@@ -6,14 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
+@Entity(name = "PESSOA")
 public class PessoaEntity {
 
     @Id
@@ -30,3 +32,5 @@ public class PessoaEntity {
     @CreatedDate
     private LocalDateTime createdAt;
 }
+
+
