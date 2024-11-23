@@ -6,6 +6,7 @@ import com.rlti.hexagonal.adapters.output.repository.PessoaRepository;
 import com.rlti.hexagonal.adapters.output.repository.entity.PessoaEntity;
 import com.rlti.hexagonal.adapters.output.repository.entity.Tipo;
 import com.rlti.hexagonal.application.core.domain.Pessoa;
+import com.rlti.hexagonal.application.core.domain.PessoaFisica;
 import com.rlti.hexagonal.application.port.output.PessoaOutputPort;
 import com.rlti.hexagonal.handler.DuplicidadeException;
 import jakarta.transaction.Transactional;
@@ -47,6 +48,13 @@ public class PessoaAdapter implements PessoaOutputPort {
                 .toList();
 
         return new PageImpl<>(pessoas, pageable, pessoaEntities.getTotalElements());
+    }
+
+    @Override
+    public PessoaFisica getByCpf(String cpf) {
+        var pessoaEntity = pessoaFisicaRepository.findByCpf(cpf)
+                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com CPF: " + cpf));
+        return modelMapper.map(pessoaEntity, PessoaFisica.class);
     }
 
     private void validarDuplicidadePessoaJuridica(Pessoa pessoa) {

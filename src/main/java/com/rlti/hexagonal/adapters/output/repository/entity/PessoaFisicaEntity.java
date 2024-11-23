@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 @Entity(name = "PESSOA_FISICA")
 public class PessoaFisicaEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @CPF
@@ -28,6 +29,9 @@ public class PessoaFisicaEntity {
     @OneToOne
     @JoinColumn(name = "pessoa_id")
     private PessoaEntity pessoa;
+
+    @OneToMany(mappedBy = "pessoaFisica", cascade = CascadeType.ALL)
+    List<TelefoneEntity> telefones;
 
     public PessoaFisicaEntity(PessoaFisica pessoaFisica) {
         this.cpf = pessoaFisica.getCpf();

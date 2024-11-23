@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class UsesCaseConfig {
+public class BuscaEnderecoUseCaseConfig {
     @Bean
     public BuscaEnderecoUseCase buscaEnderecoUseCase(BuscaEnderecoOutputPort buscaEnderecoOutputPort) {
         return new BuscaEnderecoUseCase(buscaEnderecoOutputPort);
