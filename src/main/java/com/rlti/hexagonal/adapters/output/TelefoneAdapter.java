@@ -21,7 +21,7 @@ public class TelefoneAdapter implements TelefoneOutputPort {
 
     @Override
     public void salvar(Telefone telefone) {
-        var telefoneEntity = modelMapper.map(telefone, TelefoneEntity.class);
+        var telefoneEntity = convertTelefone(telefone);
         telefoneRepository.save(telefoneEntity);
     }
 
@@ -43,7 +43,11 @@ public class TelefoneAdapter implements TelefoneOutputPort {
 
     @Override
     public void delete(Telefone telefone) {
-        var telefoneEntity = modelMapper.map(telefone, TelefoneEntity.class);
+        var telefoneEntity = convertTelefone(telefone);
         telefoneRepository.delete(telefoneEntity);
+    }
+
+    private TelefoneEntity convertTelefone(Telefone telefone) {
+        return modelMapper.map(telefone, TelefoneEntity.class);
     }
 }

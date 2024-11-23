@@ -35,18 +35,19 @@ public class TelefoneUseCase implements TelefoneInputPort {
 
     @Override
     public void updateTelefone(Long id, TelefoneRequest request) {
-        var telefone = telefoneOutputPort.getById(id);
+        var telefone = getTelefoneById(id);
         telefone.update(request);
         telefoneOutputPort.salvar(telefone);
     }
 
-    @Override
-    public void deleteTelefone(Long id) {
-        var telefone = telefoneOutputPort.getById(id);
-        telefoneOutputPort.delete(telefone);
+    private Telefone getTelefoneById(Long id) {
+        return telefoneOutputPort.getById(id);
     }
 
-
-
+    @Override
+    public void deleteTelefone(Long id) {
+        var telefone = getTelefoneById(id);
+        telefoneOutputPort.delete(telefone);
+    }
 
 }
