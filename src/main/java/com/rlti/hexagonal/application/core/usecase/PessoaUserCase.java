@@ -1,9 +1,9 @@
 package com.rlti.hexagonal.application.core.usecase;
 
-import com.rlti.hexagonal.adapters.in.controller.request.PessoaRequest;
+import com.rlti.hexagonal.adapters.input.controller.request.PessoaRequest;
 import com.rlti.hexagonal.application.core.domain.Pessoa;
-import com.rlti.hexagonal.application.ports.in.PessoaInputPort;
-import com.rlti.hexagonal.application.ports.out.PessoaOutputPort;
+import com.rlti.hexagonal.application.port.input.PessoaInputPort;
+import com.rlti.hexagonal.application.port.output.PessoaOutputPort;
 
 public class PessoaUserCase implements PessoaInputPort {
 

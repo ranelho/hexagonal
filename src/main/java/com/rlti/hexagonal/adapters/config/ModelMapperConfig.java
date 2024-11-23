@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.config;
+package com.rlti.hexagonal.adapters.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

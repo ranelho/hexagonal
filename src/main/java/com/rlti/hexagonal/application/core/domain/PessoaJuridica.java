@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.application.core.domain;
 
-import com.rlti.hexagonal.adapters.in.controller.request.PessoaJuridicaRequest;
+import com.rlti.hexagonal.adapters.input.controller.request.PessoaJuridicaRequest;
 
 public class PessoaJuridica {
     private Long id;

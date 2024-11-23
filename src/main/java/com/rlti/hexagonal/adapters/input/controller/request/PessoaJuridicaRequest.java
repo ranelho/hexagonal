@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.adapters.in.controller.request;
+package com.rlti.hexagonal.adapters.input.controller.request;
 
 import lombok.Value;
 import org.hibernate.validator.constraints.br.CNPJ;

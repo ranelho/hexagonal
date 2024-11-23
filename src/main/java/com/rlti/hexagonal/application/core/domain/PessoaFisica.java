@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.application.core.domain;
 
-import com.rlti.hexagonal.adapters.in.controller.request.PessoaFisicaRequest;
+import com.rlti.hexagonal.adapters.input.controller.request.PessoaFisicaRequest;
 
 import java.time.LocalDate;
 

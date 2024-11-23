@@ -1,6 +1,6 @@
-package com.rlti.hexagonal.adapters.out.repository;
+package com.rlti.hexagonal.adapters.output.repository;
 
-import com.rlti.hexagonal.adapters.out.repository.entity.PessoaEntity;
+import com.rlti.hexagonal.adapters.output.repository.entity.PessoaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PessoaRepository extends JpaRepository<PessoaEntity, Long> {

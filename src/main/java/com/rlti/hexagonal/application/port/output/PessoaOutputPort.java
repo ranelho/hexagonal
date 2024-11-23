@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.application.ports.out;
+package com.rlti.hexagonal.application.port.output;
 
 import com.rlti.hexagonal.application.core.domain.Pessoa;
 

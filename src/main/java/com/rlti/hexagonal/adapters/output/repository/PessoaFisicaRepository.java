@@ -1,6 +1,6 @@
-package com.rlti.hexagonal.adapters.out.repository;
+package com.rlti.hexagonal.adapters.output.repository;
 
-import com.rlti.hexagonal.adapters.out.repository.entity.PessoaFisicaEntity;
+import com.rlti.hexagonal.adapters.output.repository.entity.PessoaFisicaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

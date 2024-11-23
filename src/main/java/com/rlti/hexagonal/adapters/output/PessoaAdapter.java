@@ -1,12 +1,12 @@
-package com.rlti.hexagonal.adapters.out;
+package com.rlti.hexagonal.adapters.output;
 
-import com.rlti.hexagonal.adapters.out.repository.PessoaFisicaRepository;
-import com.rlti.hexagonal.adapters.out.repository.PessoaJuridicaRepository;
-import com.rlti.hexagonal.adapters.out.repository.PessoaRepository;
-import com.rlti.hexagonal.adapters.out.repository.entity.PessoaEntity;
-import com.rlti.hexagonal.adapters.out.repository.entity.Tipo;
+import com.rlti.hexagonal.adapters.output.repository.PessoaFisicaRepository;
+import com.rlti.hexagonal.adapters.output.repository.PessoaJuridicaRepository;
+import com.rlti.hexagonal.adapters.output.repository.PessoaRepository;
+import com.rlti.hexagonal.adapters.output.repository.entity.PessoaEntity;
+import com.rlti.hexagonal.adapters.output.repository.entity.Tipo;
 import com.rlti.hexagonal.application.core.domain.Pessoa;
-import com.rlti.hexagonal.application.ports.out.PessoaOutputPort;
+import com.rlti.hexagonal.application.port.output.PessoaOutputPort;
 import com.rlti.hexagonal.handler.DuplicidadeException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

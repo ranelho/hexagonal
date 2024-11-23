@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.adapters.out.repository.entity;
+package com.rlti.hexagonal.adapters.output.repository.entity;
 
 import com.rlti.hexagonal.application.core.domain.Pessoa;
 import jakarta.persistence.*;
