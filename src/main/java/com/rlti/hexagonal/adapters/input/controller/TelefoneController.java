@@ -1,12 +1,16 @@
 package com.rlti.hexagonal.adapters.input.controller;
 
 import com.rlti.hexagonal.adapters.input.controller.request.TelefoneRequest;
+import com.rlti.hexagonal.adapters.output.response.TelefoneResponse;
+import com.rlti.hexagonal.application.core.domain.Telefone;
 import com.rlti.hexagonal.application.port.input.TelefoneInputPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/telefones")
@@ -19,5 +23,11 @@ public class TelefoneController {
     public ResponseEntity<Void> criarTelefone(@PathVariable @CPF String cpf, @Valid @RequestBody TelefoneRequest request){
         telefoneInputPort.criarTelefone(cpf, request);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/all/{cpf}")
+    public ResponseEntity<List<TelefoneResponse>> listarTelefones(@PathVariable @CPF String cpf){
+        var telefones= telefoneInputPort.findAllByCpf(cpf);
+        return ResponseEntity.ok(telefones);
     }
 }

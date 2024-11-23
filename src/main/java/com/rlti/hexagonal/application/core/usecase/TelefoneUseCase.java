@@ -1,10 +1,13 @@
 package com.rlti.hexagonal.application.core.usecase;
 
 import com.rlti.hexagonal.adapters.input.controller.request.TelefoneRequest;
+import com.rlti.hexagonal.adapters.output.response.TelefoneResponse;
 import com.rlti.hexagonal.application.core.domain.Telefone;
 import com.rlti.hexagonal.application.port.input.TelefoneInputPort;
 import com.rlti.hexagonal.application.port.output.PessoaOutputPort;
 import com.rlti.hexagonal.application.port.output.TelefoneOutputPort;
+
+import java.util.List;
 
 public class TelefoneUseCase implements TelefoneInputPort {
 
@@ -21,5 +24,12 @@ public class TelefoneUseCase implements TelefoneInputPort {
         var pessoaFisica = pessoaOutputPort.getByCpf(cpf);
         var telefone = new Telefone(request, pessoaFisica);
         telefoneOutputPort.salvar(telefone);
+    }
+
+    @Override
+    public List<TelefoneResponse> findAllByCpf(String cpf) {
+        var pessoaFisica = pessoaOutputPort.getByCpf(cpf);
+        var telefones=  telefoneOutputPort.findAllByPessoaFisica(pessoaFisica);
+        return TelefoneResponse.converte(telefones);
     }
 }
