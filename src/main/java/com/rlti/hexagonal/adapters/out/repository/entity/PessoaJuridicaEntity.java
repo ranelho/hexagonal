@@ -30,6 +30,6 @@ public class PessoaJuridicaEntity {
 
     public PessoaJuridicaEntity(PessoaJuridica pessoaJuridica) {
         this.cnpj = pessoaJuridica.getCnpj();
-        this.razaoSocial = pessoaJuridica.getRazaoSocial();
+        this.razaoSocial = pessoaJuridica.getRazaoSocial().toUpperCase();
     }
 }

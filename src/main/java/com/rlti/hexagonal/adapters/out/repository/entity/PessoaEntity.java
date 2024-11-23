@@ -42,8 +42,8 @@ public class PessoaEntity {
     public PessoaEntity(Pessoa pessoa) {
         this.idPessoa = pessoa.getIdPessoa();
         this.tipo = pessoa.getTipo();
-        this.nome = pessoa.getNome();
-        this.resideExterior = pessoa.getResideExterior();
+        this.nome = pessoa.getNome().toUpperCase();
+        this.resideExterior = pessoa.getResideExterior().toUpperCase();
         this.createdAt = pessoa.getCreatedAt();
         if (pessoa.getPessoaFisica() != null) {
             this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica());
