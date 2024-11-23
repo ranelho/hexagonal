@@ -1,15 +1,27 @@
 package com.rlti.hexagonal.application.core.domain;
 
+import com.rlti.hexagonal.adapters.in.controller.request.PessoaRequest;
+import com.rlti.hexagonal.adapters.out.repository.entity.Tipo;
+
 import java.time.LocalDateTime;
 
 public class Pessoa {
     private Long idPessoa;
-    private String tipo;
+    private Tipo tipo;
     private String nome;
     private String resideExterior;
     private LocalDateTime createdAt;
+    private PessoaFisica pessoaFisica;
+    private PessoaJuridica pessoaJuridica;
 
-    // Getters e Setters
+    public Pessoa(PessoaRequest request) {
+        this.tipo = request.getTipo();
+        this.nome = request.getNome();
+        this.resideExterior = request.getResideExterior();
+        this.pessoaFisica = new PessoaFisica(request.getPessoaFisica());
+        this.pessoaJuridica = new PessoaJuridica(request.getPessoaJuridica());
+    }
+
     public Long getIdPessoa() {
         return idPessoa;
     }
@@ -18,11 +30,11 @@ public class Pessoa {
         this.idPessoa = idPessoa;
     }
 
-    public String getTipo() {
+    public Tipo getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
 
@@ -48,5 +60,31 @@ public class Pessoa {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public PessoaFisica getPessoaFisica() {
+        return pessoaFisica;
+    }
+
+    public void setPessoaFisica(PessoaFisica pessoaFisica) {
+        this.pessoaFisica = pessoaFisica;
+    }
+
+    public Pessoa(Long idPessoa, Tipo tipo, String nome, String resideExterior, LocalDateTime createdAt, PessoaFisica pessoaFisica, PessoaJuridica pessoaJuridica) {
+        this.idPessoa = idPessoa;
+        this.tipo = tipo;
+        this.nome = nome;
+        this.resideExterior = resideExterior;
+        this.createdAt = createdAt;
+        this.pessoaFisica = pessoaFisica;
+        this.pessoaJuridica = pessoaJuridica;
+    }
+
+    public PessoaJuridica getPessoaJuridica() {
+        return pessoaJuridica;
+    }
+
+    public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
+        this.pessoaJuridica = pessoaJuridica;
     }
 }

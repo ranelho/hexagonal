@@ -1,36 +1,39 @@
 package com.rlti.hexagonal.application.core.domain;
 
+import com.rlti.hexagonal.adapters.in.controller.request.PessoaFisicaRequest;
+
 import java.time.LocalDate;
 
-public class PessoaFisica extends Pessoa {
+public class PessoaFisica {
+    private Long id;
     private String cpf;
-    private String nomeAbreviado;
-    private String nomeSocial;
     private LocalDate dataNascimento;
 
-    // Getters e Setters
+    public PessoaFisica(Long id, String cpf, LocalDate dataNascimento) {
+        this.id = id;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+    }
+
+    public PessoaFisica(PessoaFisicaRequest pessoaFisica) {
+        this.cpf = pessoaFisica.getCpf();
+        this.dataNascimento = pessoaFisica.getDataNascimento();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getCpf() {
         return cpf;
     }
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public String getNomeAbreviado() {
-        return nomeAbreviado;
-    }
-
-    public void setNomeAbreviado(String nomeAbreviado) {
-        this.nomeAbreviado = nomeAbreviado;
-    }
-
-    public String getNomeSocial() {
-        return nomeSocial;
-    }
-
-    public void setNomeSocial(String nomeSocial) {
-        this.nomeSocial = nomeSocial;
     }
 
     public LocalDate getDataNascimento() {

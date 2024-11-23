@@ -1,17 +1,20 @@
 package com.rlti.hexagonal.adapters.in.controller.request;
 
-import com.rlti.hexagonal.adapters.out.entity.Tipo;
+import com.rlti.hexagonal.adapters.out.repository.entity.Tipo;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Value;
 
 
-@Data
+@Value
 public class PessoaRequest {
     @NotNull
-    private Tipo tipo;
+    Tipo tipo;
     @NotBlank
-    private String nome;
+    String nome;
     @NotBlank
-    private String resideExterior;
+    String resideExterior;
+
+    PessoaFisicaRequest pessoaFisica;
+    PessoaJuridicaRequest pessoaJuridica;
 }

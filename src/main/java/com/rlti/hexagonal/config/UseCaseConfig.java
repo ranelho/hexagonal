@@ -1,8 +1,8 @@
 package com.rlti.hexagonal.config;
 
-import com.rlti.hexagonal.application.core.usecase.InsertPessoaUserCase;
-import com.rlti.hexagonal.application.ports.in.InsertPessoaInputPort;
-import com.rlti.hexagonal.application.ports.out.InsertPessoaOutputPort;
+import com.rlti.hexagonal.application.core.usecase.PessoaUserCase;
+import com.rlti.hexagonal.application.ports.in.PessoaInputPort;
+import com.rlti.hexagonal.application.ports.out.PessoaOutputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class UseCaseConfig {
 
-    private final InsertPessoaOutputPort insertPessoaOutputPort;
+    private final PessoaOutputPort pessoaOutputPort;
 
     @Bean
-    public InsertPessoaInputPort insertPessoaInputPort() {
-        return new InsertPessoaUserCase(insertPessoaOutputPort);
+    public PessoaInputPort insertPessoaInputPort() {
+        return new PessoaUserCase(pessoaOutputPort);
     }
 }
