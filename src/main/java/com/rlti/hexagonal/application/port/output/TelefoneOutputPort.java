@@ -11,4 +11,6 @@ public interface TelefoneOutputPort {
     List<Telefone> findAllByPessoaFisica(PessoaFisica pessoaFisica);
 
     Telefone getById(Long id);
+
+    void delete(Telefone telefone);
 }

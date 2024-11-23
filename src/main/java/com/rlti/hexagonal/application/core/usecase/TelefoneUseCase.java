@@ -40,5 +40,13 @@ public class TelefoneUseCase implements TelefoneInputPort {
         telefoneOutputPort.salvar(telefone);
     }
 
+    @Override
+    public void deleteTelefone(Long id) {
+        var telefone = telefoneOutputPort.getById(id);
+        telefoneOutputPort.delete(telefone);
+    }
+
+
+
 
 }

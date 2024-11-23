@@ -40,4 +40,10 @@ public class TelefoneAdapter implements TelefoneOutputPort {
                 .orElseThrow(() -> new RuntimeException("Telefone não encontrado com ID: " + id));
         return modelMapper.map(telefoneEntity, Telefone.class);
     }
+
+    @Override
+    public void delete(Telefone telefone) {
+        var telefoneEntity = modelMapper.map(telefone, TelefoneEntity.class);
+        telefoneRepository.delete(telefoneEntity);
+    }
 }

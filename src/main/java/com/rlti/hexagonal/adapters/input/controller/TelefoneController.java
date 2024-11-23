@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,12 +30,18 @@ public class TelefoneController {
     @GetMapping("/all/{cpf}")
     public ResponseEntity<List<TelefoneResponse>> listarTelefones(@PathVariable @CPF String cpf){
         var telefones= telefoneInputPort.findAllByCpf(cpf);
-        return ResponseEntity.ok(telefones);
+        return ResponseEntity.ok().body(telefones);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> atualizarTelefone(@PathVariable Long id, @Valid @RequestBody TelefoneRequest request){
         telefoneInputPort.updateTelefone(id, request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarTelefone(@PathVariable Long id){
+        telefoneInputPort.deleteTelefone(id);
+        return ResponseEntity.noContent().build();
     }
 }

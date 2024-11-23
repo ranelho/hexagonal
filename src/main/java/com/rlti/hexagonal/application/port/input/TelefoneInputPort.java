@@ -2,7 +2,6 @@ package com.rlti.hexagonal.application.port.input;
 
 import com.rlti.hexagonal.adapters.input.controller.request.TelefoneRequest;
 import com.rlti.hexagonal.adapters.output.response.TelefoneResponse;
-import com.rlti.hexagonal.application.core.domain.Telefone;
 import jakarta.validation.Valid;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -14,4 +13,6 @@ public interface TelefoneInputPort {
     List<TelefoneResponse> findAllByCpf(@CPF String cpf);
 
     void updateTelefone(Long id, @Valid TelefoneRequest request);
+
+    void deleteTelefone(Long id);
 }
