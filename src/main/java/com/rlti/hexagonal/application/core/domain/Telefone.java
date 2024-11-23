@@ -77,4 +77,11 @@ public class Telefone {
     public void setNumeroTelefone(String numeroTelefone) {
         this.numeroTelefone = numeroTelefone;
     }
+
+    public void update(TelefoneRequest request) {
+        this.tipoTelefone = request.getTipoTelefone();
+        this.ddi = request.getDdi();
+        this.ddd = request.getDdd();
+        this.numeroTelefone = request.getNumeroTelefone();
+    }
 }

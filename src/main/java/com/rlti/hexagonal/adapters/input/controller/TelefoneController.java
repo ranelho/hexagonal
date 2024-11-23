@@ -30,4 +30,10 @@ public class TelefoneController {
         var telefones= telefoneInputPort.findAllByCpf(cpf);
         return ResponseEntity.ok(telefones);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> atualizarTelefone(@PathVariable Long id, @Valid @RequestBody TelefoneRequest request){
+        telefoneInputPort.updateTelefone(id, request);
+        return ResponseEntity.ok().build();
+    }
 }

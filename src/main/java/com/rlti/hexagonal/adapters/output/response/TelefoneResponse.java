@@ -8,12 +8,14 @@ import java.util.List;
 
 @Data
 public class TelefoneResponse {
+    private Long id;
     private TipoTelefone  tipoTelefone;
     private String ddi;
     private String ddd;
     private String numeroTelefone;
 
     public TelefoneResponse(Telefone telefone) {
+        this.id = telefone.getId();
         this.tipoTelefone = telefone.getTipoTelefone();
         this.ddi = telefone.getDdi();
         this.ddd = telefone.getDdd();

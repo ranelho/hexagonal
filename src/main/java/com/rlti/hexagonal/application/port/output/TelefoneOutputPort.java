@@ -9,4 +9,6 @@ public interface TelefoneOutputPort {
     void salvar(Telefone telefone);
 
     List<Telefone> findAllByPessoaFisica(PessoaFisica pessoaFisica);
+
+    Telefone getById(Long id);
 }

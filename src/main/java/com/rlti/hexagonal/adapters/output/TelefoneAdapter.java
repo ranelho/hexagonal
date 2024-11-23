@@ -33,4 +33,11 @@ public class TelefoneAdapter implements TelefoneOutputPort {
                 .map(entity -> modelMapper.map(entity, Telefone.class))
                 .toList();
     }
+
+    @Override
+    public Telefone getById(Long id) {
+        var telefoneEntity = telefoneRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Telefone não encontrado com ID: " + id));
+        return modelMapper.map(telefoneEntity, Telefone.class);
+    }
 }

@@ -32,4 +32,13 @@ public class TelefoneUseCase implements TelefoneInputPort {
         var telefones=  telefoneOutputPort.findAllByPessoaFisica(pessoaFisica);
         return TelefoneResponse.converte(telefones);
     }
+
+    @Override
+    public void updateTelefone(Long id, TelefoneRequest request) {
+        var telefone = telefoneOutputPort.getById(id);
+        telefone.update(request);
+        telefoneOutputPort.salvar(telefone);
+    }
+
+
 }

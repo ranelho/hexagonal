@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/pessoas")
 @RequiredArgsConstructor
-public class PessoaRestController {
+public class PessoaController {
 
     private final PessoaInputPort pessoaInputPort;
 

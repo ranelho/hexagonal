@@ -3,11 +3,13 @@ package com.rlti.hexagonal.application.core.domain;
 import com.rlti.hexagonal.adapters.input.controller.request.PessoaFisicaRequest;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class PessoaFisica {
     private Long id;
     private String cpf;
     private LocalDate dataNascimento;
+    private List<Telefone> telefones;
 
     public PessoaFisica() {
     }
