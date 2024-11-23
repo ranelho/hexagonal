@@ -3,7 +3,7 @@ package com.rlti.hexagonal.adapters.output.response;
 import lombok.Data;
 
 @Data
-public class ViaCepResponse {
+public class EnderecoResponse {
     private String cep;
     private String logradouro;
     private String complemento;

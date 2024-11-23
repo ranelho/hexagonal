@@ -14,6 +14,9 @@ public class Pessoa {
     private PessoaFisica pessoaFisica;
     private PessoaJuridica pessoaJuridica;
 
+    public Pessoa() {
+    }
+
     public Pessoa(PessoaRequest request) {
         this.tipo = request.getTipo();
         this.nome = request.getNome();

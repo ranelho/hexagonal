@@ -9,6 +9,9 @@ public class PessoaFisica {
     private String cpf;
     private LocalDate dataNascimento;
 
+    public PessoaFisica() {
+    }
+
     public PessoaFisica(Long id, String cpf, LocalDate dataNascimento) {
         this.id = id;
         this.cpf = cpf;

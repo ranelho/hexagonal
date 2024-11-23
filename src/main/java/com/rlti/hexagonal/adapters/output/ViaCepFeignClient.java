@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.adapters.output;
 
-import com.rlti.hexagonal.adapters.output.response.ViaCepResponse;
+import com.rlti.hexagonal.adapters.output.response.EnderecoResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface ViaCepFeignClient {
 
     @GetMapping("/{cep}/json")
-    ViaCepResponse buscarEndereco(@PathVariable("cep") String cep);
+    EnderecoResponse buscarEndereco(@PathVariable("cep") String cep);
 }

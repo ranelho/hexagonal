@@ -7,6 +7,9 @@ public class PessoaJuridica {
     private String cnpj;
     private String razaoSocial;
 
+    public PessoaJuridica() {
+    }
+
     public PessoaJuridica(Long id, String cnpj, String razaoSocial) {
         this.id = id;
         this.cnpj = cnpj;

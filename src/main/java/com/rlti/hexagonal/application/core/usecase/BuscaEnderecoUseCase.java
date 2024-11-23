@@ -1,15 +1,15 @@
 package com.rlti.hexagonal.application.core.usecase;
 
 import com.rlti.hexagonal.application.core.domain.Endereco;
-import com.rlti.hexagonal.application.port.output.BuscaEnderecoInputPort;
-import com.rlti.hexagonal.application.port.output.ViaCepOutputPort;
+import com.rlti.hexagonal.application.port.input.BuscaEnderecoInputPort;
+import com.rlti.hexagonal.application.port.output.BuscaEnderecoOutputPort;
 
 public class BuscaEnderecoUseCase implements BuscaEnderecoInputPort {
 
-    private final ViaCepOutputPort viaCepOutputPort;
+    private final BuscaEnderecoOutputPort buscaEnderecoOutputPort;
 
-    public BuscaEnderecoUseCase(ViaCepOutputPort viaCepOutputPort) {
-        this.viaCepOutputPort = viaCepOutputPort;
+    public BuscaEnderecoUseCase(BuscaEnderecoOutputPort buscaEnderecoOutputPort) {
+        this.buscaEnderecoOutputPort = buscaEnderecoOutputPort;
     }
 
     @Override
@@ -18,6 +18,6 @@ public class BuscaEnderecoUseCase implements BuscaEnderecoInputPort {
             throw new IllegalArgumentException("CEP inválido: " + cep);
         }
 
-        return viaCepOutputPort.buscarEndereco(cep);
+        return buscaEnderecoOutputPort.buscarEndereco(cep);
     }
 }

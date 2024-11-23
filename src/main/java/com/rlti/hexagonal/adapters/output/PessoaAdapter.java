@@ -10,7 +10,11 @@ import com.rlti.hexagonal.application.port.output.PessoaOutputPort;
 import com.rlti.hexagonal.handler.DuplicidadeException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +23,7 @@ public class PessoaAdapter implements PessoaOutputPort {
     private final PessoaRepository pessoaRepository;
     private final PessoaFisicaRepository pessoaFisicaRepository;
     private final PessoaJuridicaRepository pessoaJuridicaRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     @Transactional
@@ -30,6 +35,18 @@ public class PessoaAdapter implements PessoaOutputPort {
         }
         var pessoaEntity = new PessoaEntity(pessoa);
         pessoaRepository.save(pessoaEntity);
+    }
+
+    @Override
+    public Page<Pessoa> findAllPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("nome").ascending());
+        Page<PessoaEntity> pessoaEntities = pessoaRepository.findAll(pageable);
+
+        List<Pessoa> pessoas = pessoaEntities.getContent().stream()
+                .map(entity -> modelMapper.map(entity, Pessoa.class))
+                .toList();
+
+        return new PageImpl<>(pessoas, pageable, pessoaEntities.getTotalElements());
     }
 
     private void validarDuplicidadePessoaJuridica(Pessoa pessoa) {

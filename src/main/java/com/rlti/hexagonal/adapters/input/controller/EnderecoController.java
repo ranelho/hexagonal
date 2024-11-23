@@ -1,7 +1,7 @@
 package com.rlti.hexagonal.adapters.input.controller;
 
 import com.rlti.hexagonal.application.core.domain.Endereco;
-import com.rlti.hexagonal.application.port.output.BuscaEnderecoInputPort;
+import com.rlti.hexagonal.application.port.input.BuscaEnderecoInputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
