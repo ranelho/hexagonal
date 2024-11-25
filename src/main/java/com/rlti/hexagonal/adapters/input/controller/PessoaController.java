@@ -30,4 +30,10 @@ public class PessoaController {
         Page<PessoaResponse> pessoas = pessoaInputPort.listarPessoas(page, size);
         return ResponseEntity.ok(pessoas);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PessoaResponse> buscarPessoa(@PathVariable Long id){
+        PessoaResponse pessoa = pessoaInputPort.buscarPessoa(id);
+        return ResponseEntity.ok(pessoa);
+    }
 }

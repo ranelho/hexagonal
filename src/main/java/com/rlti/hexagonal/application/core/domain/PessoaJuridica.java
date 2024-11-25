@@ -3,15 +3,15 @@ package com.rlti.hexagonal.application.core.domain;
 import com.rlti.hexagonal.adapters.input.controller.request.PessoaJuridicaRequest;
 
 public class PessoaJuridica {
-    private Long id;
+    private Long idPessoaJuridica;
     private String cnpj;
     private String razaoSocial;
 
     public PessoaJuridica() {
     }
 
-    public PessoaJuridica(Long id, String cnpj, String razaoSocial) {
-        this.id = id;
+    public PessoaJuridica(Long idPessoaJuridica, String cnpj, String razaoSocial) {
+        this.idPessoaJuridica = idPessoaJuridica;
         this.cnpj = cnpj;
         this.razaoSocial = razaoSocial;
     }
@@ -22,11 +22,11 @@ public class PessoaJuridica {
     }
 
     public Long getId() {
-        return id;
+        return idPessoaJuridica;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.idPessoaJuridica = id;
     }
 
     public String getCnpj() {

@@ -8,4 +8,6 @@ public interface PessoaInputPort {
     void criarPessoa( PessoaRequest request);
 
     Page<PessoaResponse> listarPessoas(int page, int size);
+
+    PessoaResponse buscarPessoa(Long id);
 }

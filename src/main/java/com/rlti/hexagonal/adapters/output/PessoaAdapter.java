@@ -4,7 +4,7 @@ import com.rlti.hexagonal.adapters.output.repository.PessoaFisicaRepository;
 import com.rlti.hexagonal.adapters.output.repository.PessoaJuridicaRepository;
 import com.rlti.hexagonal.adapters.output.repository.PessoaRepository;
 import com.rlti.hexagonal.adapters.output.repository.entity.PessoaEntity;
-import com.rlti.hexagonal.adapters.output.repository.entity.Tipo;
+import com.rlti.hexagonal.application.core.domain.Tipo;
 import com.rlti.hexagonal.application.core.domain.Pessoa;
 import com.rlti.hexagonal.application.core.domain.PessoaFisica;
 import com.rlti.hexagonal.application.port.output.PessoaOutputPort;
@@ -35,6 +35,7 @@ public class PessoaAdapter implements PessoaOutputPort {
             validarDuplicidadePessoaJuridica(pessoa);
         }
         var pessoaEntity = new PessoaEntity(pessoa);
+        //var pessoaEntity = modelMapper.map(pessoa, PessoaEntity.class);
         pessoaRepository.save(pessoaEntity);
     }
 
@@ -55,6 +56,13 @@ public class PessoaAdapter implements PessoaOutputPort {
         var pessoaEntity = pessoaFisicaRepository.findByCpf(cpf)
                 .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com CPF: " + cpf));
         return modelMapper.map(pessoaEntity, PessoaFisica.class);
+    }
+
+    @Override
+    public Pessoa findById(Long id) {
+        var pessoaEntity = pessoaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + id));
+        return modelMapper.map(pessoaEntity, Pessoa.class);
     }
 
     private void validarDuplicidadePessoaJuridica(Pessoa pessoa) {

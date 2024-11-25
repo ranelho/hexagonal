@@ -11,4 +11,6 @@ public interface PessoaOutputPort {
     Page<Pessoa> findAllPaginated(int page, int size);
 
     PessoaFisica getByCpf(String cpf);
+
+    Pessoa findById(Long id);
 }

@@ -1,7 +1,6 @@
 package com.rlti.hexagonal.application.core.domain;
 
 import com.rlti.hexagonal.adapters.input.controller.request.PessoaRequest;
-import com.rlti.hexagonal.adapters.output.repository.entity.Tipo;
 
 import java.time.LocalDateTime;
 
@@ -19,10 +18,20 @@ public class Pessoa {
 
     public Pessoa(PessoaRequest request) {
         this.tipo = request.getTipo();
-        this.nome = request.getNome();
+        this.nome = request.getNome().toUpperCase();
         this.resideExterior = request.getResideExterior();
         this.pessoaFisica = new PessoaFisica(request.getPessoaFisica());
         this.pessoaJuridica = new PessoaJuridica(request.getPessoaJuridica());
+    }
+
+    public Pessoa(Long idPessoa, Tipo tipo, String nome, String resideExterior, LocalDateTime createdAt, PessoaFisica pessoaFisica, PessoaJuridica pessoaJuridica) {
+        this.idPessoa = idPessoa;
+        this.tipo = tipo;
+        this.nome = nome;
+        this.resideExterior = resideExterior;
+        this.createdAt = createdAt;
+        this.pessoaFisica = pessoaFisica;
+        this.pessoaJuridica = pessoaJuridica;
     }
 
     public Long getIdPessoa() {
@@ -71,16 +80,6 @@ public class Pessoa {
 
     public void setPessoaFisica(PessoaFisica pessoaFisica) {
         this.pessoaFisica = pessoaFisica;
-    }
-
-    public Pessoa(Long idPessoa, Tipo tipo, String nome, String resideExterior, LocalDateTime createdAt, PessoaFisica pessoaFisica, PessoaJuridica pessoaJuridica) {
-        this.idPessoa = idPessoa;
-        this.tipo = tipo;
-        this.nome = nome;
-        this.resideExterior = resideExterior;
-        this.createdAt = createdAt;
-        this.pessoaFisica = pessoaFisica;
-        this.pessoaJuridica = pessoaJuridica;
     }
 
     public PessoaJuridica getPessoaJuridica() {

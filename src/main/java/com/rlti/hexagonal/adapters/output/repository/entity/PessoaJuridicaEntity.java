@@ -17,11 +17,13 @@ import org.hibernate.validator.constraints.br.CNPJ;
 public class PessoaJuridicaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private Long idPessoaJuridica;
 
     @CNPJ
-    @Column(unique = true)
+    @Column(unique = true, updatable = false, nullable = false)
     private String cnpj;
+
+    @Column(nullable = false)
     private String razaoSocial;
 
     @OneToOne
