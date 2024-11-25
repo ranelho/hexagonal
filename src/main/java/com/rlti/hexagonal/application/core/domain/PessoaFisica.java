@@ -25,27 +25,9 @@ public class PessoaFisica {
     private String especificacaoPpe;
     private List<Telefone> telefones;
 
-    public PessoaFisica() {
-    }
+    private Pessoa pessoa;
 
-    public PessoaFisica(Long idPessoaFisica, String cpf, String nomeAbreviado, String nomeSocial, LocalDate dataNascimento, LocalDate dataObito, Sexo sexo, String nomePai, String nomeMae, String pep, String estrangeiro, String naturalidade, BigDecimal rendaMensal, String indicadorFacta, String indicadorPpe, String especificacaoPpe, List<Telefone> telefones) {
-        this.idPessoaFisica = idPessoaFisica;
-        this.cpf = cpf;
-        this.nomeAbreviado = nomeAbreviado;
-        this.nomeSocial = nomeSocial;
-        this.dataNascimento = dataNascimento;
-        this.dataObito = dataObito;
-        this.sexo = sexo;
-        this.nomePai = nomePai;
-        this.nomeMae = nomeMae;
-        this.pep = pep;
-        this.estrangeiro = estrangeiro;
-        this.naturalidade = naturalidade;
-        this.rendaMensal = rendaMensal;
-        this.indicadorFacta = indicadorFacta;
-        this.indicadorPpe = indicadorPpe;
-        this.especificacaoPpe = especificacaoPpe;
-        this.telefones = telefones;
+    public PessoaFisica() {
     }
 
     public PessoaFisica(PessoaFisicaRequest pessoaFisica) {
@@ -64,6 +46,27 @@ public class PessoaFisica {
         this.indicadorFacta = pessoaFisica.getIndicadorFacta().toUpperCase();
         this.indicadorPpe = pessoaFisica.getIndicadorPpe().toUpperCase();
         this.especificacaoPpe = pessoaFisica.getEspecificacaoPpe().toUpperCase();
+    }
+
+    public PessoaFisica(Long idPessoaFisica, String cpf, String nomeAbreviado, String nomeSocial, LocalDate dataNascimento, LocalDate dataObito, Sexo sexo, String nomePai, String nomeMae, String pep, String estrangeiro, String naturalidade, BigDecimal rendaMensal, String indicadorFacta, String indicadorPpe, String especificacaoPpe, List<Telefone> telefones, Pessoa pessoa) {
+        this.idPessoaFisica = idPessoaFisica;
+        this.cpf = cpf;
+        this.nomeAbreviado = nomeAbreviado;
+        this.nomeSocial = nomeSocial;
+        this.dataNascimento = dataNascimento;
+        this.dataObito = dataObito;
+        this.sexo = sexo;
+        this.nomePai = nomePai;
+        this.nomeMae = nomeMae;
+        this.pep = pep;
+        this.estrangeiro = estrangeiro;
+        this.naturalidade = naturalidade;
+        this.rendaMensal = rendaMensal;
+        this.indicadorFacta = indicadorFacta;
+        this.indicadorPpe = indicadorPpe;
+        this.especificacaoPpe = especificacaoPpe;
+        this.telefones = telefones;
+        this.pessoa = pessoa;
     }
 
     public Long getIdPessoaFisica() {
@@ -200,5 +203,13 @@ public class PessoaFisica {
 
     public void setTelefones(List<Telefone> telefones) {
         this.telefones = telefones;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 }

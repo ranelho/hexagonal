@@ -4,6 +4,7 @@ import com.rlti.hexagonal.adapters.output.repository.PessoaFisicaRepository;
 import com.rlti.hexagonal.adapters.output.repository.PessoaJuridicaRepository;
 import com.rlti.hexagonal.adapters.output.repository.PessoaRepository;
 import com.rlti.hexagonal.adapters.output.repository.entity.PessoaEntity;
+import com.rlti.hexagonal.adapters.output.repository.entity.PessoaFisicaEntity;
 import com.rlti.hexagonal.application.core.domain.Tipo;
 import com.rlti.hexagonal.application.core.domain.Pessoa;
 import com.rlti.hexagonal.application.core.domain.PessoaFisica;
@@ -11,6 +12,7 @@ import com.rlti.hexagonal.application.port.output.PessoaOutputPort;
 import com.rlti.hexagonal.handler.DuplicidadeException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.collection.spi.PersistentBag;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -63,6 +65,18 @@ public class PessoaAdapter implements PessoaOutputPort {
         var pessoaEntity = pessoaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + id));
         return modelMapper.map(pessoaEntity, Pessoa.class);
+    }
+
+    @Override
+    public Page<PessoaFisica> findAllPessoaFisicaPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("nomeAbreviado").ascending());
+        Page<PessoaFisicaEntity> pessoas = pessoaFisicaRepository.findAll(pageable);
+
+        List<PessoaFisica> pessoaFisicas = pessoas.getContent().stream()
+                .map(entity -> modelMapper.map(entity, PessoaFisica.class))
+                .toList();
+
+        return new PageImpl<>(pessoaFisicas, pageable, pessoas.getTotalElements());
     }
 
     private void validarDuplicidadePessoaJuridica(Pessoa pessoa) {

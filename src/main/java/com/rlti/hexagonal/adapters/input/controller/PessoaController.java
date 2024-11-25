@@ -2,6 +2,7 @@ package com.rlti.hexagonal.adapters.input.controller;
 
 
 import com.rlti.hexagonal.adapters.input.controller.request.PessoaRequest;
+import com.rlti.hexagonal.adapters.output.response.PessoaFisicaResponse;
 import com.rlti.hexagonal.adapters.output.response.PessoaResponse;
 import com.rlti.hexagonal.application.port.input.PessoaInputPort;
 import jakarta.validation.Valid;
@@ -29,6 +30,14 @@ public class PessoaController {
             @RequestParam(defaultValue = "12") int size) {
         Page<PessoaResponse> pessoas = pessoaInputPort.listarPessoas(page, size);
         return ResponseEntity.ok(pessoas);
+    }
+
+    @GetMapping("/fisica")
+    public ResponseEntity<Page<PessoaFisicaResponse>> listarPessoasFisica(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size) {
+        Page<PessoaFisicaResponse> pessoasFisica = pessoaInputPort.listarPessoasFisica(page, size);
+        return ResponseEntity.ok(pessoasFisica);
     }
 
     @GetMapping("/{id}")
