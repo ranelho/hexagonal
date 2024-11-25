@@ -1,7 +1,7 @@
 package com.rlti.hexagonal.adapters.output.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rlti.hexagonal.application.core.domain.Telefone;
+import com.rlti.hexagonal.application.core.domain.TipoTelefone;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import lombok.Setter;
 public class TelefoneEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private Long idTelefone;
     @Enumerated(EnumType.STRING)
     private TipoTelefone tipoTelefone;
     private String ddi;
@@ -26,5 +26,5 @@ public class TelefoneEntity {
     @ManyToOne
     @JoinColumn(name = "pessoa_fisica_id")
     @JsonIgnore
-    private PessoaFisicaEntity pessoaFisica;
+    private PessoaEntity pessoa;
 }
