@@ -1,5 +1,6 @@
 package com.rlti.hexagonal.adapters.output.repository.entity;
 
+import com.rlti.hexagonal.application.core.domain.Banco;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,4 +26,11 @@ public class BancoEntity {
 
     @OneToMany(mappedBy = "banco", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<AgenciaEntity> agencias;
+
+    public void update(Banco banco) {
+        this.nome = banco.getNome();
+        this.codigo = banco.getCodigo();
+        this.cnpj = banco.getCnpj();
+        this.inscricaoEstadual = banco.getInscricaoEstadual();
+    }
 }
