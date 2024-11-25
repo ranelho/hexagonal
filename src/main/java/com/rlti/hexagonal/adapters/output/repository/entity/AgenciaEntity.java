@@ -43,4 +43,17 @@ public class AgenciaEntity {
         this.pais = agencia.getPais().toUpperCase();
         this.numero = agencia.getNumero().toUpperCase();
     }
+
+    public void update(Agencia agencia) {
+        this.agencia = agencia.getAgencia();
+        this.digitoVerificadorAgencia = agencia.getDigitoVerificadorAgencia();
+        this.nomeAgencia = agencia.getNomeAgencia().toUpperCase();
+        this.logradouro = agencia.getLogradouro().toUpperCase();
+        this.bairro = agencia.getBairro().toUpperCase();
+        this.cidade = agencia.getCidade().toUpperCase();
+        this.uf = agencia.getUf().toUpperCase();
+        this.cep = agencia.getCep();
+        this.pais = agencia.getPais().toUpperCase();
+        this.numero = agencia.getNumero().toUpperCase();
+    }
 }

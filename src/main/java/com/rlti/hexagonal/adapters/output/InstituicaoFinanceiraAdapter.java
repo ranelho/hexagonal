@@ -57,6 +57,20 @@ public class InstituicaoFinanceiraAdapter implements InstituicaoFinanceiraOutput
         agenciaRepository.save(new AgenciaEntity(bancoEntity, agencia));
     }
 
+    @Override
+    public void atualizarAgencia(Long idAgencia, Agencia agencia) {
+        var agenciaEntity = agenciaRepository.getReferenceById(idAgencia);
+        agenciaEntity.update(agencia);
+        agenciaRepository.save(agenciaEntity);
+    }
+
+    @Override
+    public Agencia buscarAgencia(Long idAgencia) {
+        var agenciaEntity = agenciaRepository.findById(idAgencia).orElseThrow(
+                () -> new RuntimeException("Agência não encontrada"));
+        return modelMapper.map(agenciaEntity, Agencia.class);
+    }
+
     private BancoEntity getBancoEntity(Long id) {
         return bancoRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Banco não encontrado"));

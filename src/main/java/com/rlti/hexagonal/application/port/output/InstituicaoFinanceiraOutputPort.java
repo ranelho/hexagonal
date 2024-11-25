@@ -15,4 +15,8 @@ public interface InstituicaoFinanceiraOutputPort {
     Banco findById(Long id);
 
     void criarAgencia(Long id, Agencia agencia);
+
+    void atualizarAgencia(Long idAgencia, Agencia agencia);
+
+    Agencia buscarAgencia(Long idAgencia);
 }

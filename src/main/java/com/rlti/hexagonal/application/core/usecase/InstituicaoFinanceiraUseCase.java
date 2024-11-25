@@ -2,6 +2,7 @@ package com.rlti.hexagonal.application.core.usecase;
 
 import com.rlti.hexagonal.adapters.input.controller.request.AgenciaRequest;
 import com.rlti.hexagonal.adapters.input.controller.request.BancoRequest;
+import com.rlti.hexagonal.adapters.output.response.AgenciaResponse;
 import com.rlti.hexagonal.adapters.output.response.BancoResponse;
 import com.rlti.hexagonal.application.core.domain.Agencia;
 import com.rlti.hexagonal.application.core.domain.Banco;
@@ -48,6 +49,18 @@ public class InstituicaoFinanceiraUseCase implements InstituicaoFinanceiraInputP
     public void criarAgencia(Long id, AgenciaRequest request) {
         var agencia = modelMapper.map(request, Agencia.class);
         instituicaoFinanceiraOutputPort.criarAgencia(id, agencia);
+    }
+
+    @Override
+    public void atualizarAgencia(Long idAgencia, AgenciaRequest request) {
+        var agencia = modelMapper.map(request, Agencia.class);
+        instituicaoFinanceiraOutputPort.atualizarAgencia(idAgencia, agencia);
+    }
+
+    @Override
+    public AgenciaResponse buscarAgencia(Long idAgencia) {
+        var agencia = instituicaoFinanceiraOutputPort.buscarAgencia(idAgencia);
+        return modelMapper.map(agencia, AgenciaResponse.class);
     }
 
 
