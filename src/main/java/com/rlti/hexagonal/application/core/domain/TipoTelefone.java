@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.adapters.output.repository.entity;
+package com.rlti.hexagonal.application.core.domain;
 
 public enum TipoTelefone {
     CELULAR, FIXO, EMPRESARIAL, OUTRO
