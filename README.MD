@@ -1,3 +1,6 @@
+# Hexagonal Architecture
+
+```sh
 src/main/java
 └── com
 └── rlti.hexagonal
@@ -22,3 +25,5 @@ src/main/java
 │   └── usecase      # Casos de uso que implementam a lógica de negócio
 │       └── BuscaEnderecoUseCase.java
 └── Application.java # Classe principal da aplicação
+
+```
