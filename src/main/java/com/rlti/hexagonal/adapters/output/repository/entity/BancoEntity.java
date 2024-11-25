@@ -1,5 +1,6 @@
 package com.rlti.hexagonal.adapters.output.repository.entity;
 
+import com.rlti.hexagonal.application.core.domain.Agencia;
 import com.rlti.hexagonal.application.core.domain.Banco;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,4 +34,5 @@ public class BancoEntity {
         this.cnpj = banco.getCnpj();
         this.inscricaoEstadual = banco.getInscricaoEstadual();
     }
+
 }

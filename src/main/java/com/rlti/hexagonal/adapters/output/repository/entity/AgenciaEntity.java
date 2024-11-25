@@ -1,5 +1,6 @@
 package com.rlti.hexagonal.adapters.output.repository.entity;
 
+import com.rlti.hexagonal.application.core.domain.Agencia;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,4 +29,18 @@ public class AgenciaEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private BancoEntity banco;
+
+    public AgenciaEntity(BancoEntity bancoEntity, Agencia agencia) {
+        this.banco = bancoEntity;
+        this.agencia = agencia.getAgencia();
+        this.digitoVerificadorAgencia = agencia.getDigitoVerificadorAgencia();
+        this.nomeAgencia = agencia.getNomeAgencia().toUpperCase();
+        this.logradouro = agencia.getLogradouro().toUpperCase();
+        this.bairro = agencia.getBairro().toUpperCase();
+        this.cidade = agencia.getCidade().toUpperCase();
+        this.uf = agencia.getUf().toUpperCase();
+        this.cep = agencia.getCep();
+        this.pais = agencia.getPais().toUpperCase();
+        this.numero = agencia.getNumero().toUpperCase();
+    }
 }
