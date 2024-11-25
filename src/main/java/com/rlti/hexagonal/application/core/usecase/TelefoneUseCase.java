@@ -20,16 +20,16 @@ public class TelefoneUseCase implements TelefoneInputPort {
     }
 
     @Override
-    public void criarTelefone(String cpf, TelefoneRequest request) {
-        var pessoaFisica = pessoaOutputPort.getByCpf(cpf);
-        var telefone = new Telefone(request, pessoaFisica);
+    public void criarTelefone(Long id, TelefoneRequest request) {
+        var pessoa = pessoaOutputPort.findById(id);
+        var telefone = new Telefone(request, pessoa);
         telefoneOutputPort.salvar(telefone);
     }
 
     @Override
-    public List<TelefoneResponse> findAllByCpf(String cpf) {
-        var pessoaFisica = pessoaOutputPort.getByCpf(cpf);
-        var telefones=  telefoneOutputPort.findAllByPessoaFisica(pessoaFisica);
+    public List<TelefoneResponse> findAllByCpf(Long id) {
+        var pessoa = pessoaOutputPort.findById(id);
+        var telefones=  telefoneOutputPort.findAllByPessoaFisica(pessoa);
         return TelefoneResponse.converte(telefones);
     }
 
@@ -40,14 +40,14 @@ public class TelefoneUseCase implements TelefoneInputPort {
         telefoneOutputPort.salvar(telefone);
     }
 
-    private Telefone getTelefoneById(Long id) {
-        return telefoneOutputPort.getById(id);
-    }
-
     @Override
     public void deleteTelefone(Long id) {
         var telefone = getTelefoneById(id);
         telefoneOutputPort.delete(telefone);
+    }
+
+    private Telefone getTelefoneById(Long id) {
+        return telefoneOutputPort.getById(id);
     }
 
 }

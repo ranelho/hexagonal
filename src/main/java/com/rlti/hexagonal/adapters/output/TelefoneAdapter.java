@@ -1,8 +1,10 @@
 package com.rlti.hexagonal.adapters.output;
 
 import com.rlti.hexagonal.adapters.output.repository.TelefoneRepository;
+import com.rlti.hexagonal.adapters.output.repository.entity.PessoaEntity;
 import com.rlti.hexagonal.adapters.output.repository.entity.PessoaFisicaEntity;
 import com.rlti.hexagonal.adapters.output.repository.entity.TelefoneEntity;
+import com.rlti.hexagonal.application.core.domain.Pessoa;
 import com.rlti.hexagonal.application.core.domain.PessoaFisica;
 import com.rlti.hexagonal.application.core.domain.Telefone;
 import com.rlti.hexagonal.application.port.output.TelefoneOutputPort;
@@ -26,9 +28,9 @@ public class TelefoneAdapter implements TelefoneOutputPort {
     }
 
     @Override
-    public List<Telefone> findAllByPessoaFisica(PessoaFisica pessoaFisica) {
-        var pessoaFisicaEntity = modelMapper.map(pessoaFisica, PessoaFisicaEntity.class);
-        var telefoneEntity = telefoneRepository.findAllByPessoaFisica(pessoaFisicaEntity);
+    public List<Telefone> findAllByPessoaFisica(Pessoa pessoa) {
+        var pessoaEntity = modelMapper.map(pessoa, PessoaEntity.class);
+        var telefoneEntity = telefoneRepository.findAllByPessoa(pessoaEntity);
         return telefoneEntity.stream()
                 .map(entity -> modelMapper.map(entity, Telefone.class))
                 .toList();

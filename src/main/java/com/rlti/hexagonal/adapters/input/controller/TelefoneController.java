@@ -21,15 +21,15 @@ public class TelefoneController {
 
     private final TelefoneInputPort telefoneInputPort;
 
-    @PostMapping("/{cpf}")
-    public ResponseEntity<Void> criarTelefone(@PathVariable @CPF String cpf, @Valid @RequestBody TelefoneRequest request){
-        telefoneInputPort.criarTelefone(cpf, request);
+    @PostMapping("/{id}")
+    public ResponseEntity<Void> criarTelefone(@PathVariable Long id, @Valid @RequestBody TelefoneRequest request){
+        telefoneInputPort.criarTelefone(id, request);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/all/{cpf}")
-    public ResponseEntity<List<TelefoneResponse>> listarTelefones(@PathVariable @CPF String cpf){
-        var telefones= telefoneInputPort.findAllByCpf(cpf);
+    @GetMapping("/all/{id}")
+    public ResponseEntity<List<TelefoneResponse>> listarTelefones(@PathVariable Long id){
+        var telefones= telefoneInputPort.findAllByCpf(id);
         return ResponseEntity.ok().body(telefones);
     }
 

@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.adapters.output.response;
 
-import com.rlti.hexagonal.adapters.output.repository.entity.TipoTelefone;
+import com.rlti.hexagonal.application.core.domain.TipoTelefone;
 import com.rlti.hexagonal.application.core.domain.Telefone;
 import lombok.Data;
 

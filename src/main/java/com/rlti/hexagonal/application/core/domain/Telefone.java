@@ -1,7 +1,6 @@
 package com.rlti.hexagonal.application.core.domain;
 
 import com.rlti.hexagonal.adapters.input.controller.request.TelefoneRequest;
-import com.rlti.hexagonal.adapters.output.repository.entity.TipoTelefone;
 
 public class Telefone {
     private Long id;
@@ -9,33 +8,32 @@ public class Telefone {
     private String ddi;
     private String ddd;
     private String numeroTelefone;
-    private PessoaFisica pessoaFisica;
+    private Pessoa pessoa;
 
     public Telefone(){
     }
 
-    public Telefone(TelefoneRequest request, PessoaFisica pessoaFisica) {
+    public Telefone(TelefoneRequest request, Pessoa pessoa) {
         this.tipoTelefone = request.getTipoTelefone();
         this.ddi = request.getDdi();
         this.ddd = request.getDdd();
         this.numeroTelefone = request.getNumeroTelefone();
-        this.pessoaFisica =  pessoaFisica;
+        this.pessoa =  pessoa;
     }
-    public Telefone(Long id, TipoTelefone tipoTelefone, String ddi, String ddd, String numeroTelefone, PessoaFisica pessoaFisica) {
+    public Telefone(Long id, TipoTelefone tipoTelefone, String ddi, String ddd, String numeroTelefone, Pessoa pessoa) {
         this.id = id;
         this.tipoTelefone = tipoTelefone;
         this.ddi = ddi;
         this.ddd = ddd;
         this.numeroTelefone = numeroTelefone;
-        this.pessoaFisica = pessoaFisica;
+        this.pessoa = pessoa;
     }
 
-    public PessoaFisica getPessoaFisica() {
-        return pessoaFisica;
-    }
-
-    public void setPessoaFisica(PessoaFisica pessoaFisica) {
-        this.pessoaFisica = pessoaFisica;
+    public void update(TelefoneRequest request) {
+        this.tipoTelefone = request.getTipoTelefone();
+        this.ddi = request.getDdi();
+        this.ddd = request.getDdd();
+        this.numeroTelefone = request.getNumeroTelefone();
     }
 
     public Long getId() {
@@ -78,10 +76,11 @@ public class Telefone {
         this.numeroTelefone = numeroTelefone;
     }
 
-    public void update(TelefoneRequest request) {
-        this.tipoTelefone = request.getTipoTelefone();
-        this.ddi = request.getDdi();
-        this.ddd = request.getDdd();
-        this.numeroTelefone = request.getNumeroTelefone();
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 }
