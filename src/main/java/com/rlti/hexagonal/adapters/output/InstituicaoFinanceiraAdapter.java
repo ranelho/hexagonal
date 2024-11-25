@@ -12,8 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class InstituicaoFinanceiraAdapter implements InstituicaoFinanceiraOutputPort {
@@ -38,8 +36,8 @@ public class InstituicaoFinanceiraAdapter implements InstituicaoFinanceiraOutput
     @Override
     public Page<Banco> findAllPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("codigo").ascending());
-        Page<BancoEntity> bancosEntities = bancoRepository.findAll(pageable);
-        List<Banco> bancos = bancosEntities.getContent().stream()
+        var bancosEntities = bancoRepository.findAll(pageable);
+        var bancos = bancosEntities.getContent().stream()
                 .map(entity -> modelMapper.map(entity, Banco.class))
                 .toList();
         return new PageImpl<>(bancos, pageable, bancosEntities.getTotalElements());
@@ -69,6 +67,17 @@ public class InstituicaoFinanceiraAdapter implements InstituicaoFinanceiraOutput
         var agenciaEntity = agenciaRepository.findById(idAgencia).orElseThrow(
                 () -> new RuntimeException("Agência não encontrada"));
         return modelMapper.map(agenciaEntity, Agencia.class);
+    }
+
+    @Override
+    public Page<Agencia> listarAgenciasPorBanco(Long idBanco, int page, int size) {
+        var bancoEntity = getBancoEntity(idBanco);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("agencia").ascending());
+        var agenciasEntity = agenciaRepository.findAllByBanco(bancoEntity, pageable);
+        var agencias = agenciasEntity.getContent().stream()
+                .map(entity -> modelMapper.map(entity, Agencia.class))
+                .toList();
+        return new PageImpl<>(agencias, pageable, agenciasEntity.getTotalElements());
     }
 
     private BancoEntity getBancoEntity(Long id) {

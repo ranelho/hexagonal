@@ -21,4 +21,6 @@ public interface InstituicaoFinanceiraInputPort {
     void atualizarAgencia(Long idAgencia, @Valid AgenciaRequest request);
 
     AgenciaResponse buscarAgencia(Long idAgencia);
+
+    Page<AgenciaResponse> listarAgenciasPorBanco(Long idBanco, int page, int size);
 }

@@ -19,4 +19,6 @@ public interface InstituicaoFinanceiraOutputPort {
     void atualizarAgencia(Long idAgencia, Agencia agencia);
 
     Agencia buscarAgencia(Long idAgencia);
+
+    Page<Agencia> listarAgenciasPorBanco(Long idBanco, int page, int size);
 }

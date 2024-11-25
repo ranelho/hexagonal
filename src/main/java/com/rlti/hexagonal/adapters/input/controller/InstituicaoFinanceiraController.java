@@ -61,4 +61,12 @@ public class InstituicaoFinanceiraController {
         var agencia = instituicaoFinanceiraInputPort.buscarAgencia(idAgencia);
         return ResponseEntity.ok(agencia);
     }
+
+    @GetMapping("/banco/{idBanco}/agencias")
+    ResponseEntity<Page<AgenciaResponse>> listarAgencias(@PathVariable Long idBanco,
+                                                         @RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "12") int size) {
+        var agencias = instituicaoFinanceiraInputPort.listarAgenciasPorBanco(idBanco, page, size);
+        return ResponseEntity.ok(agencias);
+    }
 }

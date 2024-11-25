@@ -63,5 +63,11 @@ public class InstituicaoFinanceiraUseCase implements InstituicaoFinanceiraInputP
         return modelMapper.map(agencia, AgenciaResponse.class);
     }
 
+    @Override
+    public Page<AgenciaResponse> listarAgenciasPorBanco(Long idBanco, int page, int size) {
+        var agencias = instituicaoFinanceiraOutputPort.listarAgenciasPorBanco(idBanco, page, size);
+        return agencias.map(agencia -> modelMapper.map(agencia, AgenciaResponse.class));
+    }
+
 
 }
