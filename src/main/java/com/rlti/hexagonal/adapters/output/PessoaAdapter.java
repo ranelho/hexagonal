@@ -1,15 +1,13 @@
 package com.rlti.hexagonal.adapters.output;
 
-import com.rlti.hexagonal.adapters.output.repository.PessoaFisicaRepository;
-import com.rlti.hexagonal.adapters.output.repository.PessoaJuridicaRepository;
-import com.rlti.hexagonal.adapters.output.repository.PessoaRepository;
-import com.rlti.hexagonal.adapters.output.repository.entity.PessoaEntity;
-import com.rlti.hexagonal.adapters.output.repository.entity.PessoaFisicaEntity;
+import com.rlti.hexagonal.adapters.output.repository.*;
+import com.rlti.hexagonal.adapters.output.repository.entity.*;
 import com.rlti.hexagonal.application.core.domain.Pessoa;
 import com.rlti.hexagonal.application.core.domain.PessoaFisica;
-import com.rlti.hexagonal.application.core.domain.Tipo;
+import com.rlti.hexagonal.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.application.port.output.PessoaOutputPort;
 import com.rlti.hexagonal.handler.DuplicidadeException;
+import com.rlti.hexagonal.handler.EntidadeNaoEncontradaException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -26,18 +24,57 @@ public class PessoaAdapter implements PessoaOutputPort {
     private final PessoaFisicaRepository pessoaFisicaRepository;
     private final PessoaJuridicaRepository pessoaJuridicaRepository;
     private final ModelMapper modelMapper;
+    private final PaisRepository paisRepository;
+    private final OrientacaoSexualRepository orientacaoSexualRepository;
+    private final IdentidadeGeneroRepository identidadeGeneroRepository;
 
     @Override
     @Transactional
     public void salvar(Pessoa pessoa) {
+        validarPessoa(pessoa);
+
         if (pessoa.getTipo() == Tipo.FISICA) {
-            validarDuplicidadePessoaFisica(pessoa);
-        } else if (pessoa.getTipo() == Tipo.JURIDICA) {
-            validarDuplicidadePessoaJuridica(pessoa);
+            verificarDuplicidadeCpf(pessoa.getPessoaFisica().getCpf());
+
+            var pais = buscarPaisPorId(pessoa.getPessoaFisica().getPaisId());
+            var orientacao = buscarOrientacaoSexualPorId(pessoa.getPessoaFisica().getOrientacaoSexualId());
+            var identidadeGenero = buscarIdentidadeGeneroPorId(pessoa.getPessoaFisica().getIdentidadeDeGeneroId());
+
+            var pessoaEntity = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero);
+            pessoaRepository.save(pessoaEntity);
         }
-        var pessoaEntity = new PessoaEntity(pessoa);
-        //var pessoaEntity = modelMapper.map(pessoa, PessoaEntity.class);
-        pessoaRepository.save(pessoaEntity);
+    }
+
+    private void validarPessoa(Pessoa pessoa) {
+        if (pessoa == null) {
+            throw new IllegalArgumentException("Pessoa não pode ser nula.");
+        }
+        if (pessoa.getTipo() == null) {
+            throw new IllegalArgumentException("Tipo da pessoa deve ser informado.");
+        }
+    }
+
+    private void verificarDuplicidadeCpf(String cpf) {
+        pessoaFisicaRepository.findByCpf(cpf).ifPresent(
+                existingPessoa -> {
+                    throw new DuplicidadeException("Pessoa com CPF " + cpf + " já existe.");
+                }
+        );
+    }
+
+    private PaisEntity buscarPaisPorId(Long paisId) {
+        return paisRepository.findById(paisId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("País não encontrado com ID: " + paisId));
+    }
+
+    private OrientacaoSexualEntity buscarOrientacaoSexualPorId(Long orientacaoSexualId) {
+        return orientacaoSexualRepository.findById(orientacaoSexualId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Orientação não encontrada com ID: " + orientacaoSexualId));
+    }
+
+    private IdentidadeGeneroEntity buscarIdentidadeGeneroPorId(Long identidadeDeGeneroId) {
+        return identidadeGeneroRepository.findById(identidadeDeGeneroId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Identidade de gênero não encontrada com ID: " + identidadeDeGeneroId));
     }
 
     @Override
@@ -60,10 +97,10 @@ public class PessoaAdapter implements PessoaOutputPort {
     }
 
     @Override
-    public Pessoa findById(Long id) {
-        var pessoaEntity = pessoaRepository.findById(id)
+    public PessoaFisica findById(Long id) {
+        var pessoaEntity = pessoaFisicaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + id));
-        return modelMapper.map(pessoaEntity, Pessoa.class);
+        return modelMapper.map(pessoaEntity, PessoaFisica.class);
     }
 
     @Override
@@ -78,6 +115,13 @@ public class PessoaAdapter implements PessoaOutputPort {
         return new PageImpl<>(pessoaFisicas, pageable, pessoas.getTotalElements());
     }
 
+    @Override
+    public Pessoa findPessoaById(Long id) {
+        var pessoaEntity = pessoaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + id));
+        return modelMapper.map(pessoaEntity, Pessoa.class);
+    }
+
     private void validarDuplicidadePessoaJuridica(Pessoa pessoa) {
         pessoaJuridicaRepository.findByCnpj(pessoa.getPessoaJuridica().getCnpj())
                 .ifPresent(existingPessoa -> {
@@ -85,10 +129,4 @@ public class PessoaAdapter implements PessoaOutputPort {
                 });
     }
 
-    private void validarDuplicidadePessoaFisica(Pessoa pessoa) {
-        pessoaFisicaRepository.findByCpf(pessoa.getPessoaFisica().getCpf())
-                .ifPresent(existingPessoa -> {
-                    throw new DuplicidadeException("Pessoa com CPF " + pessoa.getPessoaFisica().getCpf() + " já existe.");
-                });
-    }
 }

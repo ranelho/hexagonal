@@ -20,16 +20,16 @@ public class TelefoneUseCase implements TelefoneInputPort {
     }
 
     @Override
-    public void criarTelefone(Long id, TelefoneRequest request) {
-        var pessoa = pessoaOutputPort.findById(id);
-        var telefone = new Telefone(request, pessoa);
-        telefoneOutputPort.salvar(telefone);
+    public void criarTelefone(Long idPessoaFisica, List<TelefoneRequest> telefones) {
+        var pessoa = pessoaOutputPort.findById(idPessoaFisica);
+        var telefonesList = Telefone.converte(telefones, pessoa);
+        telefoneOutputPort.salvarTodos(telefonesList);
     }
 
     @Override
-    public List<TelefoneResponse> findAllByCpf(Long id) {
-        var pessoa = pessoaOutputPort.findById(id);
-        var telefones=  telefoneOutputPort.findAllByPessoaFisica(pessoa);
+    public List<TelefoneResponse> findAllById(Long idPessoaFisica) {
+        var pessoaFisica = pessoaOutputPort.findById(idPessoaFisica);
+        var telefones=  telefoneOutputPort.findAllByPessoaFisica(pessoaFisica);
         return TelefoneResponse.converte(telefones);
     }
 

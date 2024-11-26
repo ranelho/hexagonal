@@ -2,16 +2,12 @@ package com.rlti.hexagonal.adapters.input.controller;
 
 import com.rlti.hexagonal.adapters.input.controller.request.TelefoneRequest;
 import com.rlti.hexagonal.adapters.output.response.TelefoneResponse;
-import com.rlti.hexagonal.application.core.domain.Telefone;
 import com.rlti.hexagonal.application.port.input.TelefoneInputPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -21,15 +17,15 @@ public class TelefoneController {
 
     private final TelefoneInputPort telefoneInputPort;
 
-    @PostMapping("/{id}")
-    public ResponseEntity<Void> criarTelefone(@PathVariable Long id, @Valid @RequestBody TelefoneRequest request){
-        telefoneInputPort.criarTelefone(id, request);
+    @PostMapping("/{idPessoaFisica}")
+    public ResponseEntity<Void> criarTelefone(@PathVariable Long idPessoaFisica, @Valid @RequestBody List<TelefoneRequest> request){
+        telefoneInputPort.criarTelefone(idPessoaFisica, request);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/all/{id}")
-    public ResponseEntity<List<TelefoneResponse>> listarTelefones(@PathVariable Long id){
-        var telefones= telefoneInputPort.findAllByCpf(id);
+    @GetMapping("/all/{idPessoaFisica}")
+    public ResponseEntity<List<TelefoneResponse>> listarTelefones(@PathVariable Long idPessoaFisica){
+        var telefones= telefoneInputPort.findAllById(idPessoaFisica);
         return ResponseEntity.ok().body(telefones);
     }
 

@@ -1,6 +1,9 @@
 package com.rlti.hexagonal.application.core.domain;
 
 import com.rlti.hexagonal.adapters.input.controller.request.PessoaFisicaRequest;
+import com.rlti.hexagonal.application.core.domain.enums.EstadoCivil;
+import com.rlti.hexagonal.application.core.domain.enums.GrauDeInstrucao;
+import com.rlti.hexagonal.application.core.domain.enums.Sexo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,63 +12,89 @@ import java.util.List;
 public class PessoaFisica {
     private Long idPessoaFisica;
     private String cpf;
-    private String nomeAbreviado;
     private String nomeSocial;
     private LocalDate dataNascimento;
     private LocalDate dataObito;
     private Sexo sexo;
+    private EstadoCivil estadoCivil;
     private String nomePai;
     private String nomeMae;
-    private String pep;
     private String estrangeiro;
     private String naturalidade;
     private BigDecimal rendaMensal;
     private String indicadorFacta;
+    private String indicadoCrs;
     private String indicadorPpe;
     private String especificacaoPpe;
+
     private List<Telefone> telefones;
+    private Long paisId;
+    private Long profissaoId;
+    private GrauDeInstrucao grauDeInstrucao;
+    private Long identidadeDeGeneroId;
+    private String especificacaoIg;
+    private Long orientacaoSexualId;
+    private String especificacaoOs;
+    private Long corRacaId;
 
     private Pessoa pessoa;
 
     public PessoaFisica() {
     }
 
-    public PessoaFisica(PessoaFisicaRequest pessoaFisica) {
-        this.cpf = pessoaFisica.getCpf();
-        this.dataNascimento = pessoaFisica.getDataNascimento();
-        this.sexo = pessoaFisica.getSexo();
-        this.nomeAbreviado = pessoaFisica.getNomeAbreviado().toUpperCase();
-        this.nomeSocial = pessoaFisica.getNomeSocial().toUpperCase();
-        this.dataObito = pessoaFisica.getDataObito();
-        this.nomePai = pessoaFisica.getNomePai().toUpperCase();
-        this.nomeMae = pessoaFisica.getNomeMae().toUpperCase();
-        this.pep = pessoaFisica.getPep();
-        this.estrangeiro = pessoaFisica.getEstrangeiro().toUpperCase();
-        this.naturalidade = pessoaFisica.getNaturalidade().toUpperCase();
-        this.rendaMensal = pessoaFisica.getRendaMensal();
-        this.indicadorFacta = pessoaFisica.getIndicadorFacta().toUpperCase();
-        this.indicadorPpe = pessoaFisica.getIndicadorPpe().toUpperCase();
-        this.especificacaoPpe = pessoaFisica.getEspecificacaoPpe().toUpperCase();
+    public PessoaFisica(PessoaFisicaRequest request) {
+        this.cpf = request.getCpf();
+        this.nomeSocial = request.getNomeSocial();
+        this.dataNascimento = request.getDataNascimento();
+        this.dataObito = request.getDataObito();
+        this.sexo = request.getSexo();
+        this.estadoCivil = request.getEstadoCivil();
+        this.nomePai = request.getNomePai();
+        this.nomeMae = request.getNomeMae();
+        this.estrangeiro = request.getEstrangeiro();
+        this.naturalidade = request.getNaturalidade();
+        this.rendaMensal = request.getRendaMensal();
+        this.indicadorFacta = request.getIndicadorFacta();
+        this.indicadoCrs = request.getIndicadoCrs();
+        this.indicadorPpe = request.getIndicadorPpe();
+        this.especificacaoPpe = request.getEspecificacaoPpe();
+        this.telefones = new Telefone().converteList(request.getTelefones());
+        this.paisId = request.getPaisId();
+        this.profissaoId = request.getProfissaoId();
+        this.grauDeInstrucao = request.getGrauDeInstrucao();
+        this.identidadeDeGeneroId = request.getIdentidadeDeGeneroId();
+        this.especificacaoIg = request.getEspecificacaoIg();
+        this.orientacaoSexualId = request.getOrientacaoSexualId();
+        this.especificacaoOs = request.getEspecificacaoOs();
+        this.corRacaId = request.getCorRacaId();
     }
 
-    public PessoaFisica(Long idPessoaFisica, String cpf, String nomeAbreviado, String nomeSocial, LocalDate dataNascimento, LocalDate dataObito, Sexo sexo, String nomePai, String nomeMae, String pep, String estrangeiro, String naturalidade, BigDecimal rendaMensal, String indicadorFacta, String indicadorPpe, String especificacaoPpe, List<Telefone> telefones, Pessoa pessoa) {
+    public PessoaFisica(Long idPessoaFisica, String cpf, String nomeSocial, LocalDate dataNascimento, LocalDate dataObito, Sexo sexo, EstadoCivil estadoCivil, String nomePai, String nomeMae, String estrangeiro, String naturalidade, BigDecimal rendaMensal, String indicadorFacta, String indicadoCrs, String indicadorPpe, String especificacaoPpe, List<Telefone> telefones, Long paisId, Long profissaoId, GrauDeInstrucao grauDeInstrucao, Long identidadeDeGeneroId, String especificacaoIg, Long orientacaoSexualId, String especificacaoOs, Long corRacaId, Pessoa pessoa) {
         this.idPessoaFisica = idPessoaFisica;
         this.cpf = cpf;
-        this.nomeAbreviado = nomeAbreviado;
         this.nomeSocial = nomeSocial;
         this.dataNascimento = dataNascimento;
         this.dataObito = dataObito;
         this.sexo = sexo;
+        this.estadoCivil = estadoCivil;
         this.nomePai = nomePai;
         this.nomeMae = nomeMae;
-        this.pep = pep;
         this.estrangeiro = estrangeiro;
         this.naturalidade = naturalidade;
         this.rendaMensal = rendaMensal;
         this.indicadorFacta = indicadorFacta;
+        this.indicadoCrs = indicadoCrs;
         this.indicadorPpe = indicadorPpe;
         this.especificacaoPpe = especificacaoPpe;
         this.telefones = telefones;
+        this.paisId = paisId;
+        this.profissaoId = profissaoId;
+        this.grauDeInstrucao = grauDeInstrucao;
+        this.identidadeDeGeneroId = identidadeDeGeneroId;
+        this.especificacaoIg = especificacaoIg;
+        this.orientacaoSexualId = orientacaoSexualId;
+        this.especificacaoOs = especificacaoOs;
+        this.corRacaId = corRacaId;
         this.pessoa = pessoa;
     }
 
@@ -83,14 +112,6 @@ public class PessoaFisica {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public String getNomeAbreviado() {
-        return nomeAbreviado;
-    }
-
-    public void setNomeAbreviado(String nomeAbreviado) {
-        this.nomeAbreviado = nomeAbreviado;
     }
 
     public String getNomeSocial() {
@@ -125,6 +146,14 @@ public class PessoaFisica {
         this.sexo = sexo;
     }
 
+    public EstadoCivil getEstadoCivil() {
+        return estadoCivil;
+    }
+
+    public void setEstadoCivil(EstadoCivil estadoCivil) {
+        this.estadoCivil = estadoCivil;
+    }
+
     public String getNomePai() {
         return nomePai;
     }
@@ -139,14 +168,6 @@ public class PessoaFisica {
 
     public void setNomeMae(String nomeMae) {
         this.nomeMae = nomeMae;
-    }
-
-    public String getPep() {
-        return pep;
-    }
-
-    public void setPep(String pep) {
-        this.pep = pep;
     }
 
     public String getEstrangeiro() {
@@ -181,6 +202,14 @@ public class PessoaFisica {
         this.indicadorFacta = indicadorFacta;
     }
 
+    public String getIndicadoCrs() {
+        return indicadoCrs;
+    }
+
+    public void setIndicadoCrs(String indicadoCrs) {
+        this.indicadoCrs = indicadoCrs;
+    }
+
     public String getIndicadorPpe() {
         return indicadorPpe;
     }
@@ -203,6 +232,70 @@ public class PessoaFisica {
 
     public void setTelefones(List<Telefone> telefones) {
         this.telefones = telefones;
+    }
+
+    public Long getPaisId() {
+        return paisId;
+    }
+
+    public void setPaisId(Long paisId) {
+        this.paisId = paisId;
+    }
+
+    public Long getProfissaoId() {
+        return profissaoId;
+    }
+
+    public void setProfissaoId(Long profissaoId) {
+        this.profissaoId = profissaoId;
+    }
+
+    public GrauDeInstrucao getGrauDeInstrucao() {
+        return grauDeInstrucao;
+    }
+
+    public void setGrauDeInstrucao(GrauDeInstrucao grauDeInstrucao) {
+        this.grauDeInstrucao = grauDeInstrucao;
+    }
+
+    public Long getIdentidadeDeGeneroId() {
+        return identidadeDeGeneroId;
+    }
+
+    public void setIdentidadeDeGeneroId(Long identidadeDeGeneroId) {
+        this.identidadeDeGeneroId = identidadeDeGeneroId;
+    }
+
+    public String getEspecificacaoIg() {
+        return especificacaoIg;
+    }
+
+    public void setEspecificacaoIg(String especificacaoIg) {
+        this.especificacaoIg = especificacaoIg;
+    }
+
+    public Long getOrientacaoSexualId() {
+        return orientacaoSexualId;
+    }
+
+    public void setOrientacaoSexualId(Long orientacaoSexualId) {
+        this.orientacaoSexualId = orientacaoSexualId;
+    }
+
+    public String getEspecificacaoOs() {
+        return especificacaoOs;
+    }
+
+    public void setEspecificacaoOs(String especificacaoOs) {
+        this.especificacaoOs = especificacaoOs;
+    }
+
+    public Long getCorRacaId() {
+        return corRacaId;
+    }
+
+    public void setCorRacaId(Long corRacaId) {
+        this.corRacaId = corRacaId;
     }
 
     public Pessoa getPessoa() {

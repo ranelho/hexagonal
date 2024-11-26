@@ -1,10 +1,8 @@
 package com.rlti.hexagonal.adapters.output;
 
 import com.rlti.hexagonal.adapters.output.repository.TelefoneRepository;
-import com.rlti.hexagonal.adapters.output.repository.entity.PessoaEntity;
 import com.rlti.hexagonal.adapters.output.repository.entity.PessoaFisicaEntity;
 import com.rlti.hexagonal.adapters.output.repository.entity.TelefoneEntity;
-import com.rlti.hexagonal.application.core.domain.Pessoa;
 import com.rlti.hexagonal.application.core.domain.PessoaFisica;
 import com.rlti.hexagonal.application.core.domain.Telefone;
 import com.rlti.hexagonal.application.port.output.TelefoneOutputPort;
@@ -22,15 +20,33 @@ public class TelefoneAdapter implements TelefoneOutputPort {
     private final ModelMapper modelMapper;
 
     @Override
-    public void salvar(Telefone telefone) {
-        var telefoneEntity = convertTelefone(telefone);
+    public void salvarTodos(List<Telefone> telefones) {
+        var telefoneEntity = telefones.stream()
+                .map(this::convertTelefone)
+                .toList();
+        var pessoaEntity = modelMapper.map(telefones.get(0).getPessoaFisica(), PessoaFisicaEntity.class);
+        var telefonesEntity = telefoneRepository.findAllByPessoaFisica(pessoaEntity);
+        if (telefonesEntity.size() > 0) {
+            throw new RuntimeException("Já existe um telefone cadastrado para a pessoa física");
+        }
+        telefoneRepository.saveAll(telefoneEntity);
+    }
+
+    @Override
+    public void salvar(Telefone telefones) {
+        var telefoneEntity = convertTelefone(telefones);
+        var pessoaEntity = modelMapper.map(telefones.getPessoaFisica(), PessoaFisicaEntity.class);
+        var telefonesEntity = telefoneRepository.findAllByPessoaFisica(pessoaEntity);
+        if (telefonesEntity.size() > 0) {
+            throw new RuntimeException("Já existe um telefone cadastrado para a pessoa física");
+        }
         telefoneRepository.save(telefoneEntity);
     }
 
     @Override
-    public List<Telefone> findAllByPessoaFisica(Pessoa pessoa) {
-        var pessoaEntity = modelMapper.map(pessoa, PessoaEntity.class);
-        var telefoneEntity = telefoneRepository.findAllByPessoa(pessoaEntity);
+    public List<Telefone> findAllByPessoaFisica(PessoaFisica pessoaFisica) {
+        var pessoaEntity = modelMapper.map(pessoaFisica, PessoaFisicaEntity.class);
+        var telefoneEntity = telefoneRepository.findAllByPessoaFisica(pessoaEntity);
         return telefoneEntity.stream()
                 .map(entity -> modelMapper.map(entity, Telefone.class))
                 .toList();

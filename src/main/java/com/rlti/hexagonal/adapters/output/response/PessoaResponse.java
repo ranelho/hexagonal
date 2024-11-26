@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.adapters.output.response;
 
-import com.rlti.hexagonal.application.core.domain.Tipo;
+import com.rlti.hexagonal.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.application.core.domain.Pessoa;
 import lombok.Data;
 import org.springframework.data.domain.Page;

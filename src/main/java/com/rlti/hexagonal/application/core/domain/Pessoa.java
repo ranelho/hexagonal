@@ -1,6 +1,7 @@
 package com.rlti.hexagonal.application.core.domain;
 
 import com.rlti.hexagonal.adapters.input.controller.request.PessoaRequest;
+import com.rlti.hexagonal.application.core.domain.enums.Tipo;
 
 import java.time.LocalDateTime;
 
@@ -20,8 +21,11 @@ public class Pessoa {
         this.tipo = request.getTipo();
         this.nome = request.getNome().toUpperCase();
         this.resideExterior = request.getResideExterior();
-        this.pessoaFisica = new PessoaFisica(request.getPessoaFisica());
-        this.pessoaJuridica = new PessoaJuridica(request.getPessoaJuridica());
+        if (Tipo.FISICA == request.getTipo()){
+            this.pessoaFisica = new PessoaFisica(request.getPessoaFisica());
+        } else {
+            this.pessoaJuridica = new PessoaJuridica(request.getPessoaJuridica());
+        }
     }
 
     public Pessoa(Long idPessoa, Tipo tipo, String nome, String resideExterior, LocalDateTime createdAt, PessoaFisica pessoaFisica, PessoaJuridica pessoaJuridica) {

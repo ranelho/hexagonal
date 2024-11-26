@@ -1,5 +1,7 @@
 package com.rlti.hexagonal.adapters.output.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rlti.hexagonal.application.core.domain.PessoaFisica;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +22,8 @@ public class EmailEntity {
     private String tipoEmail;
 
     @ManyToOne
-    private PessoaEntity pessoa;
+    @JoinColumn(name = "id_pessoa_fisica")
+    @JsonIgnore
+    private PessoaFisicaEntity pessoaFisica;
 
 }

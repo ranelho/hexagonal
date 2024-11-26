@@ -1,6 +1,9 @@
 package com.rlti.hexagonal.application.core.domain;
 
 import com.rlti.hexagonal.adapters.input.controller.request.TelefoneRequest;
+import com.rlti.hexagonal.application.core.domain.enums.TipoTelefone;
+
+import java.util.List;
 
 public class Telefone {
     private Long id;
@@ -8,25 +11,30 @@ public class Telefone {
     private String ddi;
     private String ddd;
     private String numeroTelefone;
-    private Pessoa pessoa;
-
-    public Telefone(){
-    }
-
-    public Telefone(TelefoneRequest request, Pessoa pessoa) {
-        this.tipoTelefone = request.getTipoTelefone();
-        this.ddi = request.getDdi();
-        this.ddd = request.getDdd();
-        this.numeroTelefone = request.getNumeroTelefone();
-        this.pessoa =  pessoa;
-    }
-    public Telefone(Long id, TipoTelefone tipoTelefone, String ddi, String ddd, String numeroTelefone, Pessoa pessoa) {
+    private PessoaFisica pessoaFisica;
+    public Telefone() {
         this.id = id;
         this.tipoTelefone = tipoTelefone;
         this.ddi = ddi;
         this.ddd = ddd;
         this.numeroTelefone = numeroTelefone;
-        this.pessoa = pessoa;
+        this.pessoaFisica = pessoaFisica;
+    }
+
+    public Telefone(TipoTelefone tipoTelefone, String ddi,String ddd,String numeroTelefone, PessoaFisica pessoa) {
+        this.tipoTelefone = tipoTelefone;
+        this.ddi = ddi;
+        this.ddd = ddd;
+        this.numeroTelefone = numeroTelefone;
+        this.pessoaFisica = pessoa;
+    }
+
+    public static List<Telefone> converte(List<TelefoneRequest> telefones, PessoaFisica pessoa) {
+        return telefones.stream().map(telefone -> new Telefone(telefone.getTipoTelefone(), telefone.getDdi(), telefone.getDdd(), telefone.getNumeroTelefone(), pessoa)).toList();
+    }
+
+    public List<Telefone> converteList(List<TelefoneRequest> telefones) {
+        return telefones.stream().map(telefone -> new Telefone(telefone.getTipoTelefone(), telefone.getDdi(), telefone.getDdd(), telefone.getNumeroTelefone(), pessoaFisica)).toList();
     }
 
     public void update(TelefoneRequest request) {
@@ -76,11 +84,13 @@ public class Telefone {
         this.numeroTelefone = numeroTelefone;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
+    public PessoaFisica getPessoaFisica() {
+        return pessoaFisica;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setPessoaFisica(PessoaFisica pessoaFisica) {
+        this.pessoaFisica = pessoaFisica;
     }
+
+
 }

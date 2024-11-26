@@ -7,9 +7,9 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 public interface TelefoneInputPort {
-    void criarTelefone(Long id, TelefoneRequest request);
+    void criarTelefone(Long id, List<TelefoneRequest> telefones);
 
-    List<TelefoneResponse> findAllByCpf(Long id);
+    List<TelefoneResponse> findAllById(Long idPessoaFisica);
 
     void updateTelefone(Long id, @Valid TelefoneRequest request);
 

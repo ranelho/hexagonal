@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.application.core.domain;
+package com.rlti.hexagonal.application.core.domain.enums;
 
 public enum TipoNaturezaJuridica {
     ADMINISTRACAO_PUBLICA(1, "Administração Pública"),

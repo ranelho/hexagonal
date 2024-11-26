@@ -1,6 +1,5 @@
 package com.rlti.hexagonal.application.port.output;
 
-import com.rlti.hexagonal.adapters.output.response.BancoResponse;
 import com.rlti.hexagonal.application.core.domain.Agencia;
 import com.rlti.hexagonal.application.core.domain.Banco;
 import org.springframework.data.domain.Page;

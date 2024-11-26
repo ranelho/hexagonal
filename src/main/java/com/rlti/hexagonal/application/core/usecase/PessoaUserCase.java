@@ -21,8 +21,8 @@ public class PessoaUserCase implements PessoaInputPort {
 
     @Override
     public void criarPessoa(PessoaRequest request) {
-        //var pessoa = new Pessoa(request);
-        var pessoa = modelMapper.map(request, Pessoa.class);
+        var pessoa = new Pessoa(request);
+        //var pessoa = modelMapper.map(request, Pessoa.class);
         pessoaOutputPort.salvar(pessoa);
     }
 
@@ -34,7 +34,7 @@ public class PessoaUserCase implements PessoaInputPort {
 
     @Override
     public PessoaResponse buscarPessoa(Long id) {
-        var pessoa = pessoaOutputPort.findById(id);
+        var pessoa = pessoaOutputPort.findPessoaById(id);
         return new PessoaResponse(pessoa);
     }
 

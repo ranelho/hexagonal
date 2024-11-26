@@ -2,16 +2,22 @@ package com.rlti.hexagonal.adapters.output.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rlti.hexagonal.application.core.domain.PessoaFisica;
-import com.rlti.hexagonal.application.core.domain.Sexo;
+import com.rlti.hexagonal.application.core.domain.enums.EstadoCivil;
+import com.rlti.hexagonal.application.core.domain.enums.GrauDeInstrucao;
+import com.rlti.hexagonal.application.core.domain.enums.Sexo;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,43 +31,85 @@ public class PessoaFisicaEntity {
 
     @CPF @Column(unique = true, updatable = false, nullable = false)
     private String cpf;
-    private String nomeAbreviado;
     private String nomeSocial;
     private LocalDate dataNascimento;
     private LocalDate dataObito;
 
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
+    @Enumerated(EnumType.STRING)
+    private EstadoCivil estadoCivil;
     private String nomePai;
     private String nomeMae;
-    private String pep;
-    private String estrangeiro;
+    private String estrangeiro ;
     private String naturalidade;
     private BigDecimal rendaMensal;
-    private String indicadorFacta;
-    private String indicadorPpe;
+    private String indicadorFacta ;
+    private String indicadoCrs;
+    private String indicadorPpe ;
     private String especificacaoPpe;
+    private String especificacaoIg;
+    private String especificacaoOs;
+
+    @Enumerated(EnumType.STRING)
+    private GrauDeInstrucao grauDeInstrucao;
 
     @OneToOne
     @JoinColumn(name = "pessoa_id")
     @JsonIgnore
     private PessoaEntity pessoa;
 
-    public PessoaFisicaEntity(PessoaFisica pessoaFisica) {
+    @OneToMany(mappedBy = "pessoaFisica", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Fetch(FetchMode.JOIN)
+    @JsonIgnore
+    @Size(max = 3, message = "Uma pessoa pode ter no máximo 3 telefones.")
+    private List<TelefoneEntity> telefones;
+
+    @OneToMany(mappedBy = "pessoaFisica", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Fetch(FetchMode.JOIN)
+    @JsonIgnore
+    private List<EmailEntity> emails;
+
+    @ManyToOne
+    @JoinColumn(name = "pais_id_pais")
+    private PaisEntity pais;
+
+    @ManyToOne
+    @JoinColumn(name = "identidade_genero_id")
+    private IdentidadeGeneroEntity identidadeGenero;
+
+    @ManyToOne
+    @JoinColumn(name = "orientacao_sexual_id")
+    private OrientacaoSexualEntity orientacaoSexual;
+
+    @ManyToOne
+    @JoinColumn(name = "cor_raca_id")
+    private CorRacaEntity corRacaEntity;
+
+    public PessoaFisicaEntity(PessoaFisica pessoaFisica,
+                              PaisEntity pais,
+                              OrientacaoSexualEntity orientacao,
+                              IdentidadeGeneroEntity identidadeGenero
+    ) {
         this.cpf = pessoaFisica.getCpf();
         this.dataNascimento = pessoaFisica.getDataNascimento();
         this.sexo = pessoaFisica.getSexo();
-        this.nomeAbreviado = pessoaFisica.getNomeAbreviado().toUpperCase();
         this.nomeSocial = pessoaFisica.getNomeSocial().toUpperCase();
         this.dataObito = pessoaFisica.getDataObito();
         this.nomePai = pessoaFisica.getNomePai().toUpperCase();
         this.nomeMae = pessoaFisica.getNomeMae().toUpperCase();
-        this.pep = pessoaFisica.getPep();
-        this.estrangeiro = pessoaFisica.getEstrangeiro().toUpperCase();
+        this.estrangeiro = pessoaFisica.getEstrangeiro().isEmpty() ? "N" : pessoaFisica.getEstrangeiro().toUpperCase();
         this.naturalidade = pessoaFisica.getNaturalidade().toUpperCase();
         this.rendaMensal = pessoaFisica.getRendaMensal();
-        this.indicadorFacta = pessoaFisica.getIndicadorFacta();
-        this.indicadorPpe = pessoaFisica.getIndicadorPpe();
+        this.indicadoCrs = pessoaFisica.getIndicadoCrs().isEmpty() ? "N" : pessoaFisica.getIndicadoCrs();
+        this.indicadorFacta = pessoaFisica.getIndicadorFacta().isEmpty() ? "N" : pessoaFisica.getIndicadorFacta();
+        this.indicadorPpe = pessoaFisica.getIndicadorPpe().isEmpty() ? "N" : pessoaFisica.getIndicadorPpe();
         this.especificacaoPpe = pessoaFisica.getEspecificacaoPpe();
+        this.especificacaoIg = pessoaFisica.getEspecificacaoIg();
+        this.especificacaoOs = pessoaFisica.getEspecificacaoOs();
+        this.grauDeInstrucao = pessoaFisica.getGrauDeInstrucao();
+        this.pais = pais;
+        this.orientacaoSexual = orientacao;
+        this.identidadeGenero = identidadeGenero;
     }
 }

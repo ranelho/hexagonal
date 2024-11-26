@@ -2,7 +2,7 @@ package com.rlti.hexagonal.adapters.output.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rlti.hexagonal.application.core.domain.Pessoa;
-import com.rlti.hexagonal.application.core.domain.Tipo;
+import com.rlti.hexagonal.application.core.domain.enums.Tipo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,7 +35,7 @@ public class PessoaEntity {
     @Column(nullable = false)
     private String nome;
 
-    private String resideExterior;
+    private String resideExterior = "N";
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -53,26 +53,19 @@ public class PessoaEntity {
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     @JsonIgnore
-    private List<EmailEntity> emails;
-
-    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Fetch(FetchMode.JOIN)
-    @JsonIgnore
     private List<EnderecoEntity> enderecos;
 
-    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Fetch(FetchMode.JOIN)
-    @JsonIgnore
-    private List<TelefoneEntity> telefones;
-
-    public PessoaEntity(Pessoa pessoa) {
+    public PessoaEntity(Pessoa pessoa,
+                        PaisEntity pais,
+                        OrientacaoSexualEntity orientacao,
+                        IdentidadeGeneroEntity identidadeGenero) {
         this.idPessoa = pessoa.getIdPessoa();
         this.tipo = pessoa.getTipo();
         this.nome = pessoa.getNome().toUpperCase();
         this.resideExterior = pessoa.getResideExterior().toUpperCase();
         this.createdAt = pessoa.getCreatedAt();
         if (pessoa.getTipo() == Tipo.FISICA) {
-            this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica());
+            this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica(), pais, orientacao, identidadeGenero);
             this.pessoaFisica.setPessoa(this);
         } else if (pessoa.getTipo() == Tipo.JURIDICA) {
             this.pessoaJuridica = new PessoaJuridicaEntity(pessoa.getPessoaJuridica());

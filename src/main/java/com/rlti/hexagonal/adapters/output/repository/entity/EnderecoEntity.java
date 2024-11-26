@@ -1,8 +1,8 @@
 package com.rlti.hexagonal.adapters.output.repository.entity;
 
 
-import com.rlti.hexagonal.application.core.domain.TipoEndereco;
-import com.rlti.hexagonal.application.core.domain.TipoLogradouro;
+import com.rlti.hexagonal.application.core.domain.enums.TipoEndereco;
+import com.rlti.hexagonal.application.core.domain.enums.TipoLogradouro;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
