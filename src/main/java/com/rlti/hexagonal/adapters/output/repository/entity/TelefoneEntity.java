@@ -1,12 +1,15 @@
 package com.rlti.hexagonal.adapters.output.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rlti.hexagonal.application.core.domain.Telefone;
 import com.rlti.hexagonal.application.core.domain.enums.TipoTelefone;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,4 +30,13 @@ public class TelefoneEntity {
     @JoinColumn(name = "id_pessoa_fisica")
     @JsonIgnore
     private PessoaFisicaEntity pessoaFisica;
+
+    public TelefoneEntity(List<Telefone> telefones) {
+        telefones.forEach(telefone -> {
+            this.tipoTelefone = telefone.getTipoTelefone();
+            this.ddi = telefone.getDdi();
+            this.ddd = telefone.getDdd();
+            this.numeroTelefone = telefone.getNumeroTelefone();
+        });
+    }
 }

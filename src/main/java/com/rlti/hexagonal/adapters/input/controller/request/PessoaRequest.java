@@ -1,6 +1,7 @@
 package com.rlti.hexagonal.adapters.input.controller.request;
 
 import com.rlti.hexagonal.application.core.domain.enums.Tipo;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Value;
@@ -15,6 +16,8 @@ public class PessoaRequest {
     @NotBlank
     String resideExterior;
 
+    @Valid
     PessoaFisicaRequest pessoaFisica;
+    @Valid
     PessoaJuridicaRequest pessoaJuridica;
 }

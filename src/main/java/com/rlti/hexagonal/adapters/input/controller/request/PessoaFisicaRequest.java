@@ -6,6 +6,7 @@ import com.rlti.hexagonal.application.core.domain.enums.Sexo;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -17,12 +18,12 @@ import java.util.List;
 public class PessoaFisicaRequest {
     @NotNull @CPF(message = "CPF inválido")
     private String cpf;
-    @NotBlank
     private String nomeSocial;
     @NotNull
     @Past
     private LocalDate dataNascimento;
     private LocalDate dataObito;
+    @NotNull
     private Sexo sexo;
     private EstadoCivil estadoCivil;
     private String nomePai;
@@ -34,7 +35,9 @@ public class PessoaFisicaRequest {
     private String indicadoCrs;
     private String indicadorPpe;
     private String especificacaoPpe;
+    @Size(max = 3, message = "Uma pessoa pode ter no máximo 3 telefones.")
     private List<TelefoneRequest> telefones;
+    @NotNull
     private Long paisId;
     private Long profissaoId;
     private GrauDeInstrucao grauDeInstrucao;

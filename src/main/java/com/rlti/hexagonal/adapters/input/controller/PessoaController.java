@@ -19,7 +19,7 @@ public class PessoaController {
     private final PessoaInputPort pessoaInputPort;
 
     @PostMapping
-    public ResponseEntity<Void> criarPessoa(@Valid @RequestBody PessoaRequest request){
+    public ResponseEntity<Void> criarPessoa(@RequestBody @Valid PessoaRequest request){
         pessoaInputPort.criarPessoa(request);
         return ResponseEntity.ok().build();
     }

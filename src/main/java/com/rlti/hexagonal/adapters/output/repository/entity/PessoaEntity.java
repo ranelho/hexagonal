@@ -58,14 +58,14 @@ public class PessoaEntity {
     public PessoaEntity(Pessoa pessoa,
                         PaisEntity pais,
                         OrientacaoSexualEntity orientacao,
-                        IdentidadeGeneroEntity identidadeGenero) {
+                        IdentidadeGeneroEntity identidadeGenero, ProfissaoEntity profissao) {
         this.idPessoa = pessoa.getIdPessoa();
         this.tipo = pessoa.getTipo();
         this.nome = pessoa.getNome().toUpperCase();
         this.resideExterior = pessoa.getResideExterior().toUpperCase();
         this.createdAt = pessoa.getCreatedAt();
         if (pessoa.getTipo() == Tipo.FISICA) {
-            this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica(), pais, orientacao, identidadeGenero);
+            this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica(), pais, orientacao, identidadeGenero, profissao);
             this.pessoaFisica.setPessoa(this);
         } else if (pessoa.getTipo() == Tipo.JURIDICA) {
             this.pessoaJuridica = new PessoaJuridicaEntity(pessoa.getPessoaJuridica());

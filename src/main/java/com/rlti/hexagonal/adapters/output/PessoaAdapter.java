@@ -27,6 +27,7 @@ public class PessoaAdapter implements PessoaOutputPort {
     private final PaisRepository paisRepository;
     private final OrientacaoSexualRepository orientacaoSexualRepository;
     private final IdentidadeGeneroRepository identidadeGeneroRepository;
+    private final ProfissaoRepository profissaoRepository;
 
     @Override
     @Transactional
@@ -39,10 +40,15 @@ public class PessoaAdapter implements PessoaOutputPort {
             var pais = buscarPaisPorId(pessoa.getPessoaFisica().getPaisId());
             var orientacao = buscarOrientacaoSexualPorId(pessoa.getPessoaFisica().getOrientacaoSexualId());
             var identidadeGenero = buscarIdentidadeGeneroPorId(pessoa.getPessoaFisica().getIdentidadeDeGeneroId());
-
-            var pessoaEntity = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero);
+            var profissao = buscarProfissaoPorId(pessoa.getPessoaFisica().getProfissaoId());
+            var pessoaEntity = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao);
             pessoaRepository.save(pessoaEntity);
         }
+    }
+
+    private ProfissaoEntity buscarProfissaoPorId(Long profissaoId) {
+        return profissaoRepository.findById(profissaoId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Profissão não encontrada com ID: " + profissaoId));
     }
 
     private void validarPessoa(Pessoa pessoa) {
@@ -63,6 +69,8 @@ public class PessoaAdapter implements PessoaOutputPort {
     }
 
     private PaisEntity buscarPaisPorId(Long paisId) {
+        if (paisId == null)
+            return null;
         return paisRepository.findById(paisId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("País não encontrado com ID: " + paisId));
     }

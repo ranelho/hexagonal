@@ -22,7 +22,6 @@ public class PessoaUserCase implements PessoaInputPort {
     @Override
     public void criarPessoa(PessoaRequest request) {
         var pessoa = new Pessoa(request);
-        //var pessoa = modelMapper.map(request, Pessoa.class);
         pessoaOutputPort.salvar(pessoa);
     }
 

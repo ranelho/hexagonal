@@ -17,6 +17,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -72,7 +73,7 @@ public class PessoaFisicaEntity {
 
     @ManyToOne
     @JoinColumn(name = "pais_id_pais")
-    private PaisEntity pais;
+    private PaisEntity nacionalidade;
 
     @ManyToOne
     @JoinColumn(name = "identidade_genero_id")
@@ -86,11 +87,15 @@ public class PessoaFisicaEntity {
     @JoinColumn(name = "cor_raca_id")
     private CorRacaEntity corRacaEntity;
 
+    @ManyToOne
+    @JoinColumn(name = "profissao_id")
+    private ProfissaoEntity profissao;
+
     public PessoaFisicaEntity(PessoaFisica pessoaFisica,
-                              PaisEntity pais,
+                              PaisEntity nacionalidade,
                               OrientacaoSexualEntity orientacao,
-                              IdentidadeGeneroEntity identidadeGenero
-    ) {
+                              IdentidadeGeneroEntity identidadeGenero,
+                              ProfissaoEntity profissao) {
         this.cpf = pessoaFisica.getCpf();
         this.dataNascimento = pessoaFisica.getDataNascimento();
         this.sexo = pessoaFisica.getSexo();
@@ -108,8 +113,14 @@ public class PessoaFisicaEntity {
         this.especificacaoIg = pessoaFisica.getEspecificacaoIg();
         this.especificacaoOs = pessoaFisica.getEspecificacaoOs();
         this.grauDeInstrucao = pessoaFisica.getGrauDeInstrucao();
-        this.pais = pais;
-        this.orientacaoSexual = orientacao;
-        this.identidadeGenero = identidadeGenero;
+        this.telefones = Collections.singletonList(new TelefoneEntity(pessoaFisica.getTelefones()));
+        if (nacionalidade != null)
+            this.nacionalidade = nacionalidade;
+        if (orientacao != null)
+            this.orientacaoSexual = orientacao;
+        if (identidadeGenero != null)
+            this.identidadeGenero = identidadeGenero;
+        if (profissao != null)
+            this.profissao = profissao;
     }
 }
