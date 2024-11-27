@@ -1,6 +1,7 @@
 package com.rlti.hexagonal.adapters.output.repository.entity;
 
 
+import com.rlti.hexagonal.application.core.domain.Endereco;
 import com.rlti.hexagonal.application.core.domain.enums.TipoEndereco;
 import com.rlti.hexagonal.application.core.domain.enums.TipoLogradouro;
 import jakarta.persistence.*;
@@ -20,16 +21,29 @@ public class EnderecoEntity {
         private Long idEndereco;
         private String cep;
         private String logradouro;
+        private String numero;
+        private String complemento;
         private String bairro;
         private String cidade;
         private String uf;
-        private String complemento;
-        private String numero;
-        private String pais;
-        private TipoLogradouro tipoLogradouro;
         private TipoEndereco tipoEndereco;
-        private String tipoFuncaoEndereco;
+        private String indicadorCorrespondencia;
+        private String indicadorFaturamento;
 
         @ManyToOne(fetch = FetchType.LAZY)
         private PessoaEntity pessoa;
+
+    public EnderecoEntity(PessoaFisicaEntity pessoaFisica, Endereco endereco) {
+        this.cep = endereco.getCep();
+        this.logradouro = endereco.getLogradouro();
+        this.numero = endereco.getNumero();
+        this.complemento = endereco.getComplemento();
+        this.bairro = endereco.getBairro();
+        this.cidade = endereco.getCidade();
+        this.uf = endereco.getUf();
+        this.tipoEndereco = endereco.getTipoEndereco();
+        this.indicadorCorrespondencia = endereco.getIndicadorCorrespondencia();
+        this.indicadorFaturamento = endereco.getIndicadorFaturamento();
+        this.pessoa = pessoaFisica.getPessoa();
+    }
 }

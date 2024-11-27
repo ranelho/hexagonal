@@ -1,24 +1,29 @@
 package com.rlti.hexagonal.adapters.input.controller;
 
+import com.rlti.hexagonal.adapters.input.controller.request.EnderecoRequest;
 import com.rlti.hexagonal.application.core.domain.Endereco;
-import com.rlti.hexagonal.application.port.input.BuscaEnderecoInputPort;
+import com.rlti.hexagonal.application.port.input.EnderecoInputPort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/enderecos")
 @RequiredArgsConstructor
 public class EnderecoController {
 
-    private final BuscaEnderecoInputPort buscaEnderecoInputPort;
+    private final EnderecoInputPort enderecoInputPort;
 
     @GetMapping
     public ResponseEntity<Endereco> buscarEndereco(@RequestParam String cep) {
-        var endereco = buscaEnderecoInputPort.buscarEndereco(cep);
+        var endereco = enderecoInputPort.buscarEndereco(cep);
         return ResponseEntity.ok(endereco);
+    }
+
+    @PostMapping("/{idPessoaFisica}")
+    public ResponseEntity<Void> salvarEndereco(@PathVariable Long idPessoaFisica, @RequestBody EnderecoRequest endereco) {
+        enderecoInputPort.salvarEndereco(idPessoaFisica, endereco);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
