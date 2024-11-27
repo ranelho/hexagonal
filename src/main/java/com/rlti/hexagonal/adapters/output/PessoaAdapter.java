@@ -112,7 +112,7 @@ public class PessoaAdapter implements PessoaOutputPort {
 
     @Override
     public Page<PessoaFisica> findAllPessoaFisicaPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("nomeAbreviado").ascending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("Pessoa.nome").ascending());
         Page<PessoaFisicaEntity> pessoas = pessoaFisicaRepository.findAll(pageable);
 
         List<PessoaFisica> pessoaFisicas = pessoas.getContent().stream()
