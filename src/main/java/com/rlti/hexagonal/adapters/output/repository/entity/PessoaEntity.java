@@ -1,0 +1,77 @@
+package com.rlti.hexagonal.adapters.output.repository.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rlti.hexagonal.application.core.domain.Pessoa;
+import com.rlti.hexagonal.application.core.domain.enums.Tipo;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
+@Entity(name = "PESSOA")
+public class PessoaEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long idPessoa;
+
+    @Enumerated(EnumType.STRING)
+    @Column(updatable = false)
+    private Tipo tipo;
+
+    @Column(nullable = false)
+    private String nome;
+
+    private String resideExterior = "N";
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
+    @JsonIgnore
+    private PessoaFisicaEntity pessoaFisica;
+
+    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
+    @JsonIgnore
+    private PessoaJuridicaEntity pessoaJuridica;
+
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
+    @JsonIgnore
+    private List<EnderecoEntity> enderecos;
+
+    public PessoaEntity(Pessoa pessoa,
+                        PaisEntity pais,
+                        OrientacaoSexualEntity orientacao,
+                        IdentidadeGeneroEntity identidadeGenero, ProfissaoEntity profissao) {
+        this.idPessoa = pessoa.getIdPessoa();
+        this.tipo = pessoa.getTipo();
+        this.nome = pessoa.getNome().toUpperCase();
+        this.resideExterior = pessoa.getResideExterior().toUpperCase();
+        this.createdAt = pessoa.getCreatedAt();
+        if (pessoa.getTipo() == Tipo.FISICA) {
+            this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica(), pais, orientacao, identidadeGenero, profissao);
+            this.pessoaFisica.setPessoa(this);
+        } else if (pessoa.getTipo() == Tipo.JURIDICA) {
+            this.pessoaJuridica = new PessoaJuridicaEntity(pessoa.getPessoaJuridica());
+            this.pessoaJuridica.setPessoa(this);
+        }
+    }
+}
+
+

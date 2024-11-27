@@ -1,0 +1,47 @@
+package com.rlti.hexagonal.application.core.domain;
+
+import com.rlti.hexagonal.adapters.input.controller.request.PessoaJuridicaRequest;
+
+public class PessoaJuridica {
+    private Long idPessoaJuridica;
+    private String cnpj;
+    private String razaoSocial;
+
+    public PessoaJuridica() {
+    }
+
+    public PessoaJuridica(Long idPessoaJuridica, String cnpj, String razaoSocial) {
+        this.idPessoaJuridica = idPessoaJuridica;
+        this.cnpj = cnpj;
+        this.razaoSocial = razaoSocial;
+    }
+
+    public PessoaJuridica(PessoaJuridicaRequest pessoaJuridica) {
+        this.cnpj = pessoaJuridica.getCnpj();
+        this.razaoSocial = pessoaJuridica.getRazaoSocial();
+    }
+
+    public Long getId() {
+        return idPessoaJuridica;
+    }
+
+    public void setId(Long id) {
+        this.idPessoaJuridica = id;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public String getRazaoSocial() {
+        return razaoSocial;
+    }
+
+    public void setRazaoSocial(String razaoSocial) {
+        this.razaoSocial = razaoSocial;
+    }
+}

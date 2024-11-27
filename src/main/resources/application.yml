@@ -1,6 +1,7 @@
+server:
+  servlet:
+    context-path: /hexagonal
 spring:
-  application:
-    name: hexagonal
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5433/hexagonal
@@ -14,3 +15,14 @@ spring:
         show_sql: true
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+springdoc:
+  swagger-ui:
+    path: /public/swagger
+
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000
