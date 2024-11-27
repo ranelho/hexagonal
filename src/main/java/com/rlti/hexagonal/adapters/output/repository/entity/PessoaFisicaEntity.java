@@ -11,16 +11,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -69,7 +65,7 @@ public class PessoaFisicaEntity {
 
     @OneToMany(mappedBy = "pessoaFisica", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<EmailEntity> emails;
+    private List<EmailEntity> emails = new ArrayList<>();;
 
     @ManyToOne
     @JoinColumn(name = "pais_id_pais")
@@ -99,6 +95,7 @@ public class PessoaFisicaEntity {
         this.cpf = pessoaFisica.getCpf();
         this.dataNascimento = pessoaFisica.getDataNascimento();
         this.sexo = pessoaFisica.getSexo();
+        this.estadoCivil = pessoaFisica.getEstadoCivil();
         this.nomeSocial = pessoaFisica.getNomeSocial().toUpperCase();
         this.dataObito = pessoaFisica.getDataObito();
         this.nomePai = pessoaFisica.getNomePai().toUpperCase();
@@ -113,11 +110,8 @@ public class PessoaFisicaEntity {
         this.especificacaoIg = pessoaFisica.getEspecificacaoIg();
         this.especificacaoOs = pessoaFisica.getEspecificacaoOs();
         this.grauDeInstrucao = pessoaFisica.getGrauDeInstrucao();
-        pessoaFisica.getTelefones().forEach(telefone -> {
-            TelefoneEntity telefoneEntity = new TelefoneEntity(telefone);
-            telefoneEntity.setPessoaFisica(this);
-            this.telefones.add(telefoneEntity);
-        });
+        addTelefones(pessoaFisica);
+        addEmails(pessoaFisica);
         if (nacionalidade != null)
             this.nacionalidade = nacionalidade;
         if (orientacao != null)
@@ -126,5 +120,21 @@ public class PessoaFisicaEntity {
             this.identidadeGenero = identidadeGenero;
         if (profissao != null)
             this.profissao = profissao;
+    }
+
+    private void addEmails(PessoaFisica pessoaFisica) {
+        pessoaFisica.getEmails().forEach(email -> {
+            EmailEntity emailEntity = new EmailEntity(email);
+            emailEntity.setPessoaFisica(this);
+            this.emails.add(emailEntity);
+        });
+    }
+
+    private void addTelefones(PessoaFisica pessoaFisica) {
+        pessoaFisica.getTelefones().forEach(telefone -> {
+            TelefoneEntity telefoneEntity = new TelefoneEntity(telefone);
+            telefoneEntity.setPessoaFisica(this);
+            this.telefones.add(telefoneEntity);
+        });
     }
 }

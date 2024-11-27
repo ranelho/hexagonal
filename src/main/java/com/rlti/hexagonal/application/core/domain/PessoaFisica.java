@@ -63,6 +63,7 @@ public class PessoaFisica {
         this.indicadorPpe = request.getIndicadorPpe();
         this.especificacaoPpe = request.getEspecificacaoPpe();
         this.telefones = new Telefone().converteList(request.getTelefones());
+        this.emails = new Email().converteList(request.getEmails());
         this.paisId = request.getPaisId();
         this.profissaoId = request.getProfissaoId();
         this.grauDeInstrucao = request.getGrauDeInstrucao();

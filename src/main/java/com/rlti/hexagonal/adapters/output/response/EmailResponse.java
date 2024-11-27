@@ -15,7 +15,7 @@ public class EmailResponse {
     public  EmailResponse(Email email){
         this.idEmail = email.getIdEmail();
         this.email = email.getEmail();
-        this.tipoEmail = email.getTipoEmail();
+        this.tipoEmail = email.getTipoEmail().toString();
     }
 
     public static List<EmailResponse> converte(List<Email> emails) {

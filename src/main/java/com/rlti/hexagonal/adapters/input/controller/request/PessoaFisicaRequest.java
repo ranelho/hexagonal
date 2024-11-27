@@ -3,9 +3,9 @@ package com.rlti.hexagonal.adapters.input.controller.request;
 import com.rlti.hexagonal.application.core.domain.enums.EstadoCivil;
 import com.rlti.hexagonal.application.core.domain.enums.GrauDeInstrucao;
 import com.rlti.hexagonal.application.core.domain.enums.Sexo;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.validator.constraints.br.CPF;
@@ -17,6 +17,7 @@ import java.util.List;
 @Data
 public class PessoaFisicaRequest {
     @NotNull @CPF(message = "CPF inválido")
+    @Pattern(regexp = "^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$", message = "CPF inválido")
     private String cpf;
     private String nomeSocial;
     @NotNull
@@ -37,6 +38,8 @@ public class PessoaFisicaRequest {
     private String especificacaoPpe;
     @Size(max = 3, message = "Uma pessoa pode ter no máximo 3 telefones.")
     private List<TelefoneRequest> telefones;
+    @Size(max = 3, message = "Uma pessoa pode ter no máximo 3 emails.")
+    private List<EmailRequest> emails;
     @NotNull
     private Long paisId;
     private Long profissaoId;

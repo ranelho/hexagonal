@@ -1,7 +1,6 @@
 package com.rlti.hexagonal.adapters.output.response;
 
 import com.rlti.hexagonal.application.core.domain.PessoaFisica;
-import com.rlti.hexagonal.application.core.domain.Telefone;
 import com.rlti.hexagonal.application.core.domain.enums.EstadoCivil;
 import com.rlti.hexagonal.application.core.domain.enums.GrauDeInstrucao;
 import lombok.Data;
@@ -10,10 +9,10 @@ import org.springframework.data.domain.Page;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 public class PessoaFisicaDetalheResponse {
+    private Long id;
     private String cpf;
     private String nome;
     private LocalDate dataNascimento;
@@ -38,6 +37,7 @@ public class PessoaFisicaDetalheResponse {
 
 
     public PessoaFisicaDetalheResponse(PessoaFisica pessoaFisica) {
+        this.id = pessoaFisica.getIdPessoaFisica()                                   ;
         this.cpf = pessoaFisica.getCpf();
         this.nome = pessoaFisica.getPessoa().getNome();
         this.dataNascimento = pessoaFisica.getDataNascimento();
