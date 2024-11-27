@@ -1,6 +1,7 @@
 package com.rlti.hexagonal.application.core.usecase;
 
 import com.rlti.hexagonal.adapters.input.controller.request.PessoaRequest;
+import com.rlti.hexagonal.adapters.output.response.PessoaFisicaDetalheResponse;
 import com.rlti.hexagonal.adapters.output.response.PessoaFisicaResponse;
 import com.rlti.hexagonal.adapters.output.response.PessoaResponse;
 import com.rlti.hexagonal.application.core.domain.Pessoa;
@@ -41,6 +42,12 @@ public class PessoaUserCase implements PessoaInputPort {
     public Page<PessoaFisicaResponse> listarPessoasFisica(int page, int size) {
         var pessoasFisica = pessoaOutputPort.findAllPessoaFisicaPaginated(page, size);
         return PessoaFisicaResponse.converte(pessoasFisica);
+    }
+
+    @Override
+    public PessoaFisicaDetalheResponse buscarPessoaFisica(Long id) {
+        var pessoaFisica = pessoaOutputPort.findPessoaFisicaById(id);
+        return new PessoaFisicaDetalheResponse(pessoaFisica);
     }
 
 }

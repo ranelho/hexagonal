@@ -41,7 +41,7 @@ public class PessoaAdapter implements PessoaOutputPort {
             var orientacao = buscarOrientacaoSexualPorId(pessoa.getPessoaFisica().getOrientacaoSexualId());
             var identidadeGenero = buscarIdentidadeGeneroPorId(pessoa.getPessoaFisica().getIdentidadeDeGeneroId());
             var profissao = buscarProfissaoPorId(pessoa.getPessoaFisica().getProfissaoId());
-            var pessoaEntity = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao);
+            var pessoaEntity = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao);                   ;
             pessoaRepository.save(pessoaEntity);
         }
     }
@@ -128,6 +128,13 @@ public class PessoaAdapter implements PessoaOutputPort {
         var pessoaEntity = pessoaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + id));
         return modelMapper.map(pessoaEntity, Pessoa.class);
+    }
+
+    @Override
+    public PessoaFisica findPessoaFisicaById(Long id) {
+        var  pessoaFisicaEntity = pessoaFisicaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + id));
+        return modelMapper.map(pessoaFisicaEntity, PessoaFisica.class);
     }
 
     private void validarDuplicidadePessoaJuridica(Pessoa pessoa) {

@@ -28,6 +28,10 @@ public class PessoaFisica {
     private String especificacaoPpe;
 
     private List<Telefone> telefones;
+    private List<Email> emails;
+
+    private Pais pais;
+
     private Long paisId;
     private Long profissaoId;
     private GrauDeInstrucao grauDeInstrucao;
@@ -69,7 +73,7 @@ public class PessoaFisica {
         this.corRacaId = request.getCorRacaId();
     }
 
-    public PessoaFisica(Long idPessoaFisica, String cpf, String nomeSocial, LocalDate dataNascimento, LocalDate dataObito, Sexo sexo, EstadoCivil estadoCivil, String nomePai, String nomeMae, String estrangeiro, String naturalidade, BigDecimal rendaMensal, String indicadorFacta, String indicadoCrs, String indicadorPpe, String especificacaoPpe, List<Telefone> telefones, Long paisId, Long profissaoId, GrauDeInstrucao grauDeInstrucao, Long identidadeDeGeneroId, String especificacaoIg, Long orientacaoSexualId, String especificacaoOs, Long corRacaId, Pessoa pessoa) {
+    public PessoaFisica(Long idPessoaFisica, String cpf, String nomeSocial, LocalDate dataNascimento, LocalDate dataObito, Sexo sexo, EstadoCivil estadoCivil, String nomePai, String nomeMae, String estrangeiro, String naturalidade, BigDecimal rendaMensal, String indicadorFacta, String indicadoCrs, String indicadorPpe, String especificacaoPpe, List<Telefone> telefones, List<Email> emails, Pais pais, Long paisId, Long profissaoId, GrauDeInstrucao grauDeInstrucao, Long identidadeDeGeneroId, String especificacaoIg, Long orientacaoSexualId, String especificacaoOs, Long corRacaId, Pessoa pessoa) {
         this.idPessoaFisica = idPessoaFisica;
         this.cpf = cpf;
         this.nomeSocial = nomeSocial;
@@ -87,6 +91,8 @@ public class PessoaFisica {
         this.indicadorPpe = indicadorPpe;
         this.especificacaoPpe = especificacaoPpe;
         this.telefones = telefones;
+        this.emails = emails;
+        this.pais = pais;
         this.paisId = paisId;
         this.profissaoId = profissaoId;
         this.grauDeInstrucao = grauDeInstrucao;
@@ -232,6 +238,22 @@ public class PessoaFisica {
 
     public void setTelefones(List<Telefone> telefones) {
         this.telefones = telefones;
+    }
+
+    public List<Email> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(List<Email> emails) {
+        this.emails = emails;
+    }
+
+    public Pais getPais() {
+        return pais;
+    }
+
+    public void setPais(Pais pais) {
+        this.pais = pais;
     }
 
     public Long getPaisId() {

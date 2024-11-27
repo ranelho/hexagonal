@@ -2,6 +2,7 @@ package com.rlti.hexagonal.adapters.input.controller;
 
 
 import com.rlti.hexagonal.adapters.input.controller.request.PessoaRequest;
+import com.rlti.hexagonal.adapters.output.response.PessoaFisicaDetalheResponse;
 import com.rlti.hexagonal.adapters.output.response.PessoaFisicaResponse;
 import com.rlti.hexagonal.adapters.output.response.PessoaResponse;
 import com.rlti.hexagonal.application.port.input.PessoaInputPort;
@@ -43,6 +44,12 @@ public class PessoaController {
     @GetMapping("/{id}")
     public ResponseEntity<PessoaResponse> buscarPessoa(@PathVariable Long id){
         PessoaResponse pessoa = pessoaInputPort.buscarPessoa(id);
+        return ResponseEntity.ok(pessoa);
+    }
+
+    @GetMapping("/pessoa-fisica/{id}")
+    public ResponseEntity<PessoaFisicaDetalheResponse> buscarPessoaFisica(@PathVariable Long id){
+        PessoaFisicaDetalheResponse pessoa = pessoaInputPort.buscarPessoaFisica(id);
         return ResponseEntity.ok(pessoa);
     }
 }

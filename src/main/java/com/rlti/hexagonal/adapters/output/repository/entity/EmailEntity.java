@@ -1,7 +1,6 @@
 package com.rlti.hexagonal.adapters.output.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rlti.hexagonal.application.core.domain.PessoaFisica;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

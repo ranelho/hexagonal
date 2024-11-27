@@ -17,8 +17,10 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -61,13 +63,11 @@ public class PessoaFisicaEntity {
     private PessoaEntity pessoa;
 
     @OneToMany(mappedBy = "pessoaFisica", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Fetch(FetchMode.JOIN)
     @JsonIgnore
     @Size(max = 3, message = "Uma pessoa pode ter no máximo 3 telefones.")
-    private List<TelefoneEntity> telefones;
+    private List<TelefoneEntity> telefones = new ArrayList<>();
 
     @OneToMany(mappedBy = "pessoaFisica", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Fetch(FetchMode.JOIN)
     @JsonIgnore
     private List<EmailEntity> emails;
 
@@ -113,7 +113,11 @@ public class PessoaFisicaEntity {
         this.especificacaoIg = pessoaFisica.getEspecificacaoIg();
         this.especificacaoOs = pessoaFisica.getEspecificacaoOs();
         this.grauDeInstrucao = pessoaFisica.getGrauDeInstrucao();
-        this.telefones = Collections.singletonList(new TelefoneEntity(pessoaFisica.getTelefones()));
+        pessoaFisica.getTelefones().forEach(telefone -> {
+            TelefoneEntity telefoneEntity = new TelefoneEntity(telefone);
+            telefoneEntity.setPessoaFisica(this);
+            this.telefones.add(telefoneEntity);
+        });
         if (nacionalidade != null)
             this.nacionalidade = nacionalidade;
         if (orientacao != null)
