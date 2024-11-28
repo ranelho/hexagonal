@@ -1,10 +1,7 @@
 package com.rlti.hexagonal.application.port.input;
 
 import com.rlti.hexagonal.adapters.input.controller.request.PessoaRequest;
-import com.rlti.hexagonal.adapters.output.response.PessoaFisicaDetalheResponse;
-import com.rlti.hexagonal.adapters.output.response.PessoaFisicaResponse;
-import com.rlti.hexagonal.adapters.output.response.PessoaJuridicaDetalheResponse;
-import com.rlti.hexagonal.adapters.output.response.PessoaResponse;
+import com.rlti.hexagonal.adapters.output.response.*;
 import org.springframework.data.domain.Page;
 
 public interface PessoaInputPort {
@@ -19,4 +16,6 @@ public interface PessoaInputPort {
     PessoaFisicaDetalheResponse buscarPessoaFisica(Long id);
 
     PessoaJuridicaDetalheResponse buscarPessoaJuridica(Long idPessoa);
+
+    Page<PessoaJuridicaResponse> listarPessoasJuridicas(int page, int size);
 }

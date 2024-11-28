@@ -22,4 +22,6 @@ public interface PessoaOutputPort {
     PessoaFisica findPessoaFisicaById(Long id);
 
     PessoaJuridica findPessoaJuridicaById(Long idPessoa);
+
+    Page<PessoaJuridica> findAllPessoaJuridicaPaginated(int page, int size);
 }

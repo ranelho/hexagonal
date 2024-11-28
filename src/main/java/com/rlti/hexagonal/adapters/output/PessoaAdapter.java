@@ -147,6 +147,17 @@ public class PessoaAdapter implements PessoaOutputPort {
         return modelMapper.map(pessoaJuridicaEntity, PessoaJuridica.class);
     }
 
+    @Override
+    public Page<PessoaJuridica> findAllPessoaJuridicaPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("Pessoa.nome").ascending());
+        Page<PessoaJuridicaEntity> pessoas = pessoaJuridicaRepository.findAll(pageable);
+
+        List<PessoaJuridica> pessoaJuridicas = pessoas.getContent().stream()
+                .map(entity -> modelMapper.map(entity, PessoaJuridica.class))
+                .toList();
+        return new PageImpl<>(pessoaJuridicas, pageable, pessoas.getTotalElements());
+    }
+
     private void validarDuplicidadePessoaJuridica(Pessoa pessoa) {
         pessoaJuridicaRepository.findByCnpj(pessoa.getPessoaJuridica().getCnpj())
                 .ifPresent(existingPessoa -> {
