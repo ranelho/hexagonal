@@ -14,10 +14,12 @@ public class PessoaJuridica {
     private String inscricaoMunicipal;
     private String situacao;
 
+    private Pessoa pessoa;
+
     public PessoaJuridica() {
     }
 
-    public PessoaJuridica(Long idPessoaJuridica, String cnpj, LocalDate dataAbertura, String razaoSocial, String nomeFantasia, String inscricaoEstadual, String inscricaoMunicipal, String situacao) {
+    public PessoaJuridica(Long idPessoaJuridica, String cnpj, LocalDate dataAbertura, String razaoSocial, String nomeFantasia, String inscricaoEstadual, String inscricaoMunicipal, String situacao, Pessoa pessoa) {
         this.idPessoaJuridica = idPessoaJuridica;
         this.cnpj = cnpj;
         this.dataAbertura = dataAbertura;
@@ -26,6 +28,7 @@ public class PessoaJuridica {
         this.inscricaoEstadual = inscricaoEstadual;
         this.inscricaoMunicipal = inscricaoMunicipal;
         this.situacao = situacao;
+        this.pessoa = pessoa;
     }
 
     public PessoaJuridica(PessoaJuridicaRequest pessoaJuridica) {
@@ -95,5 +98,13 @@ public class PessoaJuridica {
 
     public void setSituacao(String situacao) {
         this.situacao = situacao;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 }
