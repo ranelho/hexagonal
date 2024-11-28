@@ -2,6 +2,7 @@ package com.rlti.hexagonal.application.port.output;
 
 import com.rlti.hexagonal.application.core.domain.Pessoa;
 import com.rlti.hexagonal.application.core.domain.PessoaFisica;
+import com.rlti.hexagonal.application.core.domain.PessoaJuridica;
 import org.springframework.data.domain.Page;
 
 
@@ -19,4 +20,6 @@ public interface PessoaOutputPort {
     Pessoa findPessoaById(Long id);
 
     PessoaFisica findPessoaFisicaById(Long id);
+
+    PessoaJuridica findPessoaJuridicaById(Long idPessoa);
 }

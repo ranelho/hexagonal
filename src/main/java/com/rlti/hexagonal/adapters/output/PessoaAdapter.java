@@ -4,6 +4,7 @@ import com.rlti.hexagonal.adapters.output.repository.*;
 import com.rlti.hexagonal.adapters.output.repository.entity.*;
 import com.rlti.hexagonal.application.core.domain.Pessoa;
 import com.rlti.hexagonal.application.core.domain.PessoaFisica;
+import com.rlti.hexagonal.application.core.domain.PessoaJuridica;
 import com.rlti.hexagonal.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.application.port.output.PessoaOutputPort;
 import com.rlti.hexagonal.handler.DuplicidadeException;
@@ -137,6 +138,13 @@ public class PessoaAdapter implements PessoaOutputPort {
         var pessoaFisicaEntity = pessoaFisicaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + id));
         return modelMapper.map(pessoaFisicaEntity, PessoaFisica.class);
+    }
+
+    @Override
+    public PessoaJuridica findPessoaJuridicaById(Long idPessoa) {
+        var pessoaJuridicaEntity = pessoaJuridicaRepository.findById(idPessoa)
+                .orElseThrow(() -> new RuntimeException("Pessoa Jurídica não encontrada com ID: " + idPessoa));
+        return modelMapper.map(pessoaJuridicaEntity, PessoaJuridica.class);
     }
 
     private void validarDuplicidadePessoaJuridica(Pessoa pessoa) {

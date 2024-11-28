@@ -5,6 +5,7 @@ import com.rlti.hexagonal.adapters.input.controller.request.PessoaFisicaRequest;
 import com.rlti.hexagonal.adapters.input.controller.request.PessoaRequest;
 import com.rlti.hexagonal.adapters.output.response.PessoaFisicaDetalheResponse;
 import com.rlti.hexagonal.adapters.output.response.PessoaFisicaResponse;
+import com.rlti.hexagonal.adapters.output.response.PessoaJuridicaDetalheResponse;
 import com.rlti.hexagonal.adapters.output.response.PessoaResponse;
 import com.rlti.hexagonal.application.port.input.PessoaInputPort;
 import jakarta.validation.Valid;
@@ -51,6 +52,12 @@ public class PessoaController {
     @GetMapping("/pessoa-fisica/{id}")
     public ResponseEntity<PessoaFisicaDetalheResponse> buscarPessoaFisica(@PathVariable Long id){
         PessoaFisicaDetalheResponse pessoa = pessoaInputPort.buscarPessoaFisica(id);
+        return ResponseEntity.ok(pessoa);
+    }
+
+    @GetMapping("/pessoa-juridica/{idPessoa}")
+    public ResponseEntity<PessoaJuridicaDetalheResponse> buscarPessoaJuridica(@PathVariable Long idPessoa){
+        PessoaJuridicaDetalheResponse pessoa = pessoaInputPort.buscarPessoaJuridica(idPessoa);
         return ResponseEntity.ok(pessoa);
     }
 }

@@ -6,6 +6,8 @@ import lombok.*;
 import org.hibernate.validator.constraints.br.CNPJ;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -36,6 +38,9 @@ public class PessoaJuridicaEntity {
     private String inscricaoEstadual;
     private String inscricaoMunicipal;
     private String situacao;
+
+    @OneToMany(mappedBy = "pessoaJuridica", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PessoaJuridicaCnaeEntity> cnaes = new ArrayList<>();
 
     public PessoaJuridicaEntity(PessoaJuridica pessoaJuridica) {
         this.cnpj = pessoaJuridica.getCnpj();

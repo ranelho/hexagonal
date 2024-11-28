@@ -4,6 +4,7 @@ import com.rlti.hexagonal.adapters.input.controller.request.PessoaFisicaRequest;
 import com.rlti.hexagonal.adapters.input.controller.request.PessoaRequest;
 import com.rlti.hexagonal.adapters.output.response.PessoaFisicaDetalheResponse;
 import com.rlti.hexagonal.adapters.output.response.PessoaFisicaResponse;
+import com.rlti.hexagonal.adapters.output.response.PessoaJuridicaDetalheResponse;
 import com.rlti.hexagonal.adapters.output.response.PessoaResponse;
 import com.rlti.hexagonal.application.core.domain.Pessoa;
 import com.rlti.hexagonal.application.core.domain.PessoaFisica;
@@ -50,6 +51,12 @@ public class PessoaUserCase implements PessoaInputPort {
     public PessoaFisicaDetalheResponse buscarPessoaFisica(Long id) {
         var pessoaFisica = pessoaOutputPort.findPessoaFisicaById(id);
         return new PessoaFisicaDetalheResponse(pessoaFisica);
+    }
+
+    @Override
+    public PessoaJuridicaDetalheResponse buscarPessoaJuridica(Long idPessoa) {
+        var pessoaJuridica = pessoaOutputPort.findPessoaJuridicaById(idPessoa);
+        return new PessoaJuridicaDetalheResponse(pessoaJuridica);
     }
 
 }
