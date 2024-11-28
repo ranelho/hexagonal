@@ -23,7 +23,7 @@ public class PessoaJuridicaCnaeEntity {
 
     @ManyToOne
     @JoinColumn(name = "cnae_id", nullable = false)
-    private CnaesEntity cnae;
+    private CnaeEntity cnae;
 
     @Column(nullable = false)
     private boolean isPrincipal;
