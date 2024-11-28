@@ -25,8 +25,7 @@ public class TelefoneEntity {
     private String numeroTelefone;
 
     @ManyToOne
-    @JoinColumn(name = "id_pessoa_fisica")
-    @JsonIgnore
+    @JoinColumn(name = "idPessoaFisica", referencedColumnName = "idPessoa", nullable = true)
     private PessoaFisicaEntity pessoaFisica;
 
     public TelefoneEntity(Telefone telefone) {

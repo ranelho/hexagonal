@@ -7,7 +7,7 @@ import com.rlti.hexagonal.adapters.output.response.PessoaResponse;
 import org.springframework.data.domain.Page;
 
 public interface PessoaInputPort {
-    void criarPessoa( PessoaRequest request);
+    void criarPessoa(PessoaRequest request);
 
     Page<PessoaResponse> listarPessoas(int page, int size);
 

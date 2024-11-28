@@ -1,6 +1,5 @@
 package com.rlti.hexagonal.adapters.output.repository.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rlti.hexagonal.application.core.domain.Pessoa;
 import com.rlti.hexagonal.application.core.domain.enums.Tipo;
 import jakarta.persistence.*;
@@ -8,19 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @Entity(name = "PESSOA")
 public class PessoaEntity {
 
@@ -40,20 +34,17 @@ public class PessoaEntity {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Fetch(FetchMode.JOIN)
-    @JsonIgnore
+    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
     private PessoaFisicaEntity pessoaFisica;
 
-    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Fetch(FetchMode.JOIN)
-    @JsonIgnore
+    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
     private PessoaJuridicaEntity pessoaJuridica;
 
-    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+/*    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     @JsonIgnore
-    private List<EnderecoEntity> enderecos;
+    private List<EnderecoEntity> enderecos;*/
 
     public PessoaEntity(Pessoa pessoa,
                         PaisEntity pais,
@@ -67,10 +58,10 @@ public class PessoaEntity {
         if (pessoa.getTipo() == Tipo.FISICA) {
             this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica(), pais, orientacao, identidadeGenero, profissao);
             this.pessoaFisica.setPessoa(this);
-        } else if (pessoa.getTipo() == Tipo.JURIDICA) {
+        } /*else if (pessoa.getTipo() == Tipo.JURIDICA) {
             this.pessoaJuridica = new PessoaJuridicaEntity(pessoa.getPessoaJuridica());
             this.pessoaJuridica.setPessoa(this);
-        }
+        }*/
     }
 }
 

@@ -1,10 +1,12 @@
 package com.rlti.hexagonal.application.core.usecase;
 
+import com.rlti.hexagonal.adapters.input.controller.request.PessoaFisicaRequest;
 import com.rlti.hexagonal.adapters.input.controller.request.PessoaRequest;
 import com.rlti.hexagonal.adapters.output.response.PessoaFisicaDetalheResponse;
 import com.rlti.hexagonal.adapters.output.response.PessoaFisicaResponse;
 import com.rlti.hexagonal.adapters.output.response.PessoaResponse;
 import com.rlti.hexagonal.application.core.domain.Pessoa;
+import com.rlti.hexagonal.application.core.domain.PessoaFisica;
 import com.rlti.hexagonal.application.port.input.PessoaInputPort;
 import com.rlti.hexagonal.application.port.output.PessoaOutputPort;
 import org.modelmapper.ModelMapper;

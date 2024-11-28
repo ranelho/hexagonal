@@ -30,8 +30,8 @@ public class EnderecoEntity {
         private String indicadorCorrespondencia;
         private String indicadorFaturamento;
 
-        @ManyToOne(fetch = FetchType.LAZY)
-        private PessoaEntity pessoa;
+/*        @ManyToOne(fetch = FetchType.LAZY)
+        private PessoaEntity pessoa;*/
 
     public EnderecoEntity(PessoaFisicaEntity pessoaFisica, Endereco endereco) {
         this.cep = endereco.getCep();
@@ -44,6 +44,6 @@ public class EnderecoEntity {
         this.tipoEndereco = endereco.getTipoEndereco();
         this.indicadorCorrespondencia = endereco.getIndicadorCorrespondencia();
         this.indicadorFaturamento = endereco.getIndicadorFaturamento();
-        this.pessoa = pessoaFisica.getPessoa();
+      //  this.pessoa = pessoaFisica.getIdPessoa();
     }
 }

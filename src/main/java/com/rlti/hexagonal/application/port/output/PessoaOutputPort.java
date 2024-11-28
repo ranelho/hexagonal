@@ -1,6 +1,5 @@
 package com.rlti.hexagonal.application.port.output;
 
-import com.rlti.hexagonal.adapters.output.repository.entity.PessoaFisicaEntity;
 import com.rlti.hexagonal.application.core.domain.Pessoa;
 import com.rlti.hexagonal.application.core.domain.PessoaFisica;
 import org.springframework.data.domain.Page;

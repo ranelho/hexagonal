@@ -118,7 +118,6 @@ public class PessoaAdapter implements PessoaOutputPort {
         List<PessoaFisica> pessoaFisicas = pessoas.getContent().stream()
                 .map(entity -> modelMapper.map(entity, PessoaFisica.class))
                 .toList();
-
         return new PageImpl<>(pessoaFisicas, pageable, pessoas.getTotalElements());
     }
 

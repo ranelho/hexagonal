@@ -1,6 +1,7 @@
 package com.rlti.hexagonal.adapters.input.controller;
 
 
+import com.rlti.hexagonal.adapters.input.controller.request.PessoaFisicaRequest;
 import com.rlti.hexagonal.adapters.input.controller.request.PessoaRequest;
 import com.rlti.hexagonal.adapters.output.response.PessoaFisicaDetalheResponse;
 import com.rlti.hexagonal.adapters.output.response.PessoaFisicaResponse;

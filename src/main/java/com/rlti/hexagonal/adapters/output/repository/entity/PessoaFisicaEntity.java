@@ -7,10 +7,7 @@ import com.rlti.hexagonal.application.core.domain.enums.GrauDeInstrucao;
 import com.rlti.hexagonal.application.core.domain.enums.Sexo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.math.BigDecimal;
@@ -22,11 +19,17 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @Entity(name = "PESSOA_FISICA")
-public class PessoaFisicaEntity {
+public class PessoaFisicaEntity  {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long idPessoaFisica;
+    private Long idPessoa;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "idPessoa")
+    private PessoaEntity pessoa;
 
     @CPF @Column(unique = true, updatable = false, nullable = false)
     private String cpf;
@@ -52,11 +55,6 @@ public class PessoaFisicaEntity {
 
     @Enumerated(EnumType.STRING)
     private GrauDeInstrucao grauDeInstrucao;
-
-    @OneToOne
-    @JoinColumn(name = "pessoa_id")
-    @JsonIgnore
-    private PessoaEntity pessoa;
 
     @OneToMany(mappedBy = "pessoaFisica", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

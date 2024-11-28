@@ -1,6 +1,7 @@
 package com.rlti.hexagonal.application.core.domain;
 
 import com.rlti.hexagonal.adapters.input.controller.request.PessoaFisicaRequest;
+import com.rlti.hexagonal.adapters.input.controller.request.PessoaRequest;
 import com.rlti.hexagonal.application.core.domain.enums.EstadoCivil;
 import com.rlti.hexagonal.application.core.domain.enums.GrauDeInstrucao;
 import com.rlti.hexagonal.application.core.domain.enums.Sexo;

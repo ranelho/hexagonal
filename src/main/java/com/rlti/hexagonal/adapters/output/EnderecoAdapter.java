@@ -17,10 +17,10 @@ public class EnderecoAdapter implements EnderecoOutputPort {
 
     @Override
     public void salvarEndereco(Long idPessoaFisica, Endereco endereco) {
-        var pessoaFisica = pessoaFisicaRepository.findById(idPessoaFisica).orElseThrow(
+/*        var pessoaFisica = pessoaFisicaRepository.findById(idPessoaFisica).orElseThrow(
                 () -> new RuntimeException("Pessoa física não encontrada")
         );
         var enderecoEntity = new EnderecoEntity(pessoaFisica, endereco);
-        enderecoRepository.save(enderecoEntity);
+        enderecoRepository.save(enderecoEntity);*/
     }
 }
