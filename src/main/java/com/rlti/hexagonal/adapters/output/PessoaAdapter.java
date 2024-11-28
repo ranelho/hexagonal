@@ -40,8 +40,12 @@ public class PessoaAdapter implements PessoaOutputPort {
             var orientacao = buscarOrientacaoSexualPorId(pessoa.getPessoaFisica().getOrientacaoSexualId());
             var identidadeGenero = buscarIdentidadeGeneroPorId(pessoa.getPessoaFisica().getIdentidadeDeGeneroId());
             var profissao = buscarProfissaoPorId(pessoa.getPessoaFisica().getProfissaoId());
-            var pessoaEntity = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao);
-            pessoaRepository.save(pessoaEntity);
+            var pessoaFisica = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao);
+            pessoaRepository.save(pessoaFisica);
+        } else if (pessoa.getTipo() == Tipo.JURIDICA) {
+            validarDuplicidadePessoaJuridica(pessoa);
+            var pessoaJuridica = new PessoaEntity(pessoa);
+            pessoaRepository.save(pessoaJuridica);
         }
     }
 

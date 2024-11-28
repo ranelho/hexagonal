@@ -1,8 +1,11 @@
 package com.rlti.hexagonal.adapters.output.repository.entity;
 
+import com.rlti.hexagonal.application.core.domain.PessoaJuridica;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CNPJ;
+
+import java.time.LocalDate;
 
 
 @Getter
@@ -14,6 +17,7 @@ import org.hibernate.validator.constraints.br.CNPJ;
 public class PessoaJuridicaEntity {
 
     @Id
+    @Column(name = "id_pessoa")
     private Long idPessoa;
 
     @OneToOne
@@ -27,4 +31,14 @@ public class PessoaJuridicaEntity {
 
     @Column(nullable = false)
     private String razaoSocial;
+    private LocalDate dataAbertura;
+    private String nomeFantasia;
+    private String inscricaoEstadual;
+    private String inscricaoMunicipal;
+    private String situacao;
+
+    public PessoaJuridicaEntity(PessoaJuridica pessoaJuridica) {
+        this.cnpj = pessoaJuridica.getCnpj();
+        this.razaoSocial = pessoaJuridica.getRazaoSocial();
+    }
 }

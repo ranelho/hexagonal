@@ -24,6 +24,7 @@ import java.util.List;
 public class PessoaFisicaEntity  {
 
     @Id
+    @Column(name = "id_pessoa")
     private Long idPessoa;
 
     @OneToOne

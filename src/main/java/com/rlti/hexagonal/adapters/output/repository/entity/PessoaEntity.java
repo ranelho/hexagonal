@@ -19,7 +19,9 @@ import java.time.LocalDateTime;
 public class PessoaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pessoa_seq_generator")
+    @SequenceGenerator(name="pessoa_seq_generator", sequenceName = "pessoa_sequence", allocationSize=1)
+    @Column(name = "id_pessoa")
     private Long idPessoa;
 
     @Enumerated(EnumType.STRING)
@@ -55,13 +57,19 @@ public class PessoaEntity {
         this.nome = pessoa.getNome().toUpperCase();
         this.resideExterior = pessoa.getResideExterior().toUpperCase();
         this.createdAt = pessoa.getCreatedAt();
-        if (pessoa.getTipo() == Tipo.FISICA) {
-            this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica(), pais, orientacao, identidadeGenero, profissao);
-            this.pessoaFisica.setPessoa(this);
-        } /*else if (pessoa.getTipo() == Tipo.JURIDICA) {
-            this.pessoaJuridica = new PessoaJuridicaEntity(pessoa.getPessoaJuridica());
-            this.pessoaJuridica.setPessoa(this);
-        }*/
+        this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica(), pais, orientacao, identidadeGenero, profissao);
+        this.pessoaFisica.setPessoa(this);
+
+    }
+
+    public PessoaEntity(Pessoa pessoa) {
+        this.idPessoa = pessoa.getIdPessoa();
+        this.tipo = pessoa.getTipo();
+        this.nome = pessoa.getNome().toUpperCase();
+        this.resideExterior = pessoa.getResideExterior().toUpperCase();
+        this.createdAt = pessoa.getCreatedAt();
+        this.pessoaJuridica = new PessoaJuridicaEntity(pessoa.getPessoaJuridica());
+        this.pessoaJuridica.setPessoa(this);
     }
 }
 
