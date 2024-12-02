@@ -20,13 +20,9 @@ public class CnaeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(nullable = false, unique = true)
     private String subclasse;
-
     private String denominacao;
-
-    private Boolean principal;
 
     @OneToMany(mappedBy = "cnae", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PessoaJuridicaCnaeEntity> pessoasJuridicas = new ArrayList<>();

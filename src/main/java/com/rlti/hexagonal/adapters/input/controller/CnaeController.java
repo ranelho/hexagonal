@@ -1,5 +1,6 @@
-package com.rlti.hexagonal.adapters.input.controller.request;
+package com.rlti.hexagonal.adapters.input.controller;
 
+import com.rlti.hexagonal.adapters.input.controller.request.CnaeRequest;
 import com.rlti.hexagonal.adapters.output.response.CnaeResponse;
 import com.rlti.hexagonal.application.port.input.CnaeInputPort;
 import jakarta.validation.Valid;
@@ -27,7 +28,7 @@ public class CnaeController {
     public ResponseEntity<Void> addCnae(
             @PathVariable Long idPessoa,
             @Valid @RequestBody List<CnaeRequest> cnaeRequestList) {
-        cnaeInputPort.addCnaes(idPessoa, cnaeRequestList); // Atualizado para passar a lista
+        cnaeInputPort.addCnaes(idPessoa, cnaeRequestList);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

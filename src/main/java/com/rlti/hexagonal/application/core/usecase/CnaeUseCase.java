@@ -27,23 +27,16 @@ public class CnaeUseCase implements CnaeInputPort {
 
     @Override
     public void addCnaes(Long idPessoa, List<CnaeRequest> cnaeRequestList) {
-        // Mapeia as requisições para os objetos CNAE
         var cnaes = cnaeRequestList.stream()
                 .map(request -> modelMapper.map(request, Cnae.class))
                 .toList();
-
-        // Valida se há mais de um principal
         long principais = cnaes.stream()
-                .filter(Cnae::getPrincipal)
+                .filter(Cnae::isPrincipal)
                 .count();
-
         if (principais > 1) {
             throw new IllegalArgumentException("Apenas um CNAE pode ser marcado como principal.");
         }
-
-        // Delega a lógica ao outputPort
         outputPort.addCnaes(idPessoa, cnaes);
     }
-
 
 }

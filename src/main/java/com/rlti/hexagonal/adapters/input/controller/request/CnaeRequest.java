@@ -7,6 +7,5 @@ import lombok.Data;
 public class CnaeRequest {
     @NotNull
     private String subclasse;
-
-    private boolean principal;
+    private boolean isPrincipal;
 }

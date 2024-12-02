@@ -4,16 +4,16 @@ public class Cnae {
     private Long id;
     private String subclasse;
     private String denominacao;
-    private Boolean principal;
+    private boolean isPrincipal;
 
-    public Cnae(Long id, String subclasse, String denominacao, Boolean principal) {
+    public Cnae() {
+    }
+
+    public Cnae(Long id, String subclasse, String denominacao, boolean isPrincipal) {
         this.id = id;
         this.subclasse = subclasse;
         this.denominacao = denominacao;
-        this.principal = principal;
-    }
-
-    public Cnae() {
+        this.isPrincipal = isPrincipal;
     }
 
     public Long getId() {
@@ -40,11 +40,11 @@ public class Cnae {
         this.denominacao = denominacao;
     }
 
-    public Boolean getPrincipal() {
-        return principal;
+    public boolean isPrincipal() {
+        return isPrincipal;
     }
 
-    public void setPrincipal(Boolean principal) {
-        this.principal = principal;
+    public void setPrincipal(boolean principal) {
+        isPrincipal = principal;
     }
 }

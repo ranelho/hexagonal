@@ -35,35 +35,25 @@ public class CnaeAdapter implements CnaeOutputPort {
     @Transactional
     @Override
     public void addCnaes(Long idPessoa, List<Cnae> cnaes) {
-        // Busca a entidade PessoaJuridica pelo ID
         var pessoaJuridicaEntity = pessoaJuridicaRepository.findById(idPessoa)
                 .orElseThrow(() -> new EntityNotFoundException("Pessoa Jurídica não encontrada para o ID: " + idPessoa));
 
-        // Converte os CNAEs recebidos para as entidades do banco
         var cnaeEntities = cnaes.stream()
                 .map(cnae -> cnaeRepository.findBySubclasse(cnae.getSubclasse())
                         .orElseThrow(() -> new EntityNotFoundException("CNAE não encontrado para o código: " + cnae.getSubclasse())))
                 .toList();
 
-        // Cria e associa os relacionamentos na entidade intermediária
         List<PessoaJuridicaCnaeEntity> relacionamentos = cnaeEntities.stream()
                 .map(cnaeEntity -> {
                     PessoaJuridicaCnaeEntity relacao = new PessoaJuridicaCnaeEntity();
                     relacao.setPessoaJuridica(pessoaJuridicaEntity);
                     relacao.setCnae(cnaeEntity);
-
-                    // Define o principal (se necessário, você pode implementar lógica para isso)
                     relacao.setPrincipal(cnaes.stream()
-                            .anyMatch(cnae -> cnae.getPrincipal() && cnae.getSubclasse().equals(cnaeEntity.getSubclasse())));
-
+                            .anyMatch(cnae -> cnae.isPrincipal() && cnae.getSubclasse().equals(cnaeEntity.getSubclasse())));
                     return relacao;
                 })
                 .toList();
-
-        // Adiciona os relacionamentos à Pessoa Jurídica
         pessoaJuridicaEntity.getCnaes().addAll(relacionamentos);
-
-        // Salva a Pessoa Jurídica com os relacionamentos no banco
         pessoaJuridicaRepository.save(pessoaJuridicaEntity);
     }
 
