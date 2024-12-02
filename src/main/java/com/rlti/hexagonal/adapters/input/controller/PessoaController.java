@@ -5,12 +5,17 @@ import com.rlti.hexagonal.adapters.input.controller.request.PessoaRequest;
 import com.rlti.hexagonal.adapters.output.response.*;
 import com.rlti.hexagonal.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.application.port.input.PessoaInputPort;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 @RestController
 @RequestMapping("/api/v1/pessoas")
@@ -19,7 +24,16 @@ public class PessoaController {
 
     private final PessoaInputPort pessoaInputPort;
 
-    @PostMapping
+    private Map<Tipo, Function<Long, Object>> tipoPessoaHandler;
+
+    @PostConstruct
+    private void initTipoPessoaHandler() {
+        tipoPessoaHandler = new HashMap<>();
+        tipoPessoaHandler.put(Tipo.FISICA, pessoaInputPort::buscarPessoaFisica);
+        tipoPessoaHandler.put(Tipo.JURIDICA, pessoaInputPort::buscarPessoaJuridica);
+    }
+
+    @PostMapping    
     public ResponseEntity<Void> criarPessoa(@RequestBody @Valid PessoaRequest request){
         pessoaInputPort.criarPessoa(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -42,17 +56,9 @@ public class PessoaController {
     @GetMapping("/{idPessoa}")
     public ResponseEntity<?> buscarPessoa(@PathVariable Long idPessoa) {
         var pessoa = pessoaInputPort.buscarPessoa(idPessoa);
-
-        if (pessoa.getTipo() == Tipo.FISICA) {
-            var pessoaFisica = pessoaInputPort.buscarPessoaFisica(idPessoa);
-            return ResponseEntity.ok(pessoaFisica);
-        } else if (pessoa.getTipo() == Tipo.JURIDICA) {
-            var pessoaJuridica = pessoaInputPort.buscarPessoaJuridica(idPessoa);
-            return ResponseEntity.ok(pessoaJuridica);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Tipo de pessoa inválido ou não suportado.");
-        }
+        Function<Long, Object> handler = tipoPessoaHandler.get(pessoa.getTipo());
+        var detalhes = handler.apply(idPessoa);
+        return ResponseEntity.ok(detalhes);
     }
 
     @GetMapping("/fisica/{idPessoa}")
