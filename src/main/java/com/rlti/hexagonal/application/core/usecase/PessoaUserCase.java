@@ -60,4 +60,5 @@ public class PessoaUserCase implements PessoaInputPort {
         return PessoaJuridicaResponse.converte(pessoasJuridicas);
     }
 
+
 }

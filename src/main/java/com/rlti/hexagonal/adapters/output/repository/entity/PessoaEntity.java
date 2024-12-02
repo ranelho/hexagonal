@@ -1,5 +1,6 @@
 package com.rlti.hexagonal.adapters.output.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rlti.hexagonal.application.core.domain.Pessoa;
 import com.rlti.hexagonal.application.core.domain.enums.Tipo;
 import jakarta.persistence.*;
@@ -7,9 +8,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,7 +24,7 @@ public class PessoaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pessoa_seq_generator")
-    @SequenceGenerator(name="pessoa_seq_generator", sequenceName = "pessoa_sequence", allocationSize=1)
+    @SequenceGenerator(name = "pessoa_seq_generator", sequenceName = "pessoa_sequence", allocationSize = 1)
     @Column(name = "id_pessoa")
     private Long idPessoa;
 
@@ -43,10 +47,10 @@ public class PessoaEntity {
     private PessoaJuridicaEntity pessoaJuridica;
 
 
-/*    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     @JsonIgnore
-    private List<EnderecoEntity> enderecos;*/
+    private List<EnderecoEntity> enderecos;
 
     public PessoaEntity(Pessoa pessoa,
                         PaisEntity pais,

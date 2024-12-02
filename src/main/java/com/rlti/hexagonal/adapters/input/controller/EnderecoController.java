@@ -21,9 +21,9 @@ public class EnderecoController {
         return ResponseEntity.status(HttpStatus.OK).body(endereco);
     }
 
-    @PostMapping("/{idPessoaFisica}")
-    public ResponseEntity<Void> salvarEndereco(@PathVariable Long idPessoaFisica, @RequestBody EnderecoRequest endereco) {
-        enderecoInputPort.salvarEndereco(idPessoaFisica, endereco);
+    @PostMapping("/{idPessoa}")
+    public ResponseEntity<Void> salvarEndereco(@PathVariable Long idPessoa, @RequestBody EnderecoRequest endereco) {
+        enderecoInputPort.salvarEndereco(idPessoa, endereco);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

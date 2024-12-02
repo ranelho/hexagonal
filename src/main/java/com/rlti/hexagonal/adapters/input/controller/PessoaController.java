@@ -3,6 +3,7 @@ package com.rlti.hexagonal.adapters.input.controller;
 
 import com.rlti.hexagonal.adapters.input.controller.request.PessoaRequest;
 import com.rlti.hexagonal.adapters.output.response.*;
+import com.rlti.hexagonal.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.application.port.input.PessoaInputPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +33,26 @@ public class PessoaController {
         return ResponseEntity.status(HttpStatus.OK).body(pessoas);
     }
 
-    @GetMapping("/{idPessoa}")
+/*    @GetMapping("/{idPessoa}")
     public ResponseEntity<PessoaResponse> buscarPessoa(@PathVariable Long idPessoa){
         PessoaResponse pessoa = pessoaInputPort.buscarPessoa(idPessoa);
         return ResponseEntity.status(HttpStatus.OK).body(pessoa);
+    }*/
+
+    @GetMapping("/{idPessoa}")
+    public ResponseEntity<?> buscarPessoa(@PathVariable Long idPessoa) {
+        var pessoa = pessoaInputPort.buscarPessoa(idPessoa);
+
+        if (pessoa.getTipo() == Tipo.FISICA) {
+            var pessoaFisica = pessoaInputPort.buscarPessoaFisica(idPessoa);
+            return ResponseEntity.ok(pessoaFisica);
+        } else if (pessoa.getTipo() == Tipo.JURIDICA) {
+            var pessoaJuridica = pessoaInputPort.buscarPessoaJuridica(idPessoa);
+            return ResponseEntity.ok(pessoaJuridica);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Tipo de pessoa inválido ou não suportado.");
+        }
     }
 
     @GetMapping("/fisica/{idPessoa}")

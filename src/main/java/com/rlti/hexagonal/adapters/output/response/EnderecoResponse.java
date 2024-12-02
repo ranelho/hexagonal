@@ -1,6 +1,9 @@
 package com.rlti.hexagonal.adapters.output.response;
 
+import com.rlti.hexagonal.application.core.domain.Endereco;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class EnderecoResponse {
@@ -10,4 +13,17 @@ public class EnderecoResponse {
     private String bairro;
     private String localidade;
     private String uf;
+
+    public EnderecoResponse(Endereco endereco) {
+        this.cep = endereco.getCep();
+        this.logradouro = endereco.getLogradouro();
+        this.complemento = endereco.getComplemento();
+        this.bairro = endereco.getBairro();
+        this.localidade = endereco.getCidade();
+        this.uf = endereco.getUf();
+    }
+
+    public static List<EnderecoResponse> converte(List<Endereco> enderecos) {
+        return enderecos.stream().map(EnderecoResponse::new).toList();
+    }
 }

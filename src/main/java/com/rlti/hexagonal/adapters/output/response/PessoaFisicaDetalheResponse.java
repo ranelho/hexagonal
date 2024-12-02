@@ -3,6 +3,7 @@ package com.rlti.hexagonal.adapters.output.response;
 import com.rlti.hexagonal.application.core.domain.PessoaFisica;
 import com.rlti.hexagonal.application.core.domain.enums.EstadoCivil;
 import com.rlti.hexagonal.application.core.domain.enums.GrauDeInstrucao;
+import com.rlti.hexagonal.application.core.domain.enums.Tipo;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 
@@ -15,6 +16,7 @@ public class PessoaFisicaDetalheResponse {
     private Long id;
     private String cpf;
     private String nome;
+    private Tipo tipo;
     private LocalDate dataNascimento;
     private LocalDate dataObito;
     private String sexo;
@@ -34,12 +36,14 @@ public class PessoaFisicaDetalheResponse {
     private GrauDeInstrucao grauDeInstrucao;
     private List<TelefoneResponse> telefones;
     private List<EmailResponse> emails;
+    private List<EnderecoResponse> enderecos;
 
 
     public PessoaFisicaDetalheResponse(PessoaFisica pessoaFisica) {
         this.id = pessoaFisica.getIdPessoaFisica()                                   ;
         this.cpf = pessoaFisica.getCpf();
         this.nome = pessoaFisica.getPessoa().getNome();
+        this.tipo = pessoaFisica.getPessoa().getTipo();
         this.dataNascimento = pessoaFisica.getDataNascimento();
         this.sexo = pessoaFisica.getSexo().toString();
         this.nacionalidade = pessoaFisica.getPais().getNacionalidade();
@@ -58,6 +62,7 @@ public class PessoaFisicaDetalheResponse {
         this.grauDeInstrucao = pessoaFisica.getGrauDeInstrucao();
         this.telefones = TelefoneResponse.converte(pessoaFisica.getTelefones());
         this.emails = EmailResponse.converte(pessoaFisica.getEmails());
+        this.enderecos = EnderecoResponse.converte(pessoaFisica.getPessoa().getEnderecos());
     }
 
     public static Page<PessoaFisicaDetalheResponse> converte(Page<PessoaFisica> pessoas) {

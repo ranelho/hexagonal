@@ -18,4 +18,5 @@ public interface PessoaInputPort {
     PessoaJuridicaDetalheResponse buscarPessoaJuridica(Long idPessoa);
 
     Page<PessoaJuridicaResponse> listarPessoasJuridicas(int page, int size);
+
 }
