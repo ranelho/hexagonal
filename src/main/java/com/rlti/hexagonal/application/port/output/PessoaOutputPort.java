@@ -13,11 +13,11 @@ public interface PessoaOutputPort {
 
     PessoaFisica getByCpf(String cpf);
 
-    PessoaFisica findById(Long id);
+    PessoaFisica findById(Long idPessoa);
 
     Page<PessoaFisica> findAllPessoaFisicaPaginated(int page, int size);
 
-    Pessoa findPessoaById(Long id);
+    Pessoa findPessoaById(Long idPessoa);
 
     PessoaFisica findPessoaFisicaById(Long id);
 

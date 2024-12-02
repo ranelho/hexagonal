@@ -18,7 +18,7 @@ public class EnderecoController {
     @GetMapping
     public ResponseEntity<Endereco> buscarEndereco(@RequestParam String cep) {
         var endereco = enderecoInputPort.buscarEndereco(cep);
-        return ResponseEntity.ok(endereco);
+        return ResponseEntity.status(HttpStatus.OK).body(endereco);
     }
 
     @PostMapping("/{idPessoaFisica}")

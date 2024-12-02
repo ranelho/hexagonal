@@ -50,6 +50,75 @@ public class PessoaAdapter implements PessoaOutputPort {
         }
     }
 
+    @Override
+    public Page<Pessoa> findAllPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("nome").ascending());
+        Page<PessoaEntity> pessoaEntities = pessoaRepository.findAll(pageable);
+
+        List<Pessoa> pessoas = pessoaEntities.getContent().stream()
+                .map(entity -> modelMapper.map(entity, Pessoa.class))
+                .toList();
+
+        return new PageImpl<>(pessoas, pageable, pessoaEntities.getTotalElements());
+    }
+
+    @Override
+    public PessoaFisica getByCpf(String cpf) {
+        var pessoaEntity = pessoaFisicaRepository.findByCpf(cpf)
+                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com CPF: " + cpf));
+        return modelMapper.map(pessoaEntity, PessoaFisica.class);
+    }
+
+    @Override
+    public PessoaFisica findById(Long idPessoa) {
+        var pessoaEntity = pessoaFisicaRepository.findById(idPessoa)
+                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + idPessoa));
+        return modelMapper.map(pessoaEntity, PessoaFisica.class);
+    }
+
+    @Override
+    public Page<PessoaFisica> findAllPessoaFisicaPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("Pessoa.nome").ascending());
+        Page<PessoaFisicaEntity> pessoas = pessoaFisicaRepository.findAll(pageable);
+
+        List<PessoaFisica> pessoaFisicas = pessoas.getContent().stream()
+                .map(entity -> modelMapper.map(entity, PessoaFisica.class))
+                .toList();
+        return new PageImpl<>(pessoaFisicas, pageable, pessoas.getTotalElements());
+    }
+
+    @Override
+    public Pessoa findPessoaById(Long idPessoa) {
+        var pessoaEntity = pessoaRepository.findById(idPessoa)
+                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + idPessoa));
+        return modelMapper.map(pessoaEntity, Pessoa.class);
+    }
+
+    @Override
+    public PessoaFisica findPessoaFisicaById(Long idPessoa) {
+        var pessoaFisicaEntity = pessoaFisicaRepository.findById(idPessoa)
+                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + idPessoa));
+        return modelMapper.map(pessoaFisicaEntity, PessoaFisica.class);
+    }
+
+    @Override
+    public PessoaJuridica findPessoaJuridicaById(Long idPessoa) {
+        var pessoaJuridicaEntity = pessoaJuridicaRepository.findById(idPessoa)
+                .orElseThrow(() -> new RuntimeException("Pessoa Jurídica não encontrada com ID: " + idPessoa));
+        return modelMapper.map(pessoaJuridicaEntity, PessoaJuridica.class);
+    }
+
+    @Override
+    public Page<PessoaJuridica> findAllPessoaJuridicaPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("Pessoa.nome").ascending());
+        Page<PessoaJuridicaEntity> pessoas = pessoaJuridicaRepository.findAll(pageable);
+
+        List<PessoaJuridica> pessoaJuridicas = pessoas.getContent().stream()
+                .map(entity -> modelMapper.map(entity, PessoaJuridica.class))
+                .toList();
+        return new PageImpl<>(pessoaJuridicas, pageable, pessoas.getTotalElements());
+    }
+
     private ProfissaoEntity buscarProfissaoPorId(Long profissaoId) {
         return profissaoRepository.findById(profissaoId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Profissão não encontrada com ID: " + profissaoId));
@@ -89,80 +158,10 @@ public class PessoaAdapter implements PessoaOutputPort {
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Identidade de gênero não encontrada com ID: " + identidadeDeGeneroId));
     }
 
-    @Override
-    public Page<Pessoa> findAllPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("nome").ascending());
-        Page<PessoaEntity> pessoaEntities = pessoaRepository.findAll(pageable);
-
-        List<Pessoa> pessoas = pessoaEntities.getContent().stream()
-                .map(entity -> modelMapper.map(entity, Pessoa.class))
-                .toList();
-
-        return new PageImpl<>(pessoas, pageable, pessoaEntities.getTotalElements());
-    }
-
-    @Override
-    public PessoaFisica getByCpf(String cpf) {
-        var pessoaEntity = pessoaFisicaRepository.findByCpf(cpf)
-                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com CPF: " + cpf));
-        return modelMapper.map(pessoaEntity, PessoaFisica.class);
-    }
-
-    @Override
-    public PessoaFisica findById(Long id) {
-        var pessoaEntity = pessoaFisicaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + id));
-        return modelMapper.map(pessoaEntity, PessoaFisica.class);
-    }
-
-    @Override
-    public Page<PessoaFisica> findAllPessoaFisicaPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("Pessoa.nome").ascending());
-        Page<PessoaFisicaEntity> pessoas = pessoaFisicaRepository.findAll(pageable);
-
-        List<PessoaFisica> pessoaFisicas = pessoas.getContent().stream()
-                .map(entity -> modelMapper.map(entity, PessoaFisica.class))
-                .toList();
-        return new PageImpl<>(pessoaFisicas, pageable, pessoas.getTotalElements());
-    }
-
-    @Override
-    public Pessoa findPessoaById(Long id) {
-        var pessoaEntity = pessoaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + id));
-        return modelMapper.map(pessoaEntity, Pessoa.class);
-    }
-
-    @Override
-    public PessoaFisica findPessoaFisicaById(Long id) {
-        var pessoaFisicaEntity = pessoaFisicaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + id));
-        return modelMapper.map(pessoaFisicaEntity, PessoaFisica.class);
-    }
-
-    @Override
-    public PessoaJuridica findPessoaJuridicaById(Long idPessoa) {
-        var pessoaJuridicaEntity = pessoaJuridicaRepository.findById(idPessoa)
-                .orElseThrow(() -> new RuntimeException("Pessoa Jurídica não encontrada com ID: " + idPessoa));
-        return modelMapper.map(pessoaJuridicaEntity, PessoaJuridica.class);
-    }
-
-    @Override
-    public Page<PessoaJuridica> findAllPessoaJuridicaPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("Pessoa.nome").ascending());
-        Page<PessoaJuridicaEntity> pessoas = pessoaJuridicaRepository.findAll(pageable);
-
-        List<PessoaJuridica> pessoaJuridicas = pessoas.getContent().stream()
-                .map(entity -> modelMapper.map(entity, PessoaJuridica.class))
-                .toList();
-        return new PageImpl<>(pessoaJuridicas, pageable, pessoas.getTotalElements());
-    }
-
     private void validarDuplicidadePessoaJuridica(Pessoa pessoa) {
         pessoaJuridicaRepository.findByCnpj(pessoa.getPessoaJuridica().getCnpj())
                 .ifPresent(existingPessoa -> {
                     throw new DuplicidadeException("Pessoa com CNPJ " + pessoa.getPessoaJuridica().getCnpj() + " já existe.");
                 });
     }
-
 }

@@ -8,6 +8,7 @@ import com.rlti.hexagonal.application.port.InstituicaoFinanceiraInputPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class InstituicaoFinanceiraController {
     @PostMapping("/banco")
     ResponseEntity<Void> criarBanco(@Valid @RequestBody BancoRequest request) {
         instituicaoFinanceiraInputPort.criarBanco(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/banco/{id}")

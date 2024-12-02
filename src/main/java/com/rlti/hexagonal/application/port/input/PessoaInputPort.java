@@ -9,11 +9,11 @@ public interface PessoaInputPort {
 
     Page<PessoaResponse> listarPessoas(int page, int size);
 
-    PessoaResponse buscarPessoa(Long id);
+    PessoaResponse buscarPessoa(Long idPessoa);
 
     Page<PessoaFisicaResponse> listarPessoasFisica(int page, int size);
 
-    PessoaFisicaDetalheResponse buscarPessoaFisica(Long id);
+    PessoaFisicaDetalheResponse buscarPessoaFisica(Long idPessoa);
 
     PessoaJuridicaDetalheResponse buscarPessoaJuridica(Long idPessoa);
 

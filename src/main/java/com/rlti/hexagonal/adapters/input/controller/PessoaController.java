@@ -7,6 +7,7 @@ import com.rlti.hexagonal.application.port.input.PessoaInputPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class PessoaController {
     @PostMapping
     public ResponseEntity<Void> criarPessoa(@RequestBody @Valid PessoaRequest request){
         pessoaInputPort.criarPessoa(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
@@ -28,40 +29,40 @@ public class PessoaController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size) {
         Page<PessoaResponse> pessoas = pessoaInputPort.listarPessoas(page, size);
-        return ResponseEntity.ok(pessoas);
+        return ResponseEntity.status(HttpStatus.OK).body(pessoas);
     }
 
-    @GetMapping("/fisica")
+    @GetMapping("/{idPessoa}")
+    public ResponseEntity<PessoaResponse> buscarPessoa(@PathVariable Long idPessoa){
+        PessoaResponse pessoa = pessoaInputPort.buscarPessoa(idPessoa);
+        return ResponseEntity.status(HttpStatus.OK).body(pessoa);
+    }
+
+    @GetMapping("/fisica/{idPessoa}")
+    public ResponseEntity<PessoaFisicaDetalheResponse> buscarPessoaFisica(@PathVariable Long idPessoa){
+        PessoaFisicaDetalheResponse pessoa = pessoaInputPort.buscarPessoaFisica(idPessoa);
+        return ResponseEntity.status(HttpStatus.OK).body(pessoa);
+    }
+
+    @GetMapping("/fisica/all")
     public ResponseEntity<Page<PessoaFisicaResponse>> listarPessoasFisica(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size) {
-        Page<PessoaFisicaResponse> pessoasFisica = pessoaInputPort.listarPessoasFisica(page, size);
-        return ResponseEntity.ok(pessoasFisica);
+        Page<PessoaFisicaResponse> pessoasFisicas = pessoaInputPort.listarPessoasFisica(page, size);
+        return ResponseEntity.status(HttpStatus.OK).body(pessoasFisicas);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PessoaResponse> buscarPessoa(@PathVariable Long id){
-        PessoaResponse pessoa = pessoaInputPort.buscarPessoa(id);
-        return ResponseEntity.ok(pessoa);
-    }
-
-    @GetMapping("/pessoa-fisica/{id}")
-    public ResponseEntity<PessoaFisicaDetalheResponse> buscarPessoaFisica(@PathVariable Long id){
-        PessoaFisicaDetalheResponse pessoa = pessoaInputPort.buscarPessoaFisica(id);
-        return ResponseEntity.ok(pessoa);
-    }
-
-    @GetMapping("/pessoa-juridica/{idPessoa}")
+    @GetMapping("/juridica/{idPessoa}")
     public ResponseEntity<PessoaJuridicaDetalheResponse> buscarPessoaJuridica(@PathVariable Long idPessoa){
         PessoaJuridicaDetalheResponse pessoa = pessoaInputPort.buscarPessoaJuridica(idPessoa);
-        return ResponseEntity.ok(pessoa);
+        return ResponseEntity.status(HttpStatus.OK).body(pessoa);
     }
 
-    @GetMapping("/juridica")
+    @GetMapping("/juridica/all")
     public ResponseEntity<Page<PessoaJuridicaResponse>> listarPessoasJuridicas(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size) {
-        Page<PessoaJuridicaResponse> pessoasFisica = pessoaInputPort.listarPessoasJuridicas(page, size);
-        return ResponseEntity.ok(pessoasFisica);
+        Page<PessoaJuridicaResponse> pessoasJuridicas = pessoaInputPort.listarPessoasJuridicas(page, size);
+        return ResponseEntity.status(HttpStatus.OK).body(pessoasJuridicas);
     }
 }
