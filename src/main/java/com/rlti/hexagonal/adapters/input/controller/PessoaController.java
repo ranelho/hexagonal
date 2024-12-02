@@ -33,7 +33,7 @@ public class PessoaController {
         tipoPessoaHandler.put(Tipo.JURIDICA, pessoaInputPort::buscarPessoaJuridica);
     }
 
-    @PostMapping    
+    @PostMapping
     public ResponseEntity<Void> criarPessoa(@RequestBody @Valid PessoaRequest request){
         pessoaInputPort.criarPessoa(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -58,7 +58,7 @@ public class PessoaController {
         var pessoa = pessoaInputPort.buscarPessoa(idPessoa);
         Function<Long, Object> handler = tipoPessoaHandler.get(pessoa.getTipo());
         var detalhes = handler.apply(idPessoa);
-        return ResponseEntity.ok(detalhes);
+        return ResponseEntity.status(HttpStatus.OK).body(detalhes);
     }
 
     @GetMapping("/fisica/{idPessoa}")
