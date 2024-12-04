@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -28,9 +27,18 @@ public class PessoaController {
 
     @PostConstruct
     private void initTipoPessoaHandler() {
-        tipoPessoaHandler = new HashMap<>();
-        tipoPessoaHandler.put(Tipo.FISICA, pessoaInputPort::buscarPessoaFisica);
-        tipoPessoaHandler.put(Tipo.JURIDICA, pessoaInputPort::buscarPessoaJuridica);
+        tipoPessoaHandler = Map.of(
+                Tipo.FISICA, pessoaInputPort::buscarPessoaFisica,
+                Tipo.JURIDICA, pessoaInputPort::buscarPessoaJuridica
+        );
+    }
+
+    @GetMapping("/{idPessoa}")
+    public ResponseEntity<?> buscarPessoa(@PathVariable Long idPessoa) {
+        var pessoa = pessoaInputPort.buscarPessoa(idPessoa);
+        var handler = tipoPessoaHandler.get(pessoa.getTipo());
+        var detalhes = handler.apply(idPessoa);
+        return ResponseEntity.ok(detalhes);
     }
 
     @PostMapping
@@ -45,20 +53,6 @@ public class PessoaController {
             @RequestParam(defaultValue = "12") int size) {
         Page<PessoaResponse> pessoas = pessoaInputPort.listarPessoas(page, size);
         return ResponseEntity.status(HttpStatus.OK).body(pessoas);
-    }
-
-/*    @GetMapping("/{idPessoa}")
-    public ResponseEntity<PessoaResponse> buscarPessoa(@PathVariable Long idPessoa){
-        PessoaResponse pessoa = pessoaInputPort.buscarPessoa(idPessoa);
-        return ResponseEntity.status(HttpStatus.OK).body(pessoa);
-    }*/
-
-    @GetMapping("/{idPessoa}")
-    public ResponseEntity<?> buscarPessoa(@PathVariable Long idPessoa) {
-        var pessoa = pessoaInputPort.buscarPessoa(idPessoa);
-        Function<Long, Object> handler = tipoPessoaHandler.get(pessoa.getTipo());
-        var detalhes = handler.apply(idPessoa);
-        return ResponseEntity.status(HttpStatus.OK).body(detalhes);
     }
 
     @GetMapping("/fisica/{idPessoa}")

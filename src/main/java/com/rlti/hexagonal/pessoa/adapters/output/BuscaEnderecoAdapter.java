@@ -1,7 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output;
 
 import com.rlti.hexagonal.pessoa.adapters.output.response.EnderecoResponse;
-import com.rlti.hexagonal.pessoa.application.core.domain.Endereco;
 import com.rlti.hexagonal.pessoa.application.port.output.BuscaEnderecoOutputPort;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;

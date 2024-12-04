@@ -2,7 +2,6 @@ package com.rlti.hexagonal.pessoa.adapters.input.controller;
 
 import com.rlti.hexagonal.pessoa.adapters.input.controller.request.EnderecoRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.EnderecoResponse;
-import com.rlti.hexagonal.pessoa.application.core.domain.Endereco;
 import com.rlti.hexagonal.pessoa.application.port.input.EnderecoInputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -35,9 +35,7 @@ public class CnaeController {
 
     @PostMapping("/ler-csv")
     public ResponseEntity<String> processarProfissao(@RequestParam("file") MultipartFile file) {
-        // Lógica para processar o arquivo CSV e salvar os dados no banco
         try {
-            // Exemplo de leitura do arquivo CSV
             cnaeInputPort.processarCnae(file);
             return ResponseEntity.ok("Arquivo processado com sucesso");
         } catch (Exception e) {
