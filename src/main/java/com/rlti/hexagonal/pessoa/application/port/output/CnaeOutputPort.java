@@ -8,4 +8,8 @@ public interface CnaeOutputPort {
     List<Cnae> findAll();
 
     void addCnaes(Long idPessoa, List<Cnae> cnaes);
+
+    void processarCnae(Cnae cnae);
+
+    void salvarSubclasses();
 }

@@ -16,6 +16,11 @@ public class Cnae {
         this.isPrincipal = isPrincipal;
     }
 
+    public Cnae(String subclasse, String denominacao) {
+        this.subclasse = subclasse;
+        this.denominacao = denominacao;
+    }
+
     public Long getId() {
         return id;
     }

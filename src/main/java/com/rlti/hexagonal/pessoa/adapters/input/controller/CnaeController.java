@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,5 +31,27 @@ public class CnaeController {
             @Valid @RequestBody List<CnaeRequest> cnaeRequestList) {
         cnaeInputPort.addCnaes(idPessoa, cnaeRequestList);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/ler-csv")
+    public ResponseEntity<String> processarProfissao(@RequestParam("file") MultipartFile file) {
+        // Lógica para processar o arquivo CSV e salvar os dados no banco
+        try {
+            // Exemplo de leitura do arquivo CSV
+            cnaeInputPort.processarCnae(file);
+            return ResponseEntity.ok("Arquivo processado com sucesso");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao processar o arquivo");
+        }
+    }
+
+    @GetMapping("/salvar-subclasses")
+    public String salvarSubclasses() {
+        try {
+            cnaeInputPort.salvarSubclasses();
+            return "Subclasses salvas com sucesso!";
+        } catch (Exception e) {
+            return "Erro ao salvar subclasses: " + e.getMessage();
+        }
     }
 }

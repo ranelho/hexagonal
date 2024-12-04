@@ -1,5 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output.repository.entity;
 
+import com.rlti.hexagonal.pessoa.application.core.domain.Cnae;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,4 +27,9 @@ public class CnaeEntity {
 
     @OneToMany(mappedBy = "cnae", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PessoaJuridicaCnaeEntity> pessoasJuridicas = new ArrayList<>();
+
+    public CnaeEntity(Cnae cnae) {
+        this.subclasse = cnae.getSubclasse();
+        this.denominacao = cnae.getDenominacao();
+    }
 }

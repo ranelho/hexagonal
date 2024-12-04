@@ -3,24 +3,29 @@ package com.rlti.hexagonal.pessoa.adapters.output;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.CnaeRepository;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.PessoaJuridicaCnaeRepository;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.PessoaJuridicaRepository;
+import com.rlti.hexagonal.pessoa.adapters.output.repository.entity.CnaeEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.entity.PessoaJuridicaCnaeEntity;
+import com.rlti.hexagonal.pessoa.adapters.output.repository.entity.ProfissaoEntity;
 import com.rlti.hexagonal.pessoa.application.core.domain.Cnae;
 import com.rlti.hexagonal.pessoa.application.port.output.CnaeOutputPort;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CnaeAdapter implements CnaeOutputPort {
     private final CnaeRepository cnaeRepository;
     private final ModelMapper modelMapper;
     private final PessoaJuridicaRepository pessoaJuridicaRepository;
     private final PessoaJuridicaCnaeRepository pessoaJuridicaCnaeRepository;
+    private final IbgeClient ibgeClient;
 
 
     @Override
@@ -56,5 +61,35 @@ public class CnaeAdapter implements CnaeOutputPort {
         pessoaJuridicaRepository.save(pessoaJuridicaEntity);
     }
 
+    @Override
+    public void processarCnae(Cnae cnae) {
+        if (!cnaeRepository.existsBySubclasse(cnae.getSubclasse())) cnaeRepository.save(new CnaeEntity(cnae));
+    }
+
+    public void salvarSubclasses() {
+        List<Map<String, Object>> response = ibgeClient.getSubclasses();
+        if (response != null) {
+            Set<String> idsUnicos = new HashSet<>();
+            List<CnaeEntity> subclasses = new ArrayList<>();
+
+            for (Map<String, Object> item : response) {
+                String id = (String) item.get("id");
+                String descricao = (String) item.get("descricao");
+                if (!idsUnicos.contains(id) && !cnaeRepository.existsBySubclasse(id)) {
+                    idsUnicos.add(id);
+                    CnaeEntity subclasse = new CnaeEntity();
+                    subclasse.setSubclasse(id);
+                    subclasse.setDenominacao(descricao);
+                    subclasses.add(subclasse);
+                }
+            }
+            if (!subclasses.isEmpty()) {
+                cnaeRepository.saveAll(subclasses);
+                log.info("Subclasses salvas com sucesso.");
+            } else {
+                log.info("Nenhuma nova subclasse encontrada para salvar.");
+            }
+        }
+    }
 
 }

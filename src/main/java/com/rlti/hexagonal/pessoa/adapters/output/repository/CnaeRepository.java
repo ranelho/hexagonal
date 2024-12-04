@@ -11,4 +11,6 @@ public interface CnaeRepository extends JpaRepository<CnaeEntity, Long> {
     List<CnaeEntity> findBySubclasseIn(@Param("subclasse") List<String> subclasse);
 
     Optional<CnaeEntity> findBySubclasse(String subclasse);
+
+    boolean existsBySubclasse(String subclasse);
 }
