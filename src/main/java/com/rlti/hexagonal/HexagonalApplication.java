@@ -6,10 +6,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.rlti.hexagonal")
 @EnableFeignClients
 @EnableJpaAuditing
-@ComponentScan(basePackages = "com.rlti.hexagonal")
 public class HexagonalApplication {
 
 	public static void main(String[] args) {

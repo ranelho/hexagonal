@@ -26,3 +26,13 @@ feign:
       default:
         connect-timeout: 5000
         read-timeout: 5000
+
+bbapi:
+  oauth:
+    client-id: ${BBAPI_CLIENT_ID:eyJpZCI6IjhkM2IwZjMtYWZhMy00ODRlLTllYTQtOTAyODZkIiwiY29kaWdvUHVibGljYWRvciI6MCwiY29kaWdvU29mdHdhcmUiOjExNDIxMCwic2VxdWVuY2lhbEluc3RhbGFjYW8iOjF9}
+    client-secret: ${BBAPI_CLIENT_SECRET:eyJpZCI6ImU1ZmY5MmEtMmEyMy00MzQ5LWI1MjAtOGZmIiwiY29kaWdvUHVibGljYWRvciI6MCwiY29kaWdvU29mdHdhcmUiOjExNDIxMCwic2VxdWVuY2lhbEluc3RhbGFjYW8iOjEsInNlcXVlbmNpYWxDcmVkZW5jaWFsIjoxLCJhbWJpZW50ZSI6ImhvbW9sb2dhY2FvIiwiaWF0IjoxNzI5NzkwNzg4ODM3fQ}
+    token-url: ${URL_TOKE:https://oauth.hm.bb.com.br/oauth/token}
+    scope: ${SCOPE:validacao-contas.info}
+  validation:
+    base-url: ${URL_VALIDA_CONTA:https://api.hm.bb.com.br/validacao-contas/v1/contas}
+    gw-dev-app-key: ${BBAPI_DEV_APP_KEY:73e064f952c2bf02a2eebf624576a275}
