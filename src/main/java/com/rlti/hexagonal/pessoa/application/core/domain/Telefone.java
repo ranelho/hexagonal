@@ -11,30 +11,25 @@ public class Telefone {
     private String ddi;
     private String ddd;
     private String numeroTelefone;
-    private PessoaFisica pessoaFisica;
-    public Telefone() {
-        this.id = id;
+    private Pessoa pessoa;
+
+    public Telefone(TipoTelefone tipoTelefone, String ddi,String ddd,String numeroTelefone, Pessoa pessoa) {
         this.tipoTelefone = tipoTelefone;
         this.ddi = ddi;
         this.ddd = ddd;
         this.numeroTelefone = numeroTelefone;
-        this.pessoaFisica = pessoaFisica;
+        this.pessoa = pessoa;
     }
 
-    public Telefone(TipoTelefone tipoTelefone, String ddi,String ddd,String numeroTelefone, PessoaFisica pessoa) {
-        this.tipoTelefone = tipoTelefone;
-        this.ddi = ddi;
-        this.ddd = ddd;
-        this.numeroTelefone = numeroTelefone;
-        this.pessoaFisica = pessoa;
+    public Telefone(TelefoneRequest telefoneRequest) {
+        this.tipoTelefone = telefoneRequest.getTipoTelefone();
+        this.ddi = telefoneRequest.getDdi();
+        this.ddd = telefoneRequest.getDdd();
+        this.numeroTelefone = telefoneRequest.getNumeroTelefone();
     }
 
-    public static List<Telefone> converte(List<TelefoneRequest> telefones, PessoaFisica pessoa) {
+    public static List<Telefone> converte(List<TelefoneRequest> telefones, Pessoa pessoa) {
         return telefones.stream().map(telefone -> new Telefone(telefone.getTipoTelefone(), telefone.getDdi(), telefone.getDdd(), telefone.getNumeroTelefone(), pessoa)).toList();
-    }
-
-    public List<Telefone> converteList(List<TelefoneRequest> telefones) {
-        return telefones.stream().map(telefone -> new Telefone(telefone.getTipoTelefone(), telefone.getDdi(), telefone.getDdd(), telefone.getNumeroTelefone(), pessoaFisica)).toList();
     }
 
     public void update(TelefoneRequest request) {
@@ -42,6 +37,15 @@ public class Telefone {
         this.ddi = request.getDdi();
         this.ddd = request.getDdd();
         this.numeroTelefone = request.getNumeroTelefone();
+    }
+
+    public Telefone(Long id, TipoTelefone tipoTelefone, String ddi, String ddd, String numeroTelefone, Pessoa pessoa) {
+        this.id = id;
+        this.tipoTelefone = tipoTelefone;
+        this.ddi = ddi;
+        this.ddd = ddd;
+        this.numeroTelefone = numeroTelefone;
+        this.pessoa = pessoa;
     }
 
     public Long getId() {
@@ -84,13 +88,11 @@ public class Telefone {
         this.numeroTelefone = numeroTelefone;
     }
 
-    public PessoaFisica getPessoaFisica() {
-        return pessoaFisica;
+    public Pessoa getPessoa() {
+        return pessoa;
     }
 
-    public void setPessoaFisica(PessoaFisica pessoaFisica) {
-        this.pessoaFisica = pessoaFisica;
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
-
-
 }

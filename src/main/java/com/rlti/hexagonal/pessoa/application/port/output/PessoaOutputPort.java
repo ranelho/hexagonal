@@ -1,5 +1,6 @@
 package com.rlti.hexagonal.pessoa.application.port.output;
 
+import com.rlti.hexagonal.pessoa.application.core.domain.Email;
 import com.rlti.hexagonal.pessoa.application.core.domain.Pessoa;
 import com.rlti.hexagonal.pessoa.application.core.domain.PessoaFisica;
 import com.rlti.hexagonal.pessoa.application.core.domain.PessoaJuridica;
@@ -24,4 +25,6 @@ public interface PessoaOutputPort {
     PessoaJuridica findPessoaJuridicaById(Long idPessoa);
 
     Page<PessoaJuridica> findAllPessoaJuridicaPaginated(int page, int size);
+
+    void salvarEmail(Long idPessoa, Email email);
 }

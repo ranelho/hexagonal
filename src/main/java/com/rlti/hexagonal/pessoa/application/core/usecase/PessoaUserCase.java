@@ -1,7 +1,9 @@
 package com.rlti.hexagonal.pessoa.application.core.usecase;
 
+import com.rlti.hexagonal.pessoa.adapters.input.controller.request.EmailRequest;
 import com.rlti.hexagonal.pessoa.adapters.input.controller.request.PessoaRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.*;
+import com.rlti.hexagonal.pessoa.application.core.domain.Email;
 import com.rlti.hexagonal.pessoa.application.core.domain.Pessoa;
 import com.rlti.hexagonal.pessoa.application.port.input.PessoaInputPort;
 import com.rlti.hexagonal.pessoa.application.port.output.PessoaOutputPort;
@@ -58,6 +60,12 @@ public class PessoaUserCase implements PessoaInputPort {
     public Page<PessoaJuridicaResponse> listarPessoasJuridicas(int page, int size) {
         var pessoasJuridicas = pessoaOutputPort.findAllPessoaJuridicaPaginated(page, size);
         return PessoaJuridicaResponse.converte(pessoasJuridicas);
+    }
+
+    @Override
+    public void criarEmail(Long idPessoa, EmailRequest request) {
+        var email = modelMapper.map(request, Email.class);
+        pessoaOutputPort.salvarEmail(idPessoa, email);
     }
 
 

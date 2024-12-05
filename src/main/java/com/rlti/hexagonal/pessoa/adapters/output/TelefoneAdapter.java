@@ -1,10 +1,13 @@
 package com.rlti.hexagonal.pessoa.adapters.output;
 
 import com.rlti.hexagonal.pessoa.adapters.output.repository.TelefoneRepository;
+import com.rlti.hexagonal.pessoa.adapters.output.repository.entity.PessoaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.entity.PessoaFisicaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.entity.TelefoneEntity;
+import com.rlti.hexagonal.pessoa.application.core.domain.Pessoa;
 import com.rlti.hexagonal.pessoa.application.core.domain.PessoaFisica;
 import com.rlti.hexagonal.pessoa.application.core.domain.Telefone;
+import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.pessoa.application.port.output.TelefoneOutputPort;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -24,29 +27,27 @@ public class TelefoneAdapter implements TelefoneOutputPort {
         var telefoneEntity = telefones.stream()
                 .map(this::convertTelefone)
                 .toList();
-        var pessoaEntity = modelMapper.map(telefones.get(0).getPessoaFisica(), PessoaFisicaEntity.class);
-        var telefonesEntity = telefoneRepository.findAllByPessoaFisica(pessoaEntity);
-        if (telefonesEntity.size() > 0) {
-            throw new RuntimeException("Já existe um telefone cadastrado para a pessoa física");
-        }
+        var pessoaEntity = modelMapper.map(telefoneEntity.get(0).getPessoa(), PessoaEntity.class);
+        var telefonesEntity = telefoneRepository.findAllByPessoa(pessoaEntity);
+        //criar validaçao para verificar se o telefone ja existe
         telefoneRepository.saveAll(telefoneEntity);
     }
 
     @Override
     public void salvar(Telefone telefones) {
         var telefoneEntity = convertTelefone(telefones);
-        var pessoaEntity = modelMapper.map(telefones.getPessoaFisica(), PessoaFisicaEntity.class);
-        var telefonesEntity = telefoneRepository.findAllByPessoaFisica(pessoaEntity);
-        if (telefonesEntity.size() > 0) {
-            throw new RuntimeException("Já existe um telefone cadastrado para a pessoa física");
+        var pessoaEntity = modelMapper.map(telefones.getPessoa(), PessoaEntity.class);
+        var telefonesEntity = telefoneRepository.findAllByPessoa(pessoaEntity);
+        if (pessoaEntity.getTipo() == Tipo.FISICA && telefonesEntity.size() > 2) {
+            throw new RuntimeException("Pessoa Fisica não pode ter mais de 3 telefones");
         }
         telefoneRepository.save(telefoneEntity);
     }
 
     @Override
-    public List<Telefone> findAllByPessoaFisica(PessoaFisica pessoaFisica) {
-        var pessoaEntity = modelMapper.map(pessoaFisica, PessoaFisicaEntity.class);
-        var telefoneEntity = telefoneRepository.findAllByPessoaFisica(pessoaEntity);
+    public List<Telefone> findAllByPessoa(Pessoa pessoa) {
+        var pessoaEntity = modelMapper.map(pessoa, PessoaEntity.class);
+        var telefoneEntity = telefoneRepository.findAllByPessoa(pessoaEntity);
         return telefoneEntity.stream()
                 .map(entity -> modelMapper.map(entity, Telefone.class))
                 .toList();

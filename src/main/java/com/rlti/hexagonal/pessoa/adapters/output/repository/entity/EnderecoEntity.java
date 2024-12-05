@@ -30,6 +30,7 @@ public class EnderecoEntity {
     private String indicadorFaturamento;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pessoa", referencedColumnName = "id_pessoa")
     private PessoaEntity pessoa;
 
     public EnderecoEntity(PessoaEntity pessoa, Endereco endereco) {
@@ -44,5 +45,18 @@ public class EnderecoEntity {
         this.indicadorCorrespondencia = endereco.getIndicadorCorrespondencia();
         this.indicadorFaturamento = endereco.getIndicadorFaturamento();
         this.pessoa = pessoa;
+    }
+
+    public EnderecoEntity(Endereco endereco) {
+        this.cep = endereco.getCep();
+        this.logradouro = endereco.getLogradouro();
+        this.numero = endereco.getNumero();
+        this.complemento = endereco.getComplemento();
+        this.bairro = endereco.getBairro();
+        this.cidade = endereco.getLocalidade();
+        this.uf = endereco.getUf();
+        this.tipoEndereco = endereco.getTipoEndereco();
+        this.indicadorCorrespondencia = endereco.getIndicadorCorrespondencia();
+        this.indicadorFaturamento = endereco.getIndicadorFaturamento();
     }
 }

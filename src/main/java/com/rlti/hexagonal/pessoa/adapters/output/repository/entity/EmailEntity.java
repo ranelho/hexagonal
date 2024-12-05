@@ -24,12 +24,18 @@ public class EmailEntity {
     private TipoEmail tipoEmail;
 
     @ManyToOne
-    @JoinColumn(name = "id_pessoa_fisica")
+    @JoinColumn(name = "id_pessoa", referencedColumnName = "id_pessoa")
     @JsonIgnore
-    private PessoaFisicaEntity pessoaFisica;
+    private PessoaEntity pessoa;
 
     public EmailEntity(Email email) {
         this.email = email.getEmail();
         this.tipoEmail = email.getTipoEmail();
+    }
+
+    public EmailEntity(Email email, PessoaEntity pessoa) {
+        this.email = email.getEmail();
+        this.tipoEmail = email.getTipoEmail();
+        this.pessoa = pessoa;
     }
 }

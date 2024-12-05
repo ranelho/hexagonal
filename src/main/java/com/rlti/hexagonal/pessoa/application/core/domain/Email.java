@@ -10,13 +10,26 @@ public class Email {
     private String email;
     private TipoEmail tipoEmail;
 
+    private Pessoa pessoa;
+
     public Email(Long idEmail, String email, TipoEmail tipoEmail) {
         this.idEmail = idEmail;
         this.email = email;
         this.tipoEmail = tipoEmail;
     }
-
     public Email() {
+    }
+
+    public Email(EmailRequest emailRequest) {
+        this.email = emailRequest.getEmail();
+        this.tipoEmail = emailRequest.getTipoEmail();
+    }
+
+    public Email(Long idEmail, String email, TipoEmail tipoEmail, Pessoa pessoa) {
+        this.idEmail = idEmail;
+        this.email = email;
+        this.tipoEmail = tipoEmail;
+        this.pessoa = pessoa;
     }
 
     public Long getIdEmail() {
@@ -43,7 +56,11 @@ public class Email {
         this.tipoEmail = tipoEmail;
     }
 
-    public List<Email> converteList(List<EmailRequest> emails) {
-        return emails.stream().map(emailRequest -> new Email(null, emailRequest.getEmail(), emailRequest.getTipoEmail())).toList();
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 }

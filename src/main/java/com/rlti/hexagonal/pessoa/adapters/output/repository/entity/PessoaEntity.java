@@ -1,7 +1,10 @@
 package com.rlti.hexagonal.pessoa.adapters.output.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rlti.hexagonal.pessoa.application.core.domain.Email;
+import com.rlti.hexagonal.pessoa.application.core.domain.Endereco;
 import com.rlti.hexagonal.pessoa.application.core.domain.Pessoa;
+import com.rlti.hexagonal.pessoa.application.core.domain.Telefone;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,8 +38,6 @@ public class PessoaEntity {
     @Column(nullable = false)
     private String nome;
 
-    private String resideExterior = "N";
-
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -46,35 +47,43 @@ public class PessoaEntity {
     @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
     private PessoaJuridicaEntity pessoaJuridica;
 
-
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Fetch(FetchMode.JOIN)
     @JsonIgnore
     private List<EnderecoEntity> enderecos;
+
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<EmailEntity> emails;
+
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<TelefoneEntity> telefones;
 
     public PessoaEntity(Pessoa pessoa,
                         PaisEntity pais,
                         OrientacaoSexualEntity orientacao,
                         IdentidadeGeneroEntity identidadeGenero, ProfissaoEntity profissao) {
-        this.idPessoa = pessoa.getIdPessoa();
-        this.tipo = pessoa.getTipo();
-        this.nome = pessoa.getNome().toUpperCase();
-        this.resideExterior = pessoa.getResideExterior().toUpperCase();
-        this.createdAt = pessoa.getCreatedAt();
+        inicializarCamposComuns(pessoa);
         this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica(), pais, orientacao, identidadeGenero, profissao);
         this.pessoaFisica.setPessoa(this);
-
     }
 
     public PessoaEntity(Pessoa pessoa) {
-        this.idPessoa = pessoa.getIdPessoa();
-        this.tipo = pessoa.getTipo();
-        this.nome = pessoa.getNome().toUpperCase();
-        this.resideExterior = pessoa.getResideExterior().toUpperCase();
-        this.createdAt = pessoa.getCreatedAt();
+        inicializarCamposComuns(pessoa);
         this.pessoaJuridica = new PessoaJuridicaEntity(pessoa.getPessoaJuridica());
         this.pessoaJuridica.setPessoa(this);
     }
+
+    private void inicializarCamposComuns(Pessoa pessoa) {
+        this.idPessoa = pessoa.getIdPessoa();
+        this.tipo = pessoa.getTipo();
+        this.nome = pessoa.getNome().toUpperCase();
+        this.createdAt = pessoa.getCreatedAt();
+        this.telefones = pessoa.getTelefones().stream().map(TelefoneEntity::new).toList();
+        this.enderecos = pessoa.getEnderecos().stream().map(EnderecoEntity::new).toList();
+        this.emails = pessoa.getEmails().stream().map(EmailEntity::new).toList();
+    }
+
 }
 
 

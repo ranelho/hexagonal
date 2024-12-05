@@ -37,7 +37,7 @@ public class PessoaFisicaEntity  {
     private String nomeSocial;
     private LocalDate dataNascimento;
     private LocalDate dataObito;
-
+    private String resideExterior;
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
     @Enumerated(EnumType.STRING)
@@ -57,14 +57,14 @@ public class PessoaFisicaEntity  {
     @Enumerated(EnumType.STRING)
     private GrauDeInstrucao grauDeInstrucao;
 
-    @OneToMany(mappedBy = "pessoaFisica", cascade = CascadeType.ALL, orphanRemoval = true)
+/*    @OneToMany(mappedBy = "pessoaFisica", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     @Size(max = 3, message = "Uma pessoa pode ter no máximo 3 telefones.")
-    private List<TelefoneEntity> telefones = new ArrayList<>();
+    private List<TelefoneEntity> telefones = new ArrayList<>();*/
 
-    @OneToMany(mappedBy = "pessoaFisica", cascade = CascadeType.ALL, orphanRemoval = true)
+/*    @OneToMany(mappedBy = "pessoaFisica", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<EmailEntity> emails = new ArrayList<>();;
+    private List<EmailEntity> emails = new ArrayList<>();*/
 
     @ManyToOne
     @JoinColumn(name = "pais_id_pais")
@@ -97,6 +97,7 @@ public class PessoaFisicaEntity  {
         this.estadoCivil = pessoaFisica.getEstadoCivil();
         this.nomeSocial = pessoaFisica.getNomeSocial().toUpperCase();
         this.dataObito = pessoaFisica.getDataObito();
+        this.resideExterior = pessoaFisica.getResideExterior();
         this.nomePai = pessoaFisica.getNomePai().toUpperCase();
         this.nomeMae = pessoaFisica.getNomeMae().toUpperCase();
         this.estrangeiro = pessoaFisica.getEstrangeiro().isEmpty() ? "N" : pessoaFisica.getEstrangeiro().toUpperCase();
@@ -109,8 +110,7 @@ public class PessoaFisicaEntity  {
         this.especificacaoIg = pessoaFisica.getEspecificacaoIg();
         this.especificacaoOs = pessoaFisica.getEspecificacaoOs();
         this.grauDeInstrucao = pessoaFisica.getGrauDeInstrucao();
-        addTelefones(pessoaFisica);
-        addEmails(pessoaFisica);
+       //addTelefones(pessoaFisica);
         if (nacionalidade != null)
             this.nacionalidade = nacionalidade;
         if (orientacao != null)
@@ -121,19 +121,19 @@ public class PessoaFisicaEntity  {
             this.profissao = profissao;
     }
 
-    private void addEmails(PessoaFisica pessoaFisica) {
+/*    private void addEmails(PessoaFisica pessoaFisica) {
         pessoaFisica.getEmails().forEach(email -> {
             EmailEntity emailEntity = new EmailEntity(email);
             emailEntity.setPessoaFisica(this);
             this.emails.add(emailEntity);
         });
-    }
+    }*/
 
-    private void addTelefones(PessoaFisica pessoaFisica) {
+/*    private void addTelefones(PessoaFisica pessoaFisica) {
         pessoaFisica.getTelefones().forEach(telefone -> {
             TelefoneEntity telefoneEntity = new TelefoneEntity(telefone);
             telefoneEntity.setPessoaFisica(this);
             this.telefones.add(telefoneEntity);
         });
-    }
+    }*/
 }

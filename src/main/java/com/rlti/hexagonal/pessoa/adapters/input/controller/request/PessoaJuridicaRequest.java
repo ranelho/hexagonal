@@ -16,4 +16,5 @@ public class PessoaJuridicaRequest {
     private String inscricaoEstadual;
     private String inscricaoMunicipal;
     private String situacao;
+
 }

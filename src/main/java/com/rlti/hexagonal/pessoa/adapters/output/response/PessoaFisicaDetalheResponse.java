@@ -60,8 +60,8 @@ public class PessoaFisicaDetalheResponse {
         this.especificacaoIg = pessoaFisica.getEspecificacaoIg();
         this.especificacaoOs = pessoaFisica.getEspecificacaoOs();
         this.grauDeInstrucao = pessoaFisica.getGrauDeInstrucao();
-        this.telefones = TelefoneResponse.converte(pessoaFisica.getTelefones());
-        this.emails = EmailResponse.converte(pessoaFisica.getEmails());
+        this.telefones = TelefoneResponse.converte(pessoaFisica.getPessoa().getTelefones());
+        this.emails = EmailResponse.converte(pessoaFisica.getPessoa().getEmails());
         this.enderecos = EnderecoResponse.converte(pessoaFisica.getPessoa().getEnderecos());
     }
 

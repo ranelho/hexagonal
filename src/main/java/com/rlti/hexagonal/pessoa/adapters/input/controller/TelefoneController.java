@@ -18,15 +18,15 @@ public class TelefoneController {
 
     private final TelefoneInputPort telefoneInputPort;
 
-    @PostMapping("/{idPessoaFisica}")
-    public ResponseEntity<Void> criarTelefone(@PathVariable Long idPessoaFisica, @Valid @RequestBody List<TelefoneRequest> request){
-        telefoneInputPort.criarTelefone(idPessoaFisica, request);
+    @PostMapping("/{idPessoa}")
+    public ResponseEntity<Void> criarTelefone(@PathVariable Long idPessoa, @Valid @RequestBody List<TelefoneRequest> request){
+        telefoneInputPort.criarTelefone(idPessoa, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/all/{idPessoaFisica}")
-    public ResponseEntity<List<TelefoneResponse>> listarTelefones(@PathVariable Long idPessoaFisica){
-        var telefones= telefoneInputPort.findAllById(idPessoaFisica);
+    @GetMapping("/all/{idPessoa}")
+    public ResponseEntity<List<TelefoneResponse>> listarTelefones(@PathVariable Long idPessoa){
+        var telefones= telefoneInputPort.findAllById(idPessoa);
         return ResponseEntity.status(HttpStatus.CREATED).body(telefones);
     }
 

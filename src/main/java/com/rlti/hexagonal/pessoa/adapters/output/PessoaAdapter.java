@@ -2,6 +2,7 @@ package com.rlti.hexagonal.pessoa.adapters.output;
 
 import com.rlti.hexagonal.pessoa.adapters.output.repository.*;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.entity.*;
+import com.rlti.hexagonal.pessoa.application.core.domain.Email;
 import com.rlti.hexagonal.pessoa.application.core.domain.Pessoa;
 import com.rlti.hexagonal.pessoa.application.core.domain.PessoaFisica;
 import com.rlti.hexagonal.pessoa.application.core.domain.PessoaJuridica;
@@ -29,6 +30,7 @@ public class PessoaAdapter implements PessoaOutputPort {
     private final OrientacaoSexualRepository orientacaoSexualRepository;
     private final IdentidadeGeneroRepository identidadeGeneroRepository;
     private final ProfissaoRepository profissaoRepository;
+    private final EmailRepository emailRepository;
 
     @Override
     @Transactional
@@ -117,6 +119,14 @@ public class PessoaAdapter implements PessoaOutputPort {
                 .map(entity -> modelMapper.map(entity, PessoaJuridica.class))
                 .toList();
         return new PageImpl<>(pessoaJuridicas, pageable, pessoas.getTotalElements());
+    }
+
+    @Override
+    public void salvarEmail(Long idPessoa, Email email) {
+        var pessoa = pessoaRepository.findById(idPessoa)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Pessoa não encontrada com ID: " + idPessoa));
+        var emailEntity = new EmailEntity(email, pessoa);
+        emailRepository.save(emailEntity);
     }
 
     private ProfissaoEntity buscarProfissaoPorId(Long profissaoId) {

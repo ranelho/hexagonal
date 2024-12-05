@@ -5,17 +5,20 @@ import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Pessoa {
     private Long idPessoa;
     private Tipo tipo;
     private String nome;
-    private String resideExterior;
+
     private LocalDateTime createdAt;
     private PessoaFisica pessoaFisica;
     private PessoaJuridica pessoaJuridica;
 
     private List<Endereco> enderecos;
+    private List<Telefone> telefones;
+    private List<Email> emails;
 
     public Pessoa() {
     }
@@ -23,7 +26,18 @@ public class Pessoa {
     public Pessoa(PessoaRequest request) {
         this.tipo = request.getTipo();
         this.nome = request.getNome().toUpperCase();
-        this.resideExterior = request.getResideExterior();
+
+        this.enderecos = request.getEnderecos().stream()
+                .map(Endereco::new)
+                .collect(Collectors.toList());
+
+        this.telefones = request.getTelefones().stream()
+                .map(Telefone::new)
+                .collect(Collectors.toList());
+
+        this.emails = request.getEmails().stream()
+                .map(Email::new)
+                .collect(Collectors.toList());
         if (Tipo.FISICA == request.getTipo()){
             this.pessoaFisica = new PessoaFisica(request.getPessoaFisica());
         } else {
@@ -31,15 +45,16 @@ public class Pessoa {
         }
     }
 
-    public Pessoa(Long idPessoa, Tipo tipo, String nome, String resideExterior, LocalDateTime createdAt, PessoaFisica pessoaFisica, PessoaJuridica pessoaJuridica, List<Endereco> enderecos) {
+    public Pessoa(Long idPessoa, Tipo tipo, String nome, LocalDateTime createdAt, PessoaFisica pessoaFisica, PessoaJuridica pessoaJuridica, List<Endereco> enderecos, List<Telefone> telefones, List<Email> emails) {
         this.idPessoa = idPessoa;
         this.tipo = tipo;
         this.nome = nome;
-        this.resideExterior = resideExterior;
         this.createdAt = createdAt;
         this.pessoaFisica = pessoaFisica;
         this.pessoaJuridica = pessoaJuridica;
         this.enderecos = enderecos;
+        this.telefones = telefones;
+        this.emails = emails;
     }
 
     public Long getIdPessoa() {
@@ -64,14 +79,6 @@ public class Pessoa {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getResideExterior() {
-        return resideExterior;
-    }
-
-    public void setResideExterior(String resideExterior) {
-        this.resideExterior = resideExterior;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -104,5 +111,21 @@ public class Pessoa {
 
     public void setEnderecos(List<Endereco> enderecos) {
         this.enderecos = enderecos;
+    }
+
+    public List<Telefone> getTelefones() {
+        return telefones;
+    }
+
+    public void setTelefones(List<Telefone> telefones) {
+        this.telefones = telefones;
+    }
+
+    public List<Email> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(List<Email> emails) {
+        this.emails = emails;
     }
 }

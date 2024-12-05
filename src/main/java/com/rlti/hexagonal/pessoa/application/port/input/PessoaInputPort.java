@@ -1,7 +1,9 @@
 package com.rlti.hexagonal.pessoa.application.port.input;
 
+import com.rlti.hexagonal.pessoa.adapters.input.controller.request.EmailRequest;
 import com.rlti.hexagonal.pessoa.adapters.input.controller.request.PessoaRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.*;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 
 public interface PessoaInputPort {
@@ -18,4 +20,6 @@ public interface PessoaInputPort {
     PessoaJuridicaDetalheResponse buscarPessoaJuridica(Long idPessoa);
 
     Page<PessoaJuridicaResponse> listarPessoasJuridicas(int page, int size);
+
+    void criarEmail(Long idPessoa, @Valid EmailRequest request);
 }

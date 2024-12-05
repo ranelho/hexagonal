@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Value;
 
+import java.util.List;
+
 
 @Value
 public class PessoaRequest {
@@ -13,8 +15,10 @@ public class PessoaRequest {
     Tipo tipo;
     @NotBlank
     String nome;
-    @NotBlank
-    String resideExterior;
+
+    List<TelefoneRequest> telefones;
+    List<EmailRequest> emails;
+    List<EnderecoRequest> enderecos;
 
     @Valid
     PessoaFisicaRequest pessoaFisica;

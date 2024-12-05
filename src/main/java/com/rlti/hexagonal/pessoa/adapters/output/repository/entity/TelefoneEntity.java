@@ -24,8 +24,8 @@ public class TelefoneEntity {
     private String numeroTelefone;
 
     @ManyToOne
-    @JoinColumn(name = "idPessoaFisica", referencedColumnName = "idPessoa", nullable = true)
-    private PessoaFisicaEntity pessoaFisica;
+    @JoinColumn(name = "id_pessoa", referencedColumnName = "id_pessoa", nullable = true)
+    private PessoaEntity pessoa;
 
     public TelefoneEntity(Telefone telefone) {
         this.tipoTelefone = telefone.getTipoTelefone();

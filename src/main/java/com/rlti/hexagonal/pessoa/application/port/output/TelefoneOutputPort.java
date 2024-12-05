@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.pessoa.application.port.output;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.PessoaFisica;
+import com.rlti.hexagonal.pessoa.application.core.domain.Pessoa;
 import com.rlti.hexagonal.pessoa.application.core.domain.Telefone;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 public interface TelefoneOutputPort {
     void salvar(Telefone telefones);
 
-    List<Telefone> findAllByPessoaFisica(PessoaFisica pessoa);
+    List<Telefone> findAllByPessoa(Pessoa pessoa);
 
     Telefone getById(Long id);
 
