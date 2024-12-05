@@ -38,7 +38,7 @@ public class EnderecoEntity {
         this.numero = endereco.getNumero();
         this.complemento = endereco.getComplemento();
         this.bairro = endereco.getBairro();
-        this.cidade = endereco.getCidade();
+        this.cidade = endereco.getLocalidade();
         this.uf = endereco.getUf();
         this.tipoEndereco = endereco.getTipoEndereco();
         this.indicadorCorrespondencia = endereco.getIndicadorCorrespondencia();

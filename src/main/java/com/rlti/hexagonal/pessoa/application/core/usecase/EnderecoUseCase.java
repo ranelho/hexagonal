@@ -25,8 +25,8 @@ public class EnderecoUseCase implements EnderecoInputPort {
         if (!cep.matches("\\d{5}-?\\d{3}")) {
             throw new IllegalArgumentException("CEP inválido: " + cep);
         }
-
-        return buscaEnderecoOutputPort.buscarEndereco(cep);
+        var endereco = buscaEnderecoOutputPort.buscarEndereco(cep);
+        return modelMapper.map(endereco, EnderecoResponse.class);
     }
 
     @Override
