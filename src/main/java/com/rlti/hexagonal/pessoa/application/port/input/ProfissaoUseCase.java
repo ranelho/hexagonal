@@ -3,7 +3,7 @@ package com.rlti.hexagonal.pessoa.application.port.input;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
-import com.rlti.hexagonal.pessoa.application.core.domain.Profissao;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.Profissao;
 import com.rlti.hexagonal.pessoa.application.port.output.ProfissaoOutputPort;
 import lombok.SneakyThrows;
 import org.springframework.web.multipart.MultipartFile;

@@ -1,9 +1,9 @@
 package com.rlti.hexagonal.pessoa.application.port.output;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.Email;
-import com.rlti.hexagonal.pessoa.application.core.domain.Pessoa;
-import com.rlti.hexagonal.pessoa.application.core.domain.PessoaFisica;
-import com.rlti.hexagonal.pessoa.application.core.domain.PessoaJuridica;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Email;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.PessoaJuridica;
 import org.springframework.data.domain.Page;
 
 

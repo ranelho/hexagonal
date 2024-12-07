@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.pessoa.application.port.output;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.Cnae;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.Cnae;
 
 import java.util.List;
 

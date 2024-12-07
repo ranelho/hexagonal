@@ -1,8 +1,8 @@
 package com.rlti.hexagonal.pessoa.application.core.usecase;
 
-import com.rlti.hexagonal.pessoa.adapters.input.controller.request.EnderecoRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.EnderecoRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.EnderecoResponse;
-import com.rlti.hexagonal.pessoa.application.core.domain.Endereco;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Endereco;
 import com.rlti.hexagonal.pessoa.application.port.input.EnderecoInputPort;
 import com.rlti.hexagonal.pessoa.application.port.output.BuscaEnderecoOutputPort;
 import com.rlti.hexagonal.pessoa.application.port.output.EnderecoOutputPort;

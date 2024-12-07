@@ -1,8 +1,8 @@
 package com.rlti.hexagonal.pessoa.adapters.input.controller;
 
 
-import com.rlti.hexagonal.pessoa.adapters.input.controller.request.EmailRequest;
-import com.rlti.hexagonal.pessoa.adapters.input.controller.request.PessoaRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.EmailRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.*;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.pessoa.application.port.input.PessoaInputPort;

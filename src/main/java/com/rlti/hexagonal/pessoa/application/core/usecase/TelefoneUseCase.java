@@ -1,8 +1,8 @@
 package com.rlti.hexagonal.pessoa.application.core.usecase;
 
-import com.rlti.hexagonal.pessoa.adapters.input.controller.request.TelefoneRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.TelefoneRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.TelefoneResponse;
-import com.rlti.hexagonal.pessoa.application.core.domain.Telefone;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Telefone;
 import com.rlti.hexagonal.pessoa.application.port.input.TelefoneInputPort;
 import com.rlti.hexagonal.pessoa.application.port.output.PessoaOutputPort;
 import com.rlti.hexagonal.pessoa.application.port.output.TelefoneOutputPort;

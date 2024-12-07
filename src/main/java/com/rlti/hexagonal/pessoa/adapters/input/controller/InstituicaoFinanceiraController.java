@@ -1,7 +1,7 @@
 package com.rlti.hexagonal.pessoa.adapters.input.controller;
 
-import com.rlti.hexagonal.pessoa.adapters.input.controller.request.AgenciaRequest;
-import com.rlti.hexagonal.pessoa.adapters.input.controller.request.BancoRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.AgenciaRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.BancoRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.AgenciaResponse;
 import com.rlti.hexagonal.pessoa.adapters.output.response.BancoResponse;
 import com.rlti.hexagonal.pessoa.application.port.InstituicaoFinanceiraInputPort;

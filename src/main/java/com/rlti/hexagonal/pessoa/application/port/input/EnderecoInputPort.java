@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.pessoa.application.port.input;
 
-import com.rlti.hexagonal.pessoa.adapters.input.controller.request.EnderecoRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.EnderecoRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.EnderecoResponse;
 
 public interface EnderecoInputPort {

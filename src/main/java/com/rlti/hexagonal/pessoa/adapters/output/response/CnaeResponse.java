@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output.response;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.Cnae;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.Cnae;
 import lombok.Data;
 
 import java.util.List;

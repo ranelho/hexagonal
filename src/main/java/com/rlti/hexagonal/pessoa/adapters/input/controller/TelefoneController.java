@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.input.controller;
 
-import com.rlti.hexagonal.pessoa.adapters.input.controller.request.TelefoneRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.TelefoneRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.TelefoneResponse;
 import com.rlti.hexagonal.pessoa.application.port.input.TelefoneInputPort;
 import jakarta.validation.Valid;

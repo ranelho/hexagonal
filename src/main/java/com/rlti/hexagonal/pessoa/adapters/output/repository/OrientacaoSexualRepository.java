@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output.repository;
 
-import com.rlti.hexagonal.pessoa.adapters.output.repository.entity.OrientacaoSexualEntity;
+import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.OrientacaoSexualEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OrientacaoSexualRepository extends JpaRepository<OrientacaoSexualEntity, Long> {

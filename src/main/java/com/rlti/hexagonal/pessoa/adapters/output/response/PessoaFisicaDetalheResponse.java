@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output.response;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.PessoaFisica;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.EstadoCivil;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.GrauDeInstrucao;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;

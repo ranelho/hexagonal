@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.pessoa.application.port.input;
 
-import com.rlti.hexagonal.pessoa.adapters.input.controller.request.CnaeRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.CnaeRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.CnaeResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.multipart.MultipartFile;

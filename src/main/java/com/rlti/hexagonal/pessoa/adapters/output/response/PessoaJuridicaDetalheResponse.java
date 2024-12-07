@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output.response;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.PessoaJuridica;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.PessoaJuridica;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 import lombok.Data;
 

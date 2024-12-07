@@ -1,7 +1,7 @@
 package com.rlti.hexagonal.pessoa.adapters.output.response;
 
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
-import com.rlti.hexagonal.pessoa.application.core.domain.Pessoa;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 

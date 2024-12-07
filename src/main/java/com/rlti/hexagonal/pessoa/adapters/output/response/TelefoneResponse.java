@@ -1,7 +1,7 @@
 package com.rlti.hexagonal.pessoa.adapters.output.response;
 
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoTelefone;
-import com.rlti.hexagonal.pessoa.application.core.domain.Telefone;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Telefone;
 import lombok.Data;
 
 import java.util.List;

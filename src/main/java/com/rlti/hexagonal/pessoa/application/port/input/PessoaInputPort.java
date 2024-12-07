@@ -1,7 +1,7 @@
 package com.rlti.hexagonal.pessoa.application.port.input;
 
-import com.rlti.hexagonal.pessoa.adapters.input.controller.request.EmailRequest;
-import com.rlti.hexagonal.pessoa.adapters.input.controller.request.PessoaRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.EmailRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.*;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

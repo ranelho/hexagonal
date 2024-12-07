@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output.response;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.Endereco;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Endereco;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

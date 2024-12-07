@@ -1,11 +1,11 @@
 package com.rlti.hexagonal.pessoa.application.core.usecase;
 
-import com.rlti.hexagonal.pessoa.adapters.input.controller.request.AgenciaRequest;
-import com.rlti.hexagonal.pessoa.adapters.input.controller.request.BancoRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.AgenciaRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.BancoRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.AgenciaResponse;
 import com.rlti.hexagonal.pessoa.adapters.output.response.BancoResponse;
-import com.rlti.hexagonal.pessoa.application.core.domain.Agencia;
-import com.rlti.hexagonal.pessoa.application.core.domain.Banco;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Agencia;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Banco;
 import com.rlti.hexagonal.pessoa.application.port.InstituicaoFinanceiraInputPort;
 import com.rlti.hexagonal.pessoa.application.port.output.InstituicaoFinanceiraOutputPort;
 import org.modelmapper.ModelMapper;

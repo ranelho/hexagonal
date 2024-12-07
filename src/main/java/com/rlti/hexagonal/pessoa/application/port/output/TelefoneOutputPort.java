@@ -1,7 +1,7 @@
 package com.rlti.hexagonal.pessoa.application.port.output;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.Pessoa;
-import com.rlti.hexagonal.pessoa.application.core.domain.Telefone;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Telefone;
 
 import java.util.List;
 

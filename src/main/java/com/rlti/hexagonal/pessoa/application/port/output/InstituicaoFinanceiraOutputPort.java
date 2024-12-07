@@ -1,7 +1,7 @@
 package com.rlti.hexagonal.pessoa.application.port.output;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.Agencia;
-import com.rlti.hexagonal.pessoa.application.core.domain.Banco;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Agencia;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Banco;
 import org.springframework.data.domain.Page;
 
 public interface InstituicaoFinanceiraOutputPort {

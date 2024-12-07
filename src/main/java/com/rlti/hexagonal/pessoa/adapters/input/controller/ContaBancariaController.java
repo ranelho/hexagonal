@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.input.controller;
 
-import com.rlti.hexagonal.pessoa.adapters.input.controller.request.ContaBancariaRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.ContaBancariaRequest;
 import com.rlti.hexagonal.pessoa.application.port.input.ContaBancariaInputPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.Endereco;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Endereco;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

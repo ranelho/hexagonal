@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.input.controller;
 
-import com.rlti.hexagonal.pessoa.adapters.input.controller.request.CnaeRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.CnaeRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.CnaeResponse;
 import com.rlti.hexagonal.pessoa.application.port.input.CnaeInputPort;
 import jakarta.validation.Valid;
