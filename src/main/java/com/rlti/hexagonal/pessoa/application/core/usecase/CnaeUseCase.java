@@ -92,7 +92,8 @@ public class CnaeUseCase implements CnaeInputPort {
         var cnaes = cnaeRequestList.stream()
                 .map(request -> modelMapper.map(request, Cnae.class))
                 .toList();
-        outputPort.addCnaesV2(idPessoa, subclasse, cnaeRequestList);
+
+        outputPort.addCnaesV2(idPessoa, subclasse, cnaes);
     }
 
 }

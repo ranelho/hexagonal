@@ -1,5 +1,7 @@
 package com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica;
 
+import jakarta.validation.constraints.NotNull;
+
 public class Cnae {
     private Long id;
     private String subclasse;
@@ -19,6 +21,10 @@ public class Cnae {
     public Cnae(String subclasse, String denominacao) {
         this.subclasse = subclasse;
         this.denominacao = denominacao;
+    }
+
+    public Cnae(@NotNull String subclasse) {
+        this.subclasse = subclasse;
     }
 
     public Long getId() {

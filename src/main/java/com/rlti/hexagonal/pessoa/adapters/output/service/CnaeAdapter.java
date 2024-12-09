@@ -1,12 +1,11 @@
 package com.rlti.hexagonal.pessoa.adapters.output.service;
 
-import com.rlti.hexagonal.pessoa.adapters.input.request.CnaeRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.IbgeClient;
+import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.CnaeEntity;
+import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.PessoaJuridicaCnaeEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.CnaeRepository;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.PessoaJuridicaCnaeRepository;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.PessoaJuridicaRepository;
-import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.CnaeEntity;
-import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.PessoaJuridicaCnaeEntity;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.Cnae;
 import com.rlti.hexagonal.pessoa.application.port.output.CnaeOutputPort;
 import jakarta.persistence.EntityNotFoundException;
@@ -130,7 +129,7 @@ public class CnaeAdapter implements CnaeOutputPort {
 
     @Transactional
     @Override
-    public void addCnaesV2(Long idPessoa, String subclasse, List<CnaeRequest> cnaes) {
+    public void addCnaesV2(Long idPessoa, String subclasse, List<Cnae> cnaes) {
         // Busca a pessoa jurídica pelo ID
         var pessoaJuridicaEntity = pessoaJuridicaRepository.findById(idPessoa)
                 .orElseThrow(() -> new EntityNotFoundException("Pessoa Jurídica não encontrada para o ID: " + idPessoa));

@@ -16,6 +16,7 @@ import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisi
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.Cnae;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.PessoaJuridica;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
+import com.rlti.hexagonal.pessoa.application.port.output.CnaeOutputPort;
 import com.rlti.hexagonal.pessoa.application.port.output.PessoaOutputPort;
 import com.rlti.hexagonal.pessoa.handler.DuplicidadeException;
 import com.rlti.hexagonal.pessoa.handler.EntidadeNaoEncontradaException;
@@ -40,6 +41,7 @@ public class PessoaAdapter implements PessoaOutputPort {
     private final IdentidadeGeneroRepository identidadeGeneroRepository;
     private final ProfissaoRepository profissaoRepository;
     private final EmailRepository emailRepository;
+    private final CnaeOutputPort cnaeOutputPort;
 
     @Override
     @Transactional
@@ -57,7 +59,8 @@ public class PessoaAdapter implements PessoaOutputPort {
         } else if (pessoa.getTipo() == Tipo.JURIDICA) {
             validarDuplicidadePessoaJuridica(pessoa);
             var pessoaJuridica = new PessoaEntity(pessoa);
-            pessoaRepository.save(pessoaJuridica);
+            var pessoaEntity = pessoaRepository.save(pessoaJuridica);
+            cnaeOutputPort.addCnaesV2(pessoaEntity.getIdPessoa(), pessoa.getPessoaJuridica().getSubclasse(), pessoa.getPessoaJuridica().getCnaes());
         }
     }
 

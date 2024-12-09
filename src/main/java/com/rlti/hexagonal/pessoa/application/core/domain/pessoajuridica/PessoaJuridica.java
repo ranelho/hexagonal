@@ -5,6 +5,7 @@ import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PessoaJuridica {
     private Long idPessoaJuridica;
@@ -16,6 +17,7 @@ public class PessoaJuridica {
     private String inscricaoMunicipal;
     private String situacao;
 
+    private String cnaePrincipal;
     private Pessoa pessoa;
     private List<Cnae> cnaes;
 
@@ -27,12 +29,16 @@ public class PessoaJuridica {
         this.inscricaoEstadual = pessoaJuridica.getInscricaoEstadual();
         this.inscricaoMunicipal = pessoaJuridica.getInscricaoMunicipal();
         this.situacao = pessoaJuridica.getSituacao();
+        this.cnaePrincipal = pessoaJuridica.getCnaePrincipal();
+        this.cnaes = pessoaJuridica.getCnaes().stream()
+                .map(relacao -> new Cnae(relacao.getSubclasse()))
+                .collect(Collectors.toList());
     }
 
     public PessoaJuridica() {
     }
 
-    public PessoaJuridica(Long idPessoaJuridica, String cnpj, LocalDate dataAbertura, String razaoSocial, String nomeFantasia, String inscricaoEstadual, String inscricaoMunicipal, String situacao, Pessoa pessoa, List<Cnae> cnaes) {
+    public PessoaJuridica(Long idPessoaJuridica, String cnpj, LocalDate dataAbertura, String razaoSocial, String nomeFantasia, String inscricaoEstadual, String inscricaoMunicipal, String situacao, String cnaePrincipal, Pessoa pessoa, List<Cnae> cnaes) {
         this.idPessoaJuridica = idPessoaJuridica;
         this.cnpj = cnpj;
         this.dataAbertura = dataAbertura;
@@ -41,6 +47,7 @@ public class PessoaJuridica {
         this.inscricaoEstadual = inscricaoEstadual;
         this.inscricaoMunicipal = inscricaoMunicipal;
         this.situacao = situacao;
+        this.cnaePrincipal = cnaePrincipal;
         this.pessoa = pessoa;
         this.cnaes = cnaes;
     }
@@ -107,6 +114,14 @@ public class PessoaJuridica {
 
     public void setSituacao(String situacao) {
         this.situacao = situacao;
+    }
+
+    public String getSubclasse() {
+        return cnaePrincipal;
+    }
+
+    public void setSubclasse(String subclasse) {
+        this.cnaePrincipal = subclasse;
     }
 
     public Pessoa getPessoa() {

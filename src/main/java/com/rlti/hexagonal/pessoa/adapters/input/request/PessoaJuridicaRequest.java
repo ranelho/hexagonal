@@ -4,6 +4,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.br.CNPJ;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class PessoaJuridicaRequest {
@@ -16,5 +17,7 @@ public class PessoaJuridicaRequest {
     private String inscricaoEstadual;
     private String inscricaoMunicipal;
     private String situacao;
+    private String cnaePrincipal;
+    private List<CnaeRequest> cnaes;
 
 }
