@@ -120,7 +120,7 @@ public class PessoaAdapter implements PessoaOutputPort {
         List<Cnae> cnaes = pessoaJuridicaEntity.getCnaes().stream()
                 .map(pessoaJuridicaCnae -> {
                     CnaeEntity cnaeEntity = pessoaJuridicaCnae.getCnae();
-                    return new Cnae(cnaeEntity.getSubclasse(), cnaeEntity.getDenominacao(), pessoaJuridicaCnae.isPrincipal());
+                    return new Cnae(cnaeEntity.getId(), cnaeEntity.getSubclasse(), cnaeEntity.getDenominacao(), pessoaJuridicaCnae.isPrincipal());
                 })
                 .toList();
         var pessoaJuridica = modelMapper.map(pessoaJuridicaEntity, PessoaJuridica.class);

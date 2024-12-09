@@ -15,4 +15,6 @@ public interface CnaeInputPort {
     void processarCnae(MultipartFile file);
 
     void salvarSubclasses();
+
+    void addCnaesV2(Long idPessoa, String subclasse, @Valid List<CnaeRequest> cnaeRequestList);
 }

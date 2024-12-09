@@ -33,6 +33,15 @@ public class CnaeController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PostMapping("/v2/{idPessoa}/{subclasse}cnaes")
+    public ResponseEntity<Void> addCnaeV2(
+            @PathVariable Long idPessoa,
+            @PathVariable String subclasse,
+            @Valid @RequestBody List<CnaeRequest> cnaeRequestList) {
+        cnaeInputPort.addCnaesV2(idPessoa, subclasse, cnaeRequestList);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     @PostMapping("/ler-csv")
     public ResponseEntity<String> processarProfissao(@RequestParam("file") MultipartFile file) {
         try {

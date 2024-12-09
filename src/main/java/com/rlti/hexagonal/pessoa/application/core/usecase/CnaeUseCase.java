@@ -87,4 +87,12 @@ public class CnaeUseCase implements CnaeInputPort {
         outputPort.salvarSubclasses();
     }
 
+    @Override
+    public void addCnaesV2(Long idPessoa, String subclasse, List<CnaeRequest> cnaeRequestList) {
+        var cnaes = cnaeRequestList.stream()
+                .map(request -> modelMapper.map(request, Cnae.class))
+                .toList();
+        outputPort.addCnaesV2(idPessoa, subclasse, cnaeRequestList);
+    }
+
 }
