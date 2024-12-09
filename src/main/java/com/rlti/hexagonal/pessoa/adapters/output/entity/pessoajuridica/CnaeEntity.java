@@ -21,8 +21,11 @@ public class CnaeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, unique = true)
     private String subclasse;
+
+    @Column(nullable = false)
     private String denominacao;
 
     @OneToMany(mappedBy = "cnae", cascade = CascadeType.ALL, orphanRemoval = true)

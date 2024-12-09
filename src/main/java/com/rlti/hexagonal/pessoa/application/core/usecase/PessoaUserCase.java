@@ -1,10 +1,12 @@
 package com.rlti.hexagonal.pessoa.application.core.usecase;
 
 import com.rlti.hexagonal.pessoa.adapters.input.request.EmailRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFisicaUpdateRequest;
 import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.*;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Email;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
 import com.rlti.hexagonal.pessoa.application.port.input.PessoaInputPort;
 import com.rlti.hexagonal.pessoa.application.port.output.PessoaOutputPort;
 import org.modelmapper.ModelMapper;
@@ -66,6 +68,12 @@ public class PessoaUserCase implements PessoaInputPort {
     public void criarEmail(Long idPessoa, EmailRequest request) {
         var email = modelMapper.map(request, Email.class);
         pessoaOutputPort.salvarEmail(idPessoa, email);
+    }
+
+    @Override
+    public void atualizarPessoa(Long idPessoa, PessoaFisicaUpdateRequest request) {
+        var pessoa =  modelMapper.map(request, PessoaFisica.class);
+        pessoaOutputPort.atualizarPessoa(idPessoa, pessoa);
     }
 
 

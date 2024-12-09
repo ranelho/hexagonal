@@ -1,6 +1,7 @@
 package com.rlti.hexagonal.pessoa.application.port.input;
 
 import com.rlti.hexagonal.pessoa.adapters.input.request.EmailRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFisicaUpdateRequest;
 import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.*;
 import jakarta.validation.Valid;
@@ -22,4 +23,6 @@ public interface PessoaInputPort {
     Page<PessoaJuridicaResponse> listarPessoasJuridicas(int page, int size);
 
     void criarEmail(Long idPessoa, @Valid EmailRequest request);
+
+    void atualizarPessoa(Long idPessoa, @Valid PessoaFisicaUpdateRequest request);
 }

@@ -27,4 +27,6 @@ public interface PessoaOutputPort {
     Page<PessoaJuridica> findAllPessoaJuridicaPaginated(int page, int size);
 
     void salvarEmail(Long idPessoa, Email email);
+
+    void atualizarPessoa(Long idPessoa, PessoaFisica pessoa);
 }

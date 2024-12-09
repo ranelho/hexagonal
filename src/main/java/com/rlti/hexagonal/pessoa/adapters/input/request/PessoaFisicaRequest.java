@@ -18,12 +18,9 @@ public class PessoaFisicaRequest {
     private String cpf;
     private String nomeSocial;
     private String resideExterior;
-    @NotNull
-    @Past
-    private LocalDate dataNascimento;
+    @NotNull @Past private LocalDate dataNascimento;
     private LocalDate dataObito;
-    @NotNull
-    private Sexo sexo;
+    @NotNull private Sexo sexo;
     private EstadoCivil estadoCivil;
     private String nomePai;
     private String nomeMae;
@@ -35,8 +32,7 @@ public class PessoaFisicaRequest {
     private String indicadorPpe;
     private String especificacaoPpe;
 
-    @NotNull
-    private Long paisId;
+    @NotNull private Long paisId;
     private Long profissaoId;
     private GrauDeInstrucao grauDeInstrucao;
     private Long identidadeDeGeneroId;

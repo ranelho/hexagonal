@@ -2,6 +2,7 @@ package com.rlti.hexagonal.pessoa.adapters.input.controller;
 
 
 import com.rlti.hexagonal.pessoa.adapters.input.request.EmailRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFisicaUpdateRequest;
 import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.*;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
@@ -88,5 +89,11 @@ public class PessoaController {
     public ResponseEntity<Void> criarEmail(@PathVariable Long idPessoa, @RequestBody @Valid EmailRequest request){
         pessoaInputPort.criarEmail(idPessoa, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("/pessoa-fisica/{idPessoa}")
+    public ResponseEntity<Void> atualizarPessoa(@PathVariable Long idPessoa, @RequestBody @Valid PessoaFisicaUpdateRequest request){
+        pessoaInputPort.atualizarPessoa(idPessoa, request);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

@@ -1,5 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,8 +22,9 @@ public class PessoaJuridicaCnaeEntity {
     @JoinColumn(name = "pessoa_juridica_id", nullable = false)
     private PessoaJuridicaEntity pessoaJuridica;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cnae_id", nullable = false)
+    @JsonIgnore
     private CnaeEntity cnae;
 
     @Column(nullable = false)

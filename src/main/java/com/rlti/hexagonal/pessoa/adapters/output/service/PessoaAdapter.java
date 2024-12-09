@@ -1,5 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output.service;
 
+import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.CnaeEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.*;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.PaisEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.EmailEntity;
@@ -12,6 +13,7 @@ import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.PessoaJur
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Email;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.Cnae;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.PessoaJuridica;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.pessoa.application.port.output.PessoaOutputPort;
@@ -114,7 +116,17 @@ public class PessoaAdapter implements PessoaOutputPort {
     public PessoaJuridica findPessoaJuridicaById(Long idPessoa) {
         var pessoaJuridicaEntity = pessoaJuridicaRepository.findById(idPessoa)
                 .orElseThrow(() -> new RuntimeException("Pessoa Jurídica não encontrada com ID: " + idPessoa));
-        return modelMapper.map(pessoaJuridicaEntity, PessoaJuridica.class);
+
+        List<Cnae> cnaes = pessoaJuridicaEntity.getCnaes().stream()
+                .map(pessoaJuridicaCnae -> {
+                    CnaeEntity cnaeEntity = pessoaJuridicaCnae.getCnae();
+                    return new Cnae(cnaeEntity.getSubclasse(), cnaeEntity.getDenominacao(), pessoaJuridicaCnae.isPrincipal());
+                })
+                .toList();
+        var pessoaJuridica = modelMapper.map(pessoaJuridicaEntity, PessoaJuridica.class);
+        pessoaJuridica.setCnaes(cnaes);
+
+        return pessoaJuridica;
     }
 
     @Override
@@ -134,6 +146,14 @@ public class PessoaAdapter implements PessoaOutputPort {
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Pessoa não encontrada com ID: " + idPessoa));
         var emailEntity = new EmailEntity(email, pessoa);
         emailRepository.save(emailEntity);
+    }
+
+    @Override
+    public void atualizarPessoa(Long idPessoa, PessoaFisica pessoa) {
+          var pessoaFisicaEntity = pessoaFisicaRepository.findById(idPessoa)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Pessoa não encontrada com ID: " + idPessoa));
+        pessoaFisicaEntity.update(pessoa);
+        pessoaFisicaRepository.save(pessoaFisicaEntity);
     }
 
     private ProfissaoEntity buscarProfissaoPorId(Long profissaoId) {

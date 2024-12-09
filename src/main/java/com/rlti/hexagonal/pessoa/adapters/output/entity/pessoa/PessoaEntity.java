@@ -85,6 +85,21 @@ public class PessoaEntity {
         this.emails = pessoa.getEmails().stream().map(EmailEntity::new).toList();
     }
 
+    public void update(Pessoa pessoa) {
+        updateCampoComuns(pessoa);
+        if(pessoa.getTipo() == Tipo.FISICA){
+            this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica());
+        }else if (pessoa.getTipo() == Tipo.JURIDICA){
+            this.pessoaJuridica = new PessoaJuridicaEntity(pessoa.getPessoaJuridica());
+        }
+    }
+
+    private void updateCampoComuns(Pessoa pessoa) {
+        this.nome = pessoa.getNome();
+        this.telefones = pessoa.getTelefones().stream().map(TelefoneEntity::new).toList();
+        this.enderecos = pessoa.getEnderecos().stream().map(EnderecoEntity::new).toList();
+        this.emails = pessoa.getEmails().stream().map(EmailEntity::new).toList();
+    }
 }
 
 

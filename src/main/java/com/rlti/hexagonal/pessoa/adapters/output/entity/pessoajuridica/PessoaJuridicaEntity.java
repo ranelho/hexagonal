@@ -1,5 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.PessoaEntity;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.PessoaJuridica;
 import jakarta.persistence.*;
@@ -41,6 +42,7 @@ public class PessoaJuridicaEntity {
     private String situacao;
 
     @OneToMany(mappedBy = "pessoaJuridica", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<PessoaJuridicaCnaeEntity> cnaes = new ArrayList<>();
 
     public PessoaJuridicaEntity(PessoaJuridica pessoaJuridica) {

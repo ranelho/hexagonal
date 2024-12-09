@@ -119,19 +119,38 @@ public class PessoaFisicaEntity  {
             this.profissao = profissao;
     }
 
-/*    private void addEmails(PessoaFisica pessoaFisica) {
-        pessoaFisica.getEmails().forEach(email -> {
-            EmailEntity emailEntity = new EmailEntity(email);
-            emailEntity.setPessoaFisica(this);
-            this.emails.add(emailEntity);
-        });
-    }*/
+    public PessoaFisicaEntity(PessoaFisica pessoaFisica) {
+        this.sexo = pessoaFisica.getSexo();
+        this.estadoCivil = pessoaFisica.getEstadoCivil();
+        this.nomeSocial = pessoaFisica.getNomeSocial().toUpperCase();
+        this.dataObito = pessoaFisica.getDataObito();
+        this.resideExterior = pessoaFisica.getResideExterior();
+        this.nomePai = pessoaFisica.getNomePai().toUpperCase();
+        this.nomeMae = pessoaFisica.getNomeMae().toUpperCase();
+        this.estrangeiro = pessoaFisica.getEstrangeiro().isEmpty() ? "N" : pessoaFisica.getEstrangeiro().toUpperCase();
+        this.naturalidade = pessoaFisica.getNaturalidade().toUpperCase();
+        this.rendaMensal = pessoaFisica.getRendaMensal();
+        this.indicadoCrs = pessoaFisica.getIndicadoCrs().isEmpty() ? "N" : pessoaFisica.getIndicadoCrs();
+        this.indicadorFacta = pessoaFisica.getIndicadorFacta().isEmpty() ? "N" : pessoaFisica.getIndicadorFacta();
+        this.indicadorPpe = pessoaFisica.getIndicadorPpe().isEmpty() ? "N" : pessoaFisica.getIndicadorPpe();
+        this.especificacaoPpe = pessoaFisica.getEspecificacaoPpe();
+        this.especificacaoIg = pessoaFisica.getEspecificacaoIg();
+        this.especificacaoOs = pessoaFisica.getEspecificacaoOs();
+        this.grauDeInstrucao = pessoaFisica.getGrauDeInstrucao();
+    }
 
-/*    private void addTelefones(PessoaFisica pessoaFisica) {
-        pessoaFisica.getTelefones().forEach(telefone -> {
-            TelefoneEntity telefoneEntity = new TelefoneEntity(telefone);
-            telefoneEntity.setPessoaFisica(this);
-            this.telefones.add(telefoneEntity);
-        });
-    }*/
+    public void update(PessoaFisica pessoa) {
+        this.nomeSocial = pessoa.getNomeSocial().toUpperCase();
+        this.resideExterior = pessoa.getResideExterior();
+        this.dataObito = pessoa.getDataObito();
+        this.sexo = pessoa.getSexo();
+        this.estadoCivil = pessoa.getEstadoCivil();
+        this.rendaMensal = pessoa.getRendaMensal();
+        this.indicadorFacta = pessoa.getIndicadorFacta().isEmpty() ? "N" : pessoa.getIndicadorFacta();
+        this.indicadoCrs = pessoa.getIndicadoCrs().isEmpty() ? "N" : pessoa.getIndicadoCrs();
+        this.indicadorPpe = pessoa.getIndicadorPpe().isEmpty() ? "N" : pessoa.getIndicadorPpe();
+        this.especificacaoPpe = pessoa.getEspecificacaoPpe();
+        this.grauDeInstrucao = pessoa.getGrauDeInstrucao();
+    }
+
 }
