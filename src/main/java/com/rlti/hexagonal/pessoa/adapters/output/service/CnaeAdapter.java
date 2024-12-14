@@ -129,14 +129,14 @@ public class CnaeAdapter implements CnaeOutputPort {
 
     @Transactional
     @Override
-    public void addCnaesV2(Long idPessoa, String subclasse, List<Cnae> cnaes) {
+    public void addCnaesV2(Long idPessoa, String cnaePrincipal, List<Cnae> cnaes) {
         // Busca a pessoa jurídica pelo ID
         var pessoaJuridicaEntity = pessoaJuridicaRepository.findById(idPessoa)
                 .orElseThrow(() -> new EntityNotFoundException("Pessoa Jurídica não encontrada para o ID: " + idPessoa));
 
         // Busca o CNAE principal pelo código da subclasse
-        var cnaePrincipalEntity = cnaeRepository.findBySubclasse(subclasse)
-                .orElseThrow(() -> new EntityNotFoundException("CNAE principal não encontrado para o código: " + subclasse));
+        var cnaePrincipalEntity = cnaeRepository.findBySubclasse(cnaePrincipal)
+                .orElseThrow(() -> new EntityNotFoundException("CNAE principal não encontrado para o código: " + cnaePrincipal));
 
         // Converte os CNAEs secundários recebidos para as entidades
         var cnaeSecundariosEntities = cnaes.stream()
@@ -155,7 +155,7 @@ public class CnaeAdapter implements CnaeOutputPort {
         if (principalExistente.isPresent()) {
             // Se já existir um principal, atualiza o CNAE para o novo principal
             var relacaoPrincipal = principalExistente.get();
-            if (!relacaoPrincipal.getCnae().getSubclasse().equals(subclasse)) {
+            if (!relacaoPrincipal.getCnae().getSubclasse().equals(cnaePrincipal)) {
                 relacaoPrincipal.setCnae(cnaePrincipalEntity);
             }
         } else {

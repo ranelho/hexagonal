@@ -1,6 +1,7 @@
 package com.rlti.hexagonal.pessoa.application.core.usecase;
 
 import com.rlti.hexagonal.pessoa.adapters.input.request.EmailRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFilterParam;
 import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFisicaUpdateRequest;
 import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.*;
@@ -74,6 +75,12 @@ public class PessoaUserCase implements PessoaInputPort {
     public void atualizarPessoa(Long idPessoa, PessoaFisicaUpdateRequest request) {
         var pessoa =  modelMapper.map(request, PessoaFisica.class);
         pessoaOutputPort.atualizarPessoa(idPessoa, pessoa);
+    }
+
+    @Override
+    public Page<PessoaFisicaResponse> listPessoasFisicasWithFilter(int page, int size, PessoaFilterParam params) {
+        var pessoasJuridicas = pessoaOutputPort.listPessoasFisicasWithFilter(page, size, params);
+        return PessoaFisicaResponse.converte(pessoasJuridicas);
     }
 
 

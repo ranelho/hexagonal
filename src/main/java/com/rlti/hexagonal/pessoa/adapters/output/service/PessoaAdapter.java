@@ -1,7 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output.service;
 
-import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.CnaeEntity;
-import com.rlti.hexagonal.pessoa.adapters.output.repository.*;
+import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFilterParam;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.PaisEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.EmailEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.PessoaEntity;
@@ -9,20 +8,24 @@ import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.IdentidadeG
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.OrientacaoSexualEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.PessoaFisicaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.ProfissaoEntity;
+import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.CnaeEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.PessoaJuridicaEntity;
+import com.rlti.hexagonal.pessoa.adapters.output.repository.*;
+import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Email;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.Cnae;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.PessoaJuridica;
-import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.pessoa.application.port.output.CnaeOutputPort;
 import com.rlti.hexagonal.pessoa.application.port.output.PessoaOutputPort;
 import com.rlti.hexagonal.pessoa.handler.DuplicidadeException;
 import com.rlti.hexagonal.pessoa.handler.EntidadeNaoEncontradaException;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +45,10 @@ public class PessoaAdapter implements PessoaOutputPort {
     private final ProfissaoRepository profissaoRepository;
     private final EmailRepository emailRepository;
     private final CnaeOutputPort cnaeOutputPort;
+    private final EntityManager entityManager;
+
+    @Qualifier("pessoaRepositoryImpl")
+    private final PessoaRepositoryCustom pessoaRepositoryCustom;
 
     @Override
     @Transactional
@@ -157,6 +164,12 @@ public class PessoaAdapter implements PessoaOutputPort {
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Pessoa não encontrada com ID: " + idPessoa));
         pessoaFisicaEntity.update(pessoa);
         pessoaFisicaRepository.save(pessoaFisicaEntity);
+    }
+
+    @Override
+    public Page<PessoaFisica> listPessoasFisicasWithFilter(int page, int size, PessoaFilterParam params) {
+        Pageable pageable = PageRequest.of(page, size);
+        return pessoaRepositoryCustom.findWithFilters(params, pageable);
     }
 
     private ProfissaoEntity buscarProfissaoPorId(Long profissaoId) {

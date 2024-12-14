@@ -2,6 +2,7 @@ package com.rlti.hexagonal.pessoa.adapters.input.controller;
 
 
 import com.rlti.hexagonal.pessoa.adapters.input.request.EmailRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFilterParam;
 import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFisicaUpdateRequest;
 import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.*;
@@ -10,6 +11,7 @@ import com.rlti.hexagonal.pessoa.application.port.input.PessoaInputPort;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,6 +70,15 @@ public class PessoaController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size) {
         Page<PessoaFisicaResponse> pessoasFisicas = pessoaInputPort.listarPessoasFisica(page, size);
+        return ResponseEntity.status(HttpStatus.OK).body(pessoasFisicas);
+    }
+
+    @GetMapping("/fisica/all-filter")
+    public ResponseEntity<Page<PessoaFisicaResponse>> listarPessoasFisicaWithFilter(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,
+            @ParameterObject PessoaFilterParam params) {
+        Page<PessoaFisicaResponse> pessoasFisicas = pessoaInputPort.listPessoasFisicasWithFilter(page, size, params);
         return ResponseEntity.status(HttpStatus.OK).body(pessoasFisicas);
     }
 
