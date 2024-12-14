@@ -1,8 +1,9 @@
-package com.rlti.hexagonal.pessoa.adapters.output.repository;
+package com.rlti.hexagonal.pessoa.adapters.output.service;
 
 import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFilterParam;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.PessoaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.PessoaFisicaEntity;
+import com.rlti.hexagonal.pessoa.adapters.output.repository.PessoaRepositoryCustom;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 @Repository
 @Primary
@@ -67,19 +70,51 @@ public class PessoaRepositoryImpl implements PessoaRepositoryCustom {
     /**
      * Método auxiliar para construir os predicados dinamicamente.
      */
-    private List<Predicate> buildPredicates(PessoaFilterParam params, CriteriaBuilder cb,
-                                            Root<PessoaFisicaEntity> root, Join<PessoaFisicaEntity, PessoaEntity> pessoaJoin) {
+    private List<Predicate> buildPredicates(PessoaFilterParam params,
+                                            CriteriaBuilder cb,
+                                            Root<PessoaFisicaEntity> root,
+                                            Join<PessoaFisicaEntity, PessoaEntity> pessoaJoin) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if (params.getNome() != null) {
-            predicates.add(cb.like(cb.lower(pessoaJoin.get("nome")), "%" + params.getNome().toLowerCase() + "%"));
-        }
+        // Função auxiliar para adicionar predicados dinamicamente
+        BiConsumer<Boolean, Supplier<Predicate>> addPredicateIf = (condition, predicateSupplier) -> {
+            if (Boolean.TRUE.equals(condition)) {
+                predicates.add(predicateSupplier.get());
+            }
+        };
 
-        if (params.getCpf() != null) {
-            predicates.add(cb.equal(root.get("cpf"), params.getCpf()));
-        }
+        // Adicionando os filtros dinamicamente
+        addPredicateIf.accept(params.getNome() != null,
+                () -> cb.like(cb.lower(pessoaJoin.get("nome")), "%" + params.getNome().toLowerCase() + "%"));
 
-        // Adicione outros filtros conforme necessário
+        addPredicateIf.accept(params.getCpf() != null,
+                () -> cb.equal(root.get("cpf"), params.getCpf()));
+
+        addPredicateIf.accept(params.isEstrangeiro(),
+                () -> cb.equal(root.get("estrangeiro"), "S"));
+
+        addPredicateIf.accept(params.getSexo() != null,
+                () -> cb.equal(root.get("sexo"), params.getSexo()));
+
+        addPredicateIf.accept(params.getAnoNascimento() != null,
+                () -> cb.equal(cb.function("year", Integer.class, root.get("dataNascimento")), params.getAnoNascimento()));
+
+        /*
+        outra opções de filtro para ano de nascimento
+        //ano de nascimento maior ou igual a um valor:
+        addPredicateIf.accept(params.getAnoNascimento() != null,
+                () -> cb.greaterThanOrEqualTo(cb.function("year", Integer.class, root.get("dataNascimento")), params.getAnoNascimento()));
+
+        // ano de nascimento menor ou igual a um valor
+        addPredicateIf.accept(params.getAnoNascimento() != null,
+                () -> cb.lessThanOrEqualTo(cb.function("year", Integer.class, root.get("dataNascimento")), params.getAnoNascimento()));
+
+        intervalo de anos (ano de nascimento entre dois anos):
+        addPredicateIf.accept(params.getAnoNascimentoInicio() != null && params.getAnoNascimentoFim() != null,
+                () -> cb.between(cb.function("year", Integer.class, root.get("dataNascimento")),
+                        params.getAnoNascimentoInicio(), params.getAnoNascimentoFim()));
+        */
+
         return predicates;
     }
 

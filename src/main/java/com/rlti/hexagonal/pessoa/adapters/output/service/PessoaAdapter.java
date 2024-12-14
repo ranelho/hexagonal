@@ -167,8 +167,7 @@ public class PessoaAdapter implements PessoaOutputPort {
     }
 
     @Override
-    public Page<PessoaFisica> listPessoasFisicasWithFilter(int page, int size, PessoaFilterParam params) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<PessoaFisica> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params) {
         return pessoaRepositoryCustom.findWithFilters(params, pageable);
     }
 

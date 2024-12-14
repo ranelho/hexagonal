@@ -7,6 +7,7 @@ import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.*;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface PessoaInputPort {
     void criarPessoa(PessoaRequest request);
@@ -27,5 +28,5 @@ public interface PessoaInputPort {
 
     void atualizarPessoa(Long idPessoa, @Valid PessoaFisicaUpdateRequest request);
 
-    Page<PessoaFisicaResponse> listPessoasFisicasWithFilter(int page, int size, PessoaFilterParam params);
+    Page<PessoaFisicaResponse> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params);
 }

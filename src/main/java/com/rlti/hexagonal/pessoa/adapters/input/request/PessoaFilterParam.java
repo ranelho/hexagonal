@@ -8,4 +8,6 @@ public class PessoaFilterParam {
     private String cpf;
     private String nome;
     private Sexo sexo;
+    private boolean estrangeiro;
+    private String anoNascimento;
 }

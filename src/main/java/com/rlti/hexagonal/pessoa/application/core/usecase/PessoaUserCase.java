@@ -12,6 +12,7 @@ import com.rlti.hexagonal.pessoa.application.port.input.PessoaInputPort;
 import com.rlti.hexagonal.pessoa.application.port.output.PessoaOutputPort;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public class PessoaUserCase implements PessoaInputPort {
 
@@ -78,8 +79,8 @@ public class PessoaUserCase implements PessoaInputPort {
     }
 
     @Override
-    public Page<PessoaFisicaResponse> listPessoasFisicasWithFilter(int page, int size, PessoaFilterParam params) {
-        var pessoasJuridicas = pessoaOutputPort.listPessoasFisicasWithFilter(page, size, params);
+    public Page<PessoaFisicaResponse> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params) {
+        var pessoasJuridicas = pessoaOutputPort.listPessoasFisicasWithFilter(pageable, params);
         return PessoaFisicaResponse.converte(pessoasJuridicas);
     }
 

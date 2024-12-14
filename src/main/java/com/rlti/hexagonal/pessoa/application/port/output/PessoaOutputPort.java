@@ -6,6 +6,7 @@ import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.PessoaJuridica;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 public interface PessoaOutputPort {
@@ -31,5 +32,5 @@ public interface PessoaOutputPort {
 
     void atualizarPessoa(Long idPessoa, PessoaFisica pessoa);
 
-    Page<PessoaFisica> listPessoasFisicasWithFilter(int page, int size, PessoaFilterParam params);
+    Page<PessoaFisica> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params);
 }

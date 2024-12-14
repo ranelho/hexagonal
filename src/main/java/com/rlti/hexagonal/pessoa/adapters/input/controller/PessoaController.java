@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -75,10 +76,11 @@ public class PessoaController {
 
     @GetMapping("/fisica/all-filter")
     public ResponseEntity<Page<PessoaFisicaResponse>> listarPessoasFisicaWithFilter(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int size,
+            /*@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,*/
+            @ParameterObject Pageable pageable,
             @ParameterObject PessoaFilterParam params) {
-        Page<PessoaFisicaResponse> pessoasFisicas = pessoaInputPort.listPessoasFisicasWithFilter(page, size, params);
+        Page<PessoaFisicaResponse> pessoasFisicas = pessoaInputPort.listPessoasFisicasWithFilter(pageable, params);
         return ResponseEntity.status(HttpStatus.OK).body(pessoasFisicas);
     }
 
