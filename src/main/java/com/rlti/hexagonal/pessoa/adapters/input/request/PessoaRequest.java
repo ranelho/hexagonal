@@ -14,9 +14,9 @@ public class PessoaRequest {
     @NotNull Tipo tipo;
     @NotBlank String nome;
 
-    List<TelefoneRequest> telefones;
-    List<EmailRequest> emails;
-    List<EnderecoRequest> enderecos;
+    List<@Valid TelefoneRequest> telefones;
+    List<@Valid EmailRequest> emails;
+    List<@Valid EnderecoRequest> enderecos;
 
     @Valid PessoaFisicaRequest pessoaFisica;
     @Valid PessoaJuridicaRequest pessoaJuridica;

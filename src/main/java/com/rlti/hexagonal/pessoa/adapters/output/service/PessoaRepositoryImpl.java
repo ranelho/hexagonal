@@ -96,25 +96,6 @@ public class PessoaRepositoryImpl implements PessoaRepositoryCustom {
         addPredicateIf.accept(params.getSexo() != null,
                 () -> cb.equal(root.get("sexo"), params.getSexo()));
 
-        addPredicateIf.accept(params.getAnoNascimento() != null,
-                () -> cb.equal(cb.function("year", Integer.class, root.get("dataNascimento")), params.getAnoNascimento()));
-
-        /*
-        outra opções de filtro para ano de nascimento
-        //ano de nascimento maior ou igual a um valor:
-        addPredicateIf.accept(params.getAnoNascimento() != null,
-                () -> cb.greaterThanOrEqualTo(cb.function("year", Integer.class, root.get("dataNascimento")), params.getAnoNascimento()));
-
-        // ano de nascimento menor ou igual a um valor
-        addPredicateIf.accept(params.getAnoNascimento() != null,
-                () -> cb.lessThanOrEqualTo(cb.function("year", Integer.class, root.get("dataNascimento")), params.getAnoNascimento()));
-
-        intervalo de anos (ano de nascimento entre dois anos):
-        addPredicateIf.accept(params.getAnoNascimentoInicio() != null && params.getAnoNascimentoFim() != null,
-                () -> cb.between(cb.function("year", Integer.class, root.get("dataNascimento")),
-                        params.getAnoNascimentoInicio(), params.getAnoNascimentoFim()));
-        */
-
         return predicates;
     }
 

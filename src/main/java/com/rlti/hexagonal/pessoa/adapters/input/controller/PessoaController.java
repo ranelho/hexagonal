@@ -47,7 +47,7 @@ public class PessoaController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> criarPessoa(@RequestBody @Valid PessoaRequest request){
+    public ResponseEntity<Void> criarPessoa(@RequestBody @Valid PessoaRequest request) {
         pessoaInputPort.criarPessoa(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -61,7 +61,7 @@ public class PessoaController {
     }
 
     @GetMapping("/fisica/{idPessoa}")
-    public ResponseEntity<PessoaFisicaDetalheResponse> buscarPessoaFisica(@PathVariable Long idPessoa){
+    public ResponseEntity<PessoaFisicaDetalheResponse> buscarPessoaFisica(@PathVariable Long idPessoa) {
         PessoaFisicaDetalheResponse pessoa = pessoaInputPort.buscarPessoaFisica(idPessoa);
         return ResponseEntity.status(HttpStatus.OK).body(pessoa);
     }
@@ -74,10 +74,8 @@ public class PessoaController {
         return ResponseEntity.status(HttpStatus.OK).body(pessoasFisicas);
     }
 
-    @GetMapping("/fisica/all-filter")
-    public ResponseEntity<Page<PessoaFisicaResponse>> listarPessoasFisicaWithFilter(
-            /*@RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int size,*/
+    @GetMapping("/fisica/all-with-filter")
+    public ResponseEntity<Page<PessoaFisicaResponse>> listPessoasFisicasWithFilter(
             @ParameterObject Pageable pageable,
             @ParameterObject PessoaFilterParam params) {
         Page<PessoaFisicaResponse> pessoasFisicas = pessoaInputPort.listPessoasFisicasWithFilter(pageable, params);
@@ -85,7 +83,7 @@ public class PessoaController {
     }
 
     @GetMapping("/juridica/{idPessoa}")
-    public ResponseEntity<PessoaJuridicaDetalheResponse> buscarPessoaJuridica(@PathVariable Long idPessoa){
+    public ResponseEntity<PessoaJuridicaDetalheResponse> buscarPessoaJuridica(@PathVariable Long idPessoa) {
         PessoaJuridicaDetalheResponse pessoa = pessoaInputPort.buscarPessoaJuridica(idPessoa);
         return ResponseEntity.status(HttpStatus.OK).body(pessoa);
     }
@@ -99,13 +97,13 @@ public class PessoaController {
     }
 
     @PostMapping("/email/{idPessoa}")
-    public ResponseEntity<Void> criarEmail(@PathVariable Long idPessoa, @RequestBody @Valid EmailRequest request){
+    public ResponseEntity<Void> criarEmail(@PathVariable Long idPessoa, @RequestBody @Valid EmailRequest request) {
         pessoaInputPort.criarEmail(idPessoa, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/pessoa-fisica/{idPessoa}")
-    public ResponseEntity<Void> atualizarPessoa(@PathVariable Long idPessoa, @RequestBody @Valid PessoaFisicaUpdateRequest request){
+    public ResponseEntity<Void> atualizarPessoa(@PathVariable Long idPessoa, @RequestBody @Valid PessoaFisicaUpdateRequest request) {
         pessoaInputPort.atualizarPessoa(idPessoa, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

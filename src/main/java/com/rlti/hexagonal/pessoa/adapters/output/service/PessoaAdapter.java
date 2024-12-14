@@ -30,6 +30,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +48,6 @@ public class PessoaAdapter implements PessoaOutputPort {
     private final CnaeOutputPort cnaeOutputPort;
     private final EntityManager entityManager;
 
-    @Qualifier("pessoaRepositoryImpl")
     private final PessoaRepositoryCustom pessoaRepositoryCustom;
 
     @Override
@@ -57,10 +57,10 @@ public class PessoaAdapter implements PessoaOutputPort {
 
         if (pessoa.getTipo() == Tipo.FISICA) {
             verificarDuplicidadeCpf(pessoa.getPessoaFisica().getCpf());
-            var pais = buscarPaisPorId(pessoa.getPessoaFisica().getPaisId());
-            var orientacao = buscarOrientacaoSexualPorId(pessoa.getPessoaFisica().getOrientacaoSexualId());
-            var identidadeGenero = buscarIdentidadeGeneroPorId(pessoa.getPessoaFisica().getIdentidadeDeGeneroId());
-            var profissao = buscarProfissaoPorId(pessoa.getPessoaFisica().getProfissaoId());
+            var pais = buscarSeExistir(pessoa.getPessoaFisica().getPaisId(), this::buscarPaisPorId);
+            var orientacao = buscarSeExistir(pessoa.getPessoaFisica().getOrientacaoSexualId(), this::buscarOrientacaoSexualPorId);
+            var identidadeGenero = buscarSeExistir(pessoa.getPessoaFisica().getIdentidadeDeGeneroId(), this::buscarIdentidadeGeneroPorId);
+            var profissao = buscarSeExistir(pessoa.getPessoaFisica().getProfissaoId(), this::buscarProfissaoPorId);
             var pessoaFisica = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao);
             pessoaRepository.save(pessoaFisica);
         } else if (pessoa.getTipo() == Tipo.JURIDICA) {
@@ -191,6 +191,10 @@ public class PessoaAdapter implements PessoaOutputPort {
                     throw new DuplicidadeException("Pessoa com CPF " + cpf + " já existe.");
                 }
         );
+    }
+
+    private <T> T buscarSeExistir(Long id, Function<Long, T> buscaFunc) {
+        return id != null ? buscaFunc.apply(id) : null;
     }
 
     private PaisEntity buscarPaisPorId(Long paisId) {
