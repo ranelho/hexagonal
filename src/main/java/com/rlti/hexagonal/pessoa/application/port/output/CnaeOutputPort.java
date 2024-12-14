@@ -13,5 +13,5 @@ public interface CnaeOutputPort {
 
     void salvarSubclasses();
 
-    void addCnaesV2(Long idPessoa, String subclasse, List<Cnae> cnaes);
+    void addCnaesV2(Long idPessoa, String cnaePrincipal, List<Cnae> cnaes);
 }
