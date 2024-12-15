@@ -3,6 +3,7 @@ package com.rlti.hexagonal.pessoa.application.core.usecase;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import com.rlti.hexagonal.pessoa.adapters.input.request.CnaeFilter;
 import com.rlti.hexagonal.pessoa.adapters.input.request.CnaeRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.CnaeResponse;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.Cnae;
@@ -94,6 +95,12 @@ public class CnaeUseCase implements CnaeInputPort {
                 .toList();
 
         outputPort.addCnaesV2(idPessoa, cnaePrincipal, cnaes);
+    }
+
+    @Override
+    public List<CnaeResponse> getAllCnaesWithFilter(CnaeFilter params) {
+        var cnaes = outputPort.getAllCnaesWithFilter(params);
+        return CnaeResponse.convert(cnaes);
     }
 
 }

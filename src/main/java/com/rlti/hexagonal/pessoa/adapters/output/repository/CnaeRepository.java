@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface CnaeRepository extends JpaRepository<CnaeEntity, Long> {
+public interface CnaeRepository extends JpaRepository<CnaeEntity, Long>, CnaeRepositoryCustom {
     List<CnaeEntity> findBySubclasseIn(@Param("subclasse") List<String> subclasse);
 
     Optional<CnaeEntity> findBySubclasse(String subclasse);

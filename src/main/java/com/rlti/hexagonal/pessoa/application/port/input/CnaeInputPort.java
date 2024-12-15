@@ -1,5 +1,6 @@
 package com.rlti.hexagonal.pessoa.application.port.input;
 
+import com.rlti.hexagonal.pessoa.adapters.input.request.CnaeFilter;
 import com.rlti.hexagonal.pessoa.adapters.input.request.CnaeRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.CnaeResponse;
 import jakarta.validation.Valid;
@@ -17,4 +18,6 @@ public interface CnaeInputPort {
     void salvarSubclasses();
 
     void addCnaesV2(Long idPessoa, String cnaePrincipal, @Valid List<CnaeRequest> cnaeRequestList);
+
+    List<CnaeResponse> getAllCnaesWithFilter(CnaeFilter cnaeFilter);
 }

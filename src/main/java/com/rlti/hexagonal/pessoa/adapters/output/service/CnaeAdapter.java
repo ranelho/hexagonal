@@ -1,5 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output.service;
 
+import com.rlti.hexagonal.pessoa.adapters.input.request.CnaeFilter;
 import com.rlti.hexagonal.pessoa.adapters.output.IbgeClient;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.CnaeEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.PessoaJuridicaCnaeEntity;
@@ -95,7 +96,6 @@ public class CnaeAdapter implements CnaeOutputPort {
     }
 
 
-
     @Override
     public void processarCnae(Cnae cnae) {
         if (!cnaeRepository.existsBySubclasse(cnae.getSubclasse())) cnaeRepository.save(new CnaeEntity(cnae));
@@ -185,6 +185,14 @@ public class CnaeAdapter implements CnaeOutputPort {
 
         // Salva as alterações
         pessoaJuridicaRepository.save(pessoaJuridicaEntity);
+    }
+
+    @Override
+    public List<Cnae> getAllCnaesWithFilter(CnaeFilter params) {
+        return cnaeRepository.getWithFilter(params)
+                .stream()
+                .map(entity -> modelMapper.map(entity, Cnae.class))
+                .toList();
     }
 
 

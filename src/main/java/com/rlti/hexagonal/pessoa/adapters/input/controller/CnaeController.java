@@ -1,10 +1,12 @@
 package com.rlti.hexagonal.pessoa.adapters.input.controller;
 
+import com.rlti.hexagonal.pessoa.adapters.input.request.CnaeFilter;
 import com.rlti.hexagonal.pessoa.adapters.input.request.CnaeRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.CnaeResponse;
 import com.rlti.hexagonal.pessoa.application.port.input.CnaeInputPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,12 @@ public class CnaeController {
     ResponseEntity<List<CnaeResponse>> getAllCnaes() {
         var cnae = cnaeInputPort.findAll();
         return ResponseEntity.ok(cnae);
+    }
+
+    @GetMapping("/all-with-filter")
+    ResponseEntity<List<CnaeResponse>> getAllCnaesWithFilter(@ParameterObject CnaeFilter cnaeFilter) {
+        var cnaes = cnaeInputPort.getAllCnaesWithFilter(cnaeFilter);
+        return ResponseEntity.ok(cnaes);
     }
 
     @PostMapping("/{idPessoa}/cnaes")
