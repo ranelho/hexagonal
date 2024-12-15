@@ -11,8 +11,9 @@ import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Repository
@@ -24,16 +25,22 @@ public class CnaeRepositoryCustomImpl implements CnaeRepositoryCustom {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<CnaeEntity> query = cb.createQuery(CnaeEntity.class);
         Root<CnaeEntity> cnaeRoot = query.from(CnaeEntity.class);
-        List<Predicate> predicates = new ArrayList<>();
-        if (params.getDenominacao() != null) {
-            predicates.add(cb.like(cnaeRoot.get("denominacao"), "%" + params.getDenominacao() + "%"));
-        }
-        if (params.getSubclasse() != null) {
-            predicates.add(cb.like(cnaeRoot.get("subclasse"), "%" + params.getSubclasse() + "%"));
-        }
+
+        List<Predicate> predicates = Stream.of(
+                        params.getDenominacao() != null
+                                ? cb.like(cnaeRoot.get("denominacao"), "%" + params.getDenominacao() + "%")
+                                : null,
+                        params.getSubclasse() != null
+                                ? cb.like(cnaeRoot.get("subclasse"), "%" + params.getSubclasse() + "%")
+                                : null
+                ).filter(Objects::nonNull)
+                .toList();
+
+
         if (!predicates.isEmpty()) {
-            query.where(predicates.toArray(Predicate[]::new));
+            query.where(predicates.toArray(new Predicate[0]));
         }
+
         TypedQuery<CnaeEntity> queryResult = this.entityManager.createQuery(query);
         return queryResult.getResultList();
     }
