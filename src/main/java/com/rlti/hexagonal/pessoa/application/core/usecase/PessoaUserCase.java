@@ -80,8 +80,8 @@ public class PessoaUserCase implements PessoaInputPort {
 
     @Override
     public Page<PessoaFisicaResponse> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params) {
-        var pessoasJuridicas = pessoaOutputPort.listPessoasFisicasWithFilter(pageable, params);
-        return PessoaFisicaResponse.converte(pessoasJuridicas);
+        var pessoasFisicas = pessoaOutputPort.listPessoasFisicasWithFilter(pageable, params);
+        return PessoaFisicaResponse.converte(pessoasFisicas);
     }
 
 

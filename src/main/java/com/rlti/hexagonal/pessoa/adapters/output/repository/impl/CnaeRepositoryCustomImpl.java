@@ -1,7 +1,8 @@
-package com.rlti.hexagonal.pessoa.adapters.output.repository;
+package com.rlti.hexagonal.pessoa.adapters.output.repository.impl;
 
 import com.rlti.hexagonal.pessoa.adapters.input.request.CnaeFilter;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.CnaeEntity;
+import com.rlti.hexagonal.pessoa.adapters.output.repository.CnaeRepositoryCustom;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -36,9 +37,8 @@ public class CnaeRepositoryCustomImpl implements CnaeRepositoryCustom {
                 ).filter(Objects::nonNull)
                 .toList();
 
-
         if (!predicates.isEmpty()) {
-            query.where(predicates.toArray(new Predicate[0]));
+            query.where(predicates.toArray(Predicate[]::new));
         }
 
         TypedQuery<CnaeEntity> queryResult = this.entityManager.createQuery(query);

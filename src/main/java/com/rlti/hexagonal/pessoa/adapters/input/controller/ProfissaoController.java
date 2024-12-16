@@ -1,15 +1,19 @@
 package com.rlti.hexagonal.pessoa.adapters.input.controller;
 
+import com.rlti.hexagonal.pessoa.adapters.input.request.CnaeFilter;
+import com.rlti.hexagonal.pessoa.adapters.input.request.ProfissaoFilter;
+import com.rlti.hexagonal.pessoa.adapters.output.response.CnaeResponse;
+import com.rlti.hexagonal.pessoa.adapters.output.response.ProfissaoResponse;
 import com.rlti.hexagonal.pessoa.application.port.input.ProfissaoInputPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/profissao")
@@ -30,4 +34,11 @@ public class ProfissaoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao processar o arquivo");
         }
     }
+
+    @GetMapping("/all-with-filter")
+    ResponseEntity<List<ProfissaoResponse>> getAllProfissoesWithFilter(@ParameterObject ProfissaoFilter params) {
+        var profissoes = profissaoInputPort.getAllCnaesWithFilter(params);
+        return ResponseEntity.ok(profissoes);
+    }
+
 }

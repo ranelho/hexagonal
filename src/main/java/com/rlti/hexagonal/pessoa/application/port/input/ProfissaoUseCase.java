@@ -3,6 +3,8 @@ package com.rlti.hexagonal.pessoa.application.port.input;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import com.rlti.hexagonal.pessoa.adapters.input.request.ProfissaoFilter;
+import com.rlti.hexagonal.pessoa.adapters.output.response.ProfissaoResponse;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.Profissao;
 import com.rlti.hexagonal.pessoa.application.port.output.ProfissaoOutputPort;
 import lombok.SneakyThrows;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.List;
 
 public class ProfissaoUseCase implements ProfissaoInputPort {
 
@@ -59,5 +62,12 @@ public class ProfissaoUseCase implements ProfissaoInputPort {
             // Trate a exceção de forma mais informativa
             throw new RuntimeException("Erro ao processar o arquivo: " + e.getMessage(), e);
         }
+    }
+
+    @Override
+    public List<ProfissaoResponse> getAllCnaesWithFilter(ProfissaoFilter params) {
+        var profissoes = profissaoService.getAllProfissoesWithFilter(params);
+        return ProfissaoResponse.convert(profissoes);
+
     }
 }

@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.pessoa.adapters.output.service;
+package com.rlti.hexagonal.pessoa.adapters.output.repository.impl;
 
 import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFilterParam;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.PessoaEntity;
@@ -56,7 +56,7 @@ public class PessoaRepositoryImpl implements PessoaRepositoryCustom {
 
         List<Predicate> countPredicates = buildPredicates(params, cb, countRoot, countPessoaJoin); // Reutiliza a lógica
         countQuery.select(cb.count(countRoot));
-        countQuery.where(countPredicates.toArray(new Predicate[0]));
+        countQuery.where(countPredicates.toArray(Predicate[]::new));
         long total = entityManager.createQuery(countQuery).getSingleResult();
 
         // Conversão para DTO ou modelo de domínio
@@ -67,9 +67,6 @@ public class PessoaRepositoryImpl implements PessoaRepositoryCustom {
         return new PageImpl<>(pessoas, pageable, total);
     }
 
-    /**
-     * Método auxiliar para construir os predicados dinamicamente.
-     */
     private List<Predicate> buildPredicates(PessoaFilterParam params,
                                             CriteriaBuilder cb,
                                             Root<PessoaFisicaEntity> root,
