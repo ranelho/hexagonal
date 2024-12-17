@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/enderecos")
 @RequiredArgsConstructor
@@ -25,5 +27,10 @@ public class EnderecoController {
     public ResponseEntity<Void> salvarEndereco(@PathVariable Long idPessoa, @RequestBody EnderecoRequest endereco) {
         enderecoInputPort.salvarEndereco(idPessoa, endereco);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/municipios/{uf}")
+    public List<String> getMunicipios(@PathVariable("uf") String uf) {
+        return enderecoInputPort.buscarNomesMunicipiosPorUF(uf);
     }
 }

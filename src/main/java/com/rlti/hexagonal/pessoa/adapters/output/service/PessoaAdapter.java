@@ -21,16 +21,14 @@ import com.rlti.hexagonal.pessoa.application.port.output.CnaeOutputPort;
 import com.rlti.hexagonal.pessoa.application.port.output.PessoaOutputPort;
 import com.rlti.hexagonal.pessoa.handler.DuplicidadeException;
 import com.rlti.hexagonal.pessoa.handler.EntidadeNaoEncontradaException;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.LongFunction;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +44,6 @@ public class PessoaAdapter implements PessoaOutputPort {
     private final ProfissaoRepository profissaoRepository;
     private final EmailRepository emailRepository;
     private final CnaeOutputPort cnaeOutputPort;
-    private final EntityManager entityManager;
 
     private final PessoaRepositoryCustom pessoaRepositoryCustom;
 
@@ -56,18 +53,41 @@ public class PessoaAdapter implements PessoaOutputPort {
         validarPessoa(pessoa);
 
         if (pessoa.getTipo() == Tipo.FISICA) {
-            verificarDuplicidadeCpf(pessoa.getPessoaFisica().getCpf());
-            var pais = buscarSeExistir(pessoa.getPessoaFisica().getPaisId(), this::buscarPaisPorId);
+            //verificarDuplicidadeCpf(pessoa.getPessoaFisica().getCpf());
+            pessoaFisicaRepository.findByCpf(pessoa.getPessoaFisica().getCpf()).ifPresentOrElse(
+                    existingPessoa -> {
+                        throw new DuplicidadeException("Pessoa com CPF " + pessoa.getPessoaFisica().getCpf() + " já existe.");
+                    },
+                    () -> {
+                        var pais = findIfExists(pessoa.getPessoaFisica().getPaisId(), this::buscarPaisPorId);
+                        var orientacao = findIfExists(pessoa.getPessoaFisica().getOrientacaoSexualId(), this::buscarOrientacaoSexualPorId);
+                        var identidadeGenero = findIfExists(pessoa.getPessoaFisica().getIdentidadeDeGeneroId(), this::buscarIdentidadeGeneroPorId);
+                        var profissao = findIfExists(pessoa.getPessoaFisica().getProfissaoId(), this::buscarProfissaoPorId);
+                        var pessoaFisica = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao);
+                        pessoaRepository.save(pessoaFisica);
+                    }
+            );
+           /* var pais = buscarSeExistir(pessoa.getPessoaFisica().getPaisId(), this::buscarPaisPorId);
             var orientacao = buscarSeExistir(pessoa.getPessoaFisica().getOrientacaoSexualId(), this::buscarOrientacaoSexualPorId);
             var identidadeGenero = buscarSeExistir(pessoa.getPessoaFisica().getIdentidadeDeGeneroId(), this::buscarIdentidadeGeneroPorId);
             var profissao = buscarSeExistir(pessoa.getPessoaFisica().getProfissaoId(), this::buscarProfissaoPorId);
             var pessoaFisica = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao);
-            pessoaRepository.save(pessoaFisica);
+            pessoaRepository.save(pessoaFisica);*/
         } else if (pessoa.getTipo() == Tipo.JURIDICA) {
-            validarDuplicidadePessoaJuridica(pessoa);
-            var pessoaJuridica = new PessoaEntity(pessoa);
+            //validarDuplicidadePessoaJuridica(pessoa);
+            pessoaJuridicaRepository.findByCnpj(pessoa.getPessoaJuridica().getCnpj()).ifPresentOrElse(
+                    existingPessoa -> {
+                        throw new DuplicidadeException("Pessoa com CNPJ " + pessoa.getPessoaJuridica().getCnpj() + " já existe.");
+                    },
+                    () -> {
+                        var pessoaJuridica = new PessoaEntity(pessoa);
+                        pessoaRepository.save(pessoaJuridica);
+                        cnaeOutputPort.addCnaesV2(pessoaJuridica.getIdPessoa(), pessoa.getPessoaJuridica().getSubclasse(), pessoa.getPessoaJuridica().getCnaes());
+                    }
+            );
+          /*  var pessoaJuridica = new PessoaEntity(pessoa);
             var pessoaEntity = pessoaRepository.save(pessoaJuridica);
-            cnaeOutputPort.addCnaesV2(pessoaEntity.getIdPessoa(), pessoa.getPessoaJuridica().getSubclasse(), pessoa.getPessoaJuridica().getCnaes());
+            cnaeOutputPort.addCnaesV2(pessoaEntity.getIdPessoa(), pessoa.getPessoaJuridica().getSubclasse(), pessoa.getPessoaJuridica().getCnaes());*/
         }
     }
 
@@ -160,10 +180,19 @@ public class PessoaAdapter implements PessoaOutputPort {
 
     @Override
     public void atualizarPessoa(Long idPessoa, PessoaFisica pessoa) {
-          var pessoaFisicaEntity = pessoaFisicaRepository.findById(idPessoa)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Pessoa não encontrada com ID: " + idPessoa));
-        pessoaFisicaEntity.update(pessoa);
-        pessoaFisicaRepository.save(pessoaFisicaEntity);
+/*        var pessoaFisicaEntity = pessoaFisicaRepository.findById(idPessoa)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Pessoa não encontrada com ID: " + idPessoa));*/
+        pessoaFisicaRepository.findById(idPessoa).ifPresentOrElse(
+                pessoaFisicaEntity -> {
+                    pessoaFisicaEntity.update(pessoa);
+                    pessoaFisicaRepository.save(pessoaFisicaEntity);
+                },
+                () -> {
+                    throw new EntidadeNaoEncontradaException("Pessoa não encontrada com ID: " + idPessoa);
+                }
+        );
+       /* pessoaFisicaEntity.update(pessoa);
+        pessoaFisicaRepository.save(pessoaFisicaEntity);*/
     }
 
     @Override
@@ -185,15 +214,19 @@ public class PessoaAdapter implements PessoaOutputPort {
         }
     }
 
-    private void verificarDuplicidadeCpf(String cpf) {
+  /*  private void verificarDuplicidadeCpf(String cpf) {
         pessoaFisicaRepository.findByCpf(cpf).ifPresent(
                 existingPessoa -> {
                     throw new DuplicidadeException("Pessoa com CPF " + cpf + " já existe.");
                 }
         );
-    }
+    }*/
 
-    private <T> T buscarSeExistir(Long id, Function<Long, T> buscaFunc) {
+    /*private <T> T findIfExists(Long id, Function<Long, T> buscaFunc) {
+        return id != null ? buscaFunc.apply(id) : null;
+    }*/
+
+    private <T> T findIfExists(Long id, LongFunction<T> buscaFunc) {
         return id != null ? buscaFunc.apply(id) : null;
     }
 
@@ -214,10 +247,10 @@ public class PessoaAdapter implements PessoaOutputPort {
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Identidade de gênero não encontrada com ID: " + identidadeDeGeneroId));
     }
 
-    private void validarDuplicidadePessoaJuridica(Pessoa pessoa) {
+    /*private void validarDuplicidadePessoaJuridica(Pessoa pessoa) {
         pessoaJuridicaRepository.findByCnpj(pessoa.getPessoaJuridica().getCnpj())
                 .ifPresent(existingPessoa -> {
                     throw new DuplicidadeException("Pessoa com CNPJ " + pessoa.getPessoaJuridica().getCnpj() + " já existe.");
                 });
-    }
+    }*/
 }

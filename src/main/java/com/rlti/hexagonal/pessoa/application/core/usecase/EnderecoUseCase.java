@@ -8,6 +8,8 @@ import com.rlti.hexagonal.pessoa.application.port.output.BuscaEnderecoOutputPort
 import com.rlti.hexagonal.pessoa.application.port.output.EnderecoOutputPort;
 import org.modelmapper.ModelMapper;
 
+import java.util.List;
+
 public class EnderecoUseCase implements EnderecoInputPort {
 
     private final BuscaEnderecoOutputPort buscaEnderecoOutputPort;
@@ -34,4 +36,11 @@ public class EnderecoUseCase implements EnderecoInputPort {
         var endereco = modelMapper.map(request, Endereco.class);
         enderecoOutputPort.salvarEndereco(idPessoaFisica, endereco);
     }
+
+    @Override
+    public List<String> buscarNomesMunicipiosPorUF(String uf) {
+        return buscaEnderecoOutputPort.buscarNomesMunicipiosPorUF(uf);
+    }
+
+
 }

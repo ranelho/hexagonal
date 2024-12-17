@@ -6,7 +6,7 @@ import com.rlti.hexagonal.pessoa.adapters.output.response.AgenciaResponse;
 import com.rlti.hexagonal.pessoa.adapters.output.response.BancoResponse;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Agencia;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Banco;
-import com.rlti.hexagonal.pessoa.application.port.InstituicaoFinanceiraInputPort;
+import com.rlti.hexagonal.pessoa.application.port.input.InstituicaoFinanceiraInputPort;
 import com.rlti.hexagonal.pessoa.application.port.output.InstituicaoFinanceiraOutputPort;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;

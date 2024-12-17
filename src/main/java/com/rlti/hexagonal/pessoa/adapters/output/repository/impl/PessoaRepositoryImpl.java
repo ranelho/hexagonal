@@ -5,6 +5,7 @@ import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.PessoaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.PessoaFisicaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.PessoaRepositoryCustom;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
+import com.rlti.hexagonal.util.CriteriaQueryHelper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
@@ -31,40 +32,21 @@ public class PessoaRepositoryImpl implements PessoaRepositoryCustom {
 
     @Override
     public Page<PessoaFisica> findWithFilters(PessoaFilterParam params, Pageable pageable) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQueryHelper queryHelper = new CriteriaQueryHelper(entityManager);
 
-        // Consulta principal
-        CriteriaQuery<PessoaFisicaEntity> query = cb.createQuery(PessoaFisicaEntity.class);
-        Root<PessoaFisicaEntity> root = query.from(PessoaFisicaEntity.class);
+        return queryHelper.findWithFilters(
+                PessoaFisicaEntity.class,
+                (cb, root) -> {
+                    // Join com a entidade PessoaEntity
+                    Join<PessoaFisicaEntity, PessoaEntity> pessoaJoin = root.join("pessoa");
 
-        // Faz o join com a entidade PessoaEntity
-        Join<PessoaFisicaEntity, PessoaEntity> pessoaJoin = root.join("pessoa");
-
-        List<Predicate> predicates = buildPredicates(params, cb, root, pessoaJoin);
-        query.where(predicates.toArray(new Predicate[0]));
-
-        // Paginação e execução da consulta principal
-        TypedQuery<PessoaFisicaEntity> typedQuery = entityManager.createQuery(query);
-        typedQuery.setFirstResult((int) pageable.getOffset());
-        typedQuery.setMaxResults(pageable.getPageSize());
-        List<PessoaFisicaEntity> content = typedQuery.getResultList();
-
-        // Consulta de contagem
-        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
-        Root<PessoaFisicaEntity> countRoot = countQuery.from(PessoaFisicaEntity.class);
-        Join<PessoaFisicaEntity, PessoaEntity> countPessoaJoin = countRoot.join("pessoa");
-
-        List<Predicate> countPredicates = buildPredicates(params, cb, countRoot, countPessoaJoin); // Reutiliza a lógica
-        countQuery.select(cb.count(countRoot));
-        countQuery.where(countPredicates.toArray(Predicate[]::new));
-        long total = entityManager.createQuery(countQuery).getSingleResult();
-
-        // Conversão para DTO ou modelo de domínio
-        List<PessoaFisica> pessoas = content.stream()
-                .map(entity -> modelMapper.map(entity, PessoaFisica.class))
-                .toList();
-
-        return new PageImpl<>(pessoas, pageable, total);
+                    // Criação dos Predicates
+                    return buildPredicates(params, cb, root, pessoaJoin);
+                },
+                pageable,
+                PessoaFisica.class,
+                modelMapper
+        );
     }
 
     private List<Predicate> buildPredicates(PessoaFilterParam params,

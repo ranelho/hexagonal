@@ -4,7 +4,7 @@ import com.rlti.hexagonal.pessoa.adapters.input.request.AgenciaRequest;
 import com.rlti.hexagonal.pessoa.adapters.input.request.BancoRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.response.AgenciaResponse;
 import com.rlti.hexagonal.pessoa.adapters.output.response.BancoResponse;
-import com.rlti.hexagonal.pessoa.application.port.InstituicaoFinanceiraInputPort;
+import com.rlti.hexagonal.pessoa.application.port.input.InstituicaoFinanceiraInputPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
