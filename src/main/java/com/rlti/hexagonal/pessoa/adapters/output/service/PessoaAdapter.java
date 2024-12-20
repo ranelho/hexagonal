@@ -11,7 +11,6 @@ import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.ProfissaoEn
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.CnaeEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.PessoaJuridicaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.*;
-import com.rlti.hexagonal.pessoa.application.core.domain.enums.Sexo;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Email;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
@@ -81,8 +80,6 @@ public class PessoaAdapter implements PessoaOutputPort {
         }
         return idCriado.get();
     }
-
-
 
 
     @Override
@@ -195,13 +192,8 @@ public class PessoaAdapter implements PessoaOutputPort {
                 ? params.getDataNascimento().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                 : null;
 
-        var content = pessoaFisicaRepository.findWithFilters(
-                params.getNome(),
-                dataString,
-                params.getSexo(),
-                params.getCpf(),
-                pageable
-        );
+        var content = pessoaFisicaRepository.findWithFilters(params.getNome(),
+                dataString, params.getSexo(), params.getCpf(), pageable);
 
         List<PessoaFisica> results = content.stream()
                 .map(entity -> modelMapper.map(entity, PessoaFisica.class))

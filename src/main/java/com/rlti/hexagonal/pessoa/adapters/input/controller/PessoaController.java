@@ -84,8 +84,6 @@ public class PessoaController {
         return ResponseEntity.status(HttpStatus.OK).body(pessoasFisicas);
     }
 
-
-
     @GetMapping("/fisica/all-with-filter")
     public ResponseEntity<Page<PessoaFisicaResponse>> listPessoasFisicasWithFilter(
             @ParameterObject Pageable pageable,
