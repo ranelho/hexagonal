@@ -1,6 +1,7 @@
 package com.rlti.hexagonal.pessoa.adapters.output.repository;
 
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.PessoaFisicaEntity;
+import com.rlti.hexagonal.pessoa.application.core.domain.enums.Sexo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,7 +22,7 @@ public interface PessoaFisicaRepository extends JpaRepository<PessoaFisicaEntity
     Page<PessoaFisicaEntity> findWithFilters(
             @Param("nome") String nome,
             @Param("dataNascimento") String dataNascimento,
-            @Param("sexo") String sexo,
+            @Param("sexo") Sexo sexo,
             @Param("cpf") String cpf,
             Pageable pageable
     );

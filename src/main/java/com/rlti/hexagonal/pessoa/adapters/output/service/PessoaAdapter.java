@@ -191,7 +191,6 @@ public class PessoaAdapter implements PessoaOutputPort {
     @Override
     public Page<PessoaFisica> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params) {
 
-        String  sexo = params.getSexo() != null ? params.getSexo().toString() : null;
         String dataString = params.getDataNascimento() != null
                 ? params.getDataNascimento().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                 : null;
@@ -199,7 +198,7 @@ public class PessoaAdapter implements PessoaOutputPort {
         var content = pessoaFisicaRepository.findWithFilters(
                 params.getNome(),
                 dataString,
-                sexo,
+                params.getSexo(),
                 params.getCpf(),
                 pageable
         );
