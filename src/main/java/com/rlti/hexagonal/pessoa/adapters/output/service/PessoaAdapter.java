@@ -11,6 +11,7 @@ import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.ProfissaoEn
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.CnaeEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.PessoaJuridicaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.*;
+import com.rlti.hexagonal.pessoa.application.core.domain.enums.Sexo;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Email;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
@@ -27,7 +28,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.LongFunction;
 
 @Service
@@ -49,47 +52,38 @@ public class PessoaAdapter implements PessoaOutputPort {
 
     @Override
     @Transactional
-    public void salvar(Pessoa pessoa) {
-        validarPessoa(pessoa);
+    public Long salvar(Pessoa pessoa) {
+        AtomicReference<Long> idCriado = new AtomicReference<>();
 
         if (pessoa.getTipo() == Tipo.FISICA) {
-            //verificarDuplicidadeCpf(pessoa.getPessoaFisica().getCpf());
-            pessoaFisicaRepository.findByCpf(pessoa.getPessoaFisica().getCpf()).ifPresentOrElse(
-                    existingPessoa -> {
+            pessoaFisicaRepository.findByCpf(pessoa.getPessoaFisica().getCpf())
+                    .ifPresentOrElse(existingPessoa -> {
                         throw new DuplicidadeException("Pessoa com CPF " + pessoa.getPessoaFisica().getCpf() + " já existe.");
-                    },
-                    () -> {
+                    }, () -> {
                         var pais = findIfExists(pessoa.getPessoaFisica().getPaisId(), this::buscarPaisPorId);
                         var orientacao = findIfExists(pessoa.getPessoaFisica().getOrientacaoSexualId(), this::buscarOrientacaoSexualPorId);
                         var identidadeGenero = findIfExists(pessoa.getPessoaFisica().getIdentidadeDeGeneroId(), this::buscarIdentidadeGeneroPorId);
                         var profissao = findIfExists(pessoa.getPessoaFisica().getProfissaoId(), this::buscarProfissaoPorId);
                         var pessoaFisica = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao);
                         pessoaRepository.save(pessoaFisica);
-                    }
-            );
-           /* var pais = buscarSeExistir(pessoa.getPessoaFisica().getPaisId(), this::buscarPaisPorId);
-            var orientacao = buscarSeExistir(pessoa.getPessoaFisica().getOrientacaoSexualId(), this::buscarOrientacaoSexualPorId);
-            var identidadeGenero = buscarSeExistir(pessoa.getPessoaFisica().getIdentidadeDeGeneroId(), this::buscarIdentidadeGeneroPorId);
-            var profissao = buscarSeExistir(pessoa.getPessoaFisica().getProfissaoId(), this::buscarProfissaoPorId);
-            var pessoaFisica = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao);
-            pessoaRepository.save(pessoaFisica);*/
+                        idCriado.set(pessoaFisica.getIdPessoa());
+                    });
         } else if (pessoa.getTipo() == Tipo.JURIDICA) {
-            //validarDuplicidadePessoaJuridica(pessoa);
-            pessoaJuridicaRepository.findByCnpj(pessoa.getPessoaJuridica().getCnpj()).ifPresentOrElse(
-                    existingPessoa -> {
+            pessoaJuridicaRepository.findByCnpj(pessoa.getPessoaJuridica().getCnpj())
+                    .ifPresentOrElse(existingPessoa -> {
                         throw new DuplicidadeException("Pessoa com CNPJ " + pessoa.getPessoaJuridica().getCnpj() + " já existe.");
-                    },
-                    () -> {
+                    }, () -> {
                         var pessoaJuridica = new PessoaEntity(pessoa);
                         pessoaRepository.save(pessoaJuridica);
                         cnaeOutputPort.addCnaesV2(pessoaJuridica.getIdPessoa(), pessoa.getPessoaJuridica().getSubclasse(), pessoa.getPessoaJuridica().getCnaes());
-                    }
-            );
-          /*  var pessoaJuridica = new PessoaEntity(pessoa);
-            var pessoaEntity = pessoaRepository.save(pessoaJuridica);
-            cnaeOutputPort.addCnaesV2(pessoaEntity.getIdPessoa(), pessoa.getPessoaJuridica().getSubclasse(), pessoa.getPessoaJuridica().getCnaes());*/
+                        idCriado.set(pessoaJuridica.getIdPessoa());
+                    });
         }
+        return idCriado.get();
     }
+
+
+
 
     @Override
     public Page<Pessoa> findAllPaginated(int page, int size) {
@@ -118,8 +112,7 @@ public class PessoaAdapter implements PessoaOutputPort {
     }
 
     @Override
-    public Page<PessoaFisica> findAllPessoaFisicaPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("Pessoa.nome").ascending());
+    public Page<PessoaFisica> findAllPessoaFisicaPaginated(Pageable pageable) {
         Page<PessoaFisicaEntity> pessoas = pessoaFisicaRepository.findAll(pageable);
 
         List<PessoaFisica> pessoaFisicas = pessoas.getContent().stream()
@@ -197,7 +190,26 @@ public class PessoaAdapter implements PessoaOutputPort {
 
     @Override
     public Page<PessoaFisica> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params) {
-        return pessoaRepositoryCustom.findWithFilters(params, pageable);
+
+        String  sexo = params.getSexo() != null ? params.getSexo().toString() : null;
+        String dataString = params.getDataNascimento() != null
+                ? params.getDataNascimento().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                : null;
+
+        var content = pessoaFisicaRepository.findWithFilters(
+                params.getNome(),
+                dataString,
+                sexo,
+                params.getCpf(),
+                pageable
+        );
+
+        List<PessoaFisica> results = content.stream()
+                .map(entity -> modelMapper.map(entity, PessoaFisica.class))
+                .toList();
+
+        return new PageImpl<>(results, pageable, content.getTotalElements());
+
     }
 
     private ProfissaoEntity buscarProfissaoPorId(Long profissaoId) {

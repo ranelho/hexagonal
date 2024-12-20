@@ -1,13 +1,12 @@
 package com.rlti.hexagonal.pessoa.adapters.input.controller;
 
 
-import com.rlti.hexagonal.pessoa.adapters.input.request.EmailRequest;
-import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFilterParam;
-import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFisicaUpdateRequest;
-import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.*;
 import com.rlti.hexagonal.pessoa.adapters.output.response.*;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.pessoa.application.port.input.PessoaInputPort;
+import com.rlti.hexagonal.util.PageableUtil;
+import com.rlti.hexagonal.util.SortFieldResolver;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.net.URI;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -48,8 +49,9 @@ public class PessoaController {
 
     @PostMapping
     public ResponseEntity<Void> criarPessoa(@RequestBody @Valid PessoaRequest request) {
-        pessoaInputPort.criarPessoa(request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        Long idSalvo = pessoaInputPort.criarPessoa(request);
+        URI location = URI.create(String.format("/pessoas/%d", idSalvo));
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping
@@ -68,11 +70,21 @@ public class PessoaController {
 
     @GetMapping("/fisica/all")
     public ResponseEntity<Page<PessoaFisicaResponse>> listarPessoasFisica(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int size) {
-        Page<PessoaFisicaResponse> pessoasFisicas = pessoaInputPort.listarPessoasFisica(page, size);
+            @ModelAttribute @Valid PaginationRequest paginationRequest) {
+        if (SortFieldResolver.isValidSortField("pessoaFisica", paginationRequest.getSortBy())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "O campo de ordenação '" + paginationRequest.getSortBy() + "' não é válido para Pessoa Física."
+            );
+        }
+
+        Pageable pageable = PageableUtil.getPageable(paginationRequest, "pessoaFisica");
+        Page<PessoaFisicaResponse> pessoasFisicas = pessoaInputPort.listarPessoasFisica(pageable);
+
         return ResponseEntity.status(HttpStatus.OK).body(pessoasFisicas);
     }
+
+
 
     @GetMapping("/fisica/all-with-filter")
     public ResponseEntity<Page<PessoaFisicaResponse>> listPessoasFisicasWithFilter(

@@ -25,9 +25,9 @@ public class PessoaUserCase implements PessoaInputPort {
     }
 
     @Override
-    public void criarPessoa(PessoaRequest request) {
+    public Long criarPessoa(PessoaRequest request) {
         var pessoa = new Pessoa(request);
-        pessoaOutputPort.salvar(pessoa);
+        return pessoaOutputPort.salvar(pessoa);
     }
 
     @Override
@@ -43,8 +43,8 @@ public class PessoaUserCase implements PessoaInputPort {
     }
 
     @Override
-    public Page<PessoaFisicaResponse> listarPessoasFisica(int page, int size) {
-        var pessoasFisica = pessoaOutputPort.findAllPessoaFisicaPaginated(page, size);
+    public Page<PessoaFisicaResponse> listarPessoasFisica(Pageable pageable) {
+        var pessoasFisica = pessoaOutputPort.findAllPessoaFisicaPaginated(pageable);
         return PessoaFisicaResponse.converte(pessoasFisica);
     }
 

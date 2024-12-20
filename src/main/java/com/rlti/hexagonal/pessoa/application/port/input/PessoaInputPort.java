@@ -16,7 +16,7 @@ public interface PessoaInputPort {
 
     PessoaResponse buscarPessoa(Long idPessoa);
 
-    Page<PessoaFisicaResponse> listarPessoasFisica(int page, int size);
+    Page<PessoaFisicaResponse> listarPessoasFisica(Pageable pageable);
 
     PessoaFisicaDetalheResponse buscarPessoaFisica(Long idPessoa);
 

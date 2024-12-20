@@ -1,8 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.input.controller;
 
-import com.rlti.hexagonal.pessoa.adapters.input.request.CnaeFilter;
 import com.rlti.hexagonal.pessoa.adapters.input.request.ProfissaoFilter;
-import com.rlti.hexagonal.pessoa.adapters.output.response.CnaeResponse;
 import com.rlti.hexagonal.pessoa.adapters.output.response.ProfissaoResponse;
 import com.rlti.hexagonal.pessoa.application.port.input.ProfissaoInputPort;
 import lombok.RequiredArgsConstructor;

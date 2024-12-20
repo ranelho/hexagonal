@@ -19,7 +19,7 @@ public class PaisEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long idPais;
-    private String nome;
+    private String nomePais;
     private String sigla;
     private String nacionalidade;
 }

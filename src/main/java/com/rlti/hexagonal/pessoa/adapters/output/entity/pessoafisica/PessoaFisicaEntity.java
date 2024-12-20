@@ -65,8 +65,8 @@ public class PessoaFisicaEntity  {
     private List<EmailEntity> emails = new ArrayList<>();*/
 
     @ManyToOne
-    @JoinColumn(name = "pais_id_pais")
-    private PaisEntity nacionalidade;
+    @JoinColumn(name = "ID_PAIS")
+    private PaisEntity pais;
 
     @ManyToOne
     @JoinColumn(name = "identidade_genero_id")
@@ -85,7 +85,7 @@ public class PessoaFisicaEntity  {
     private ProfissaoEntity profissao;
 
     public PessoaFisicaEntity(PessoaFisica pessoaFisica,
-                              PaisEntity nacionalidade,
+                              PaisEntity pais,
                               OrientacaoSexualEntity orientacao,
                               IdentidadeGeneroEntity identidadeGenero,
                               ProfissaoEntity profissao) {
@@ -109,8 +109,8 @@ public class PessoaFisicaEntity  {
         this.especificacaoOs = pessoaFisica.getEspecificacaoOs();
         this.grauDeInstrucao = pessoaFisica.getGrauDeInstrucao();
        //addTelefones(pessoaFisica);
-        if (nacionalidade != null)
-            this.nacionalidade = nacionalidade;
+        if (pais != null)
+            this.pais = pais;
         if (orientacao != null)
             this.orientacaoSexual = orientacao;
         if (identidadeGenero != null)

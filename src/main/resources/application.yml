@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5433/hexagonal2
-    username: postgres
-    password: 852456
+    url: jdbc:postgresql://teste-pwc.postgres.database.azure.com:5432/postgres
+    username: teste_pwc
+    password: Dev@135246
   jpa:
     generate-ddl: true
     properties:

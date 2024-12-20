@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 
 public interface PessoaOutputPort {
-    void salvar(Pessoa pessoa);
+    Long salvar(Pessoa pessoa);
 
     Page<Pessoa> findAllPaginated(int page, int size);
 
@@ -18,7 +18,7 @@ public interface PessoaOutputPort {
 
     PessoaFisica findById(Long idPessoa);
 
-    Page<PessoaFisica> findAllPessoaFisicaPaginated(int page, int size);
+    Page<PessoaFisica> findAllPessoaFisicaPaginated(Pageable pageable);
 
     Pessoa findPessoaById(Long idPessoa);
 

@@ -46,7 +46,7 @@ public class PessoaFisicaDetalheResponse {
         this.tipo = pessoaFisica.getPessoa().getTipo();
         this.dataNascimento = pessoaFisica.getDataNascimento();
         this.sexo = pessoaFisica.getSexo().toString();
-        this.nacionalidade = pessoaFisica.getPais().getNacionalidade();
+        this.nacionalidade = pessoaFisica.getPais() != null ? pessoaFisica.getPais().getNacionalidade() : null;
         this.estadoCivil = pessoaFisica.getEstadoCivil();
         this.nomePai = pessoaFisica.getNomePai();
         this.nomeMae = pessoaFisica.getNomeMae();
