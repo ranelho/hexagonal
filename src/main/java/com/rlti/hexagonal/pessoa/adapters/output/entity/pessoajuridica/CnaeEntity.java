@@ -15,7 +15,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "TB_CNAE")
+@Entity
+@Table(name = "TB_CNAE")
 public class CnaeEntity {
 
     @Id

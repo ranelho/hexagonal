@@ -12,6 +12,10 @@ public class Profissao {
         this.nomeProfissao = nomeProfissao;
     }
 
+    public Profissao(Long profissaoId) {
+        this.codigo = profissaoId;
+    }
+
     public Long getCodigo() {
         return codigo;
     }

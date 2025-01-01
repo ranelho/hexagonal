@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.pessoa.handler;
+package com.rlti.hexagonal.handler;
 
 public class DuplicidadeException extends RuntimeException {
     public DuplicidadeException(String message) {

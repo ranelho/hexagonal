@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.pessoa.handler;
+package com.rlti.hexagonal.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

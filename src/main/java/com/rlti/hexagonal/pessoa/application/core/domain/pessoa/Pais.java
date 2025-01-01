@@ -1,5 +1,7 @@
 package com.rlti.hexagonal.pessoa.application.core.domain.pessoa;
 
+import jakarta.validation.constraints.NotNull;
+
 public class Pais {
     private Long idPais;
     private String nome;
@@ -14,6 +16,10 @@ public class Pais {
         this.nome = nome;
         this.sigla = sigla;
         this.nacionalidade = nacionalidade;
+    }
+
+    public Pais(@NotNull Long paisId) {
+        this.idPais = paisId;
     }
 
     public Long getIdPais() {

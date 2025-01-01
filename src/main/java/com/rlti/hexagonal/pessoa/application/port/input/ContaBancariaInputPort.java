@@ -5,5 +5,6 @@ import jakarta.validation.Valid;
 
 public interface ContaBancariaInputPort {
 
-    void novaContaBancaria(Long idPessoa, @Valid ContaBancariaRequest request);
+    void novaContaBancaria(Long idPessoa, ContaBancariaRequest request);
+
 }

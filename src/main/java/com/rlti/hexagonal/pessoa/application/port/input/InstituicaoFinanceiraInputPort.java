@@ -6,6 +6,9 @@ import com.rlti.hexagonal.pessoa.adapters.output.response.AgenciaResponse;
 import com.rlti.hexagonal.pessoa.adapters.output.response.BancoResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 public interface InstituicaoFinanceiraInputPort {
     void criarBanco(@Valid BancoRequest request);
@@ -23,4 +26,6 @@ public interface InstituicaoFinanceiraInputPort {
     AgenciaResponse buscarAgencia(Long idAgencia);
 
     Page<AgenciaResponse> listarAgenciasPorBanco(Long idBanco, int page, int size);
+
+    void importExcel(MultipartFile file) throws IOException;
 }

@@ -1,13 +1,12 @@
 package com.rlti.hexagonal.pessoa.adapters.output.service;
 
+import com.rlti.hexagonal.handler.DuplicidadeException;
+import com.rlti.hexagonal.handler.EntidadeNaoEncontradaException;
 import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFilterParam;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.PaisEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.EmailEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.PessoaEntity;
-import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.IdentidadeGeneroEntity;
-import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.OrientacaoSexualEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.PessoaFisicaEntity;
-import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.ProfissaoEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.CnaeEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.PessoaJuridicaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.*;
@@ -19,8 +18,6 @@ import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.Cnae;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.PessoaJuridica;
 import com.rlti.hexagonal.pessoa.application.port.output.CnaeOutputPort;
 import com.rlti.hexagonal.pessoa.application.port.output.PessoaOutputPort;
-import com.rlti.hexagonal.pessoa.handler.DuplicidadeException;
-import com.rlti.hexagonal.pessoa.handler.EntidadeNaoEncontradaException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -31,6 +28,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.LongFunction;
+
+import static com.rlti.hexagonal.util.Utils.*;
 
 @Service
 @RequiredArgsConstructor
@@ -48,9 +47,9 @@ public class PessoaAdapter implements PessoaOutputPort {
     private final IdentidadeGeneroRepository identidadeGeneroRepository;
     private final ProfissaoRepository profissaoRepository;
     private final EmailRepository emailRepository;
+    private final EstadoCivilRepository estadoCivilRepository;
     private final CnaeOutputPort cnaeOutputPort;
 
-    @Override
     @Transactional
     public Long salvar(Pessoa pessoa) {
         AtomicReference<Long> idCriado = new AtomicReference<>();
@@ -60,11 +59,32 @@ public class PessoaAdapter implements PessoaOutputPort {
                     .ifPresentOrElse(existingPessoa -> {
                         throw new DuplicidadeException("Pessoa com CPF " + pessoa.getPessoaFisica().getCpf() + JA_EXISTE);
                     }, () -> {
-                        var pais = findIfExists(pessoa.getPessoaFisica().getPaisId(), this::buscarPaisPorId);
-                        var orientacao = findIfExists(pessoa.getPessoaFisica().getOrientacaoSexualId(), this::buscarOrientacaoSexualPorId);
-                        var identidadeGenero = findIfExists(pessoa.getPessoaFisica().getIdentidadeDeGeneroId(), this::buscarIdentidadeGeneroPorId);
-                        var profissao = findIfExists(pessoa.getPessoaFisica().getProfissaoId(), this::buscarProfissaoPorId);
-                        var pessoaFisica = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao);
+                        var pais = findEntityById(
+                                pessoa.getPessoaFisica().getPais().getIdPais(),
+                                paisRepository::findById,
+                                () -> new EntidadeNaoEncontradaException("País não encontrado com ID: " + pessoa.getPessoaFisica().getPais().getIdPais())
+                        );
+                        var orientacao = findEntityById(
+                                pessoa.getPessoaFisica().getOrientacaoSexual().getIdOrientacaoSexual(),
+                                orientacaoSexualRepository::findById,
+                                () -> new EntidadeNaoEncontradaException("Orientação não encontrada com ID: " + pessoa.getPessoaFisica().getOrientacaoSexual().getIdOrientacaoSexual())
+                        );
+                        var identidadeGenero = findEntityById(
+                                pessoa.getPessoaFisica().getIdentidadeGenero().getIdIdentidadeDeGenero(),
+                                identidadeGeneroRepository::findById,
+                                () -> new EntidadeNaoEncontradaException("Identidade de gênero não encontrada com ID: " + pessoa.getPessoaFisica().getIdentidadeGenero().getIdIdentidadeDeGenero())
+                        );
+                        var profissao = findEntityById(
+                                pessoa.getPessoaFisica().getProfissao().getCodigo(),
+                                profissaoRepository::findById,
+                                () -> new EntidadeNaoEncontradaException("Profissão não encontrada com código: " + pessoa.getPessoaFisica().getProfissao().getCodigo())
+                        );
+                        var estadoCivil = findEntityById(
+                                pessoa.getPessoaFisica().getEstadoCivil().getIdEstadoCivil(),
+                                estadoCivilRepository::findById,
+                                () -> new EntidadeNaoEncontradaException("Estado Civil não encontrado com ID: " + pessoa.getPessoaFisica().getEstadoCivil().getIdEstadoCivil())
+                        );
+                        var pessoaFisica = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao, estadoCivil);
                         pessoaRepository.save(pessoaFisica);
                         idCriado.set(pessoaFisica.getIdPessoa());
                     });
@@ -81,7 +101,6 @@ public class PessoaAdapter implements PessoaOutputPort {
         }
         return idCriado.get();
     }
-
 
     @Override
     public Page<Pessoa> findAllPaginated(int page, int size) {
@@ -184,7 +203,6 @@ public class PessoaAdapter implements PessoaOutputPort {
 
     @Override
     public Page<PessoaFisica> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params) {
-
         String dataString = params.getDataNascimento() != null
                 ? params.getDataNascimento().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                 : null;
@@ -197,7 +215,6 @@ public class PessoaAdapter implements PessoaOutputPort {
                 .toList();
 
         return new PageImpl<>(results, pageable, content.getTotalElements());
-
     }
 
     @Override
@@ -207,20 +224,32 @@ public class PessoaAdapter implements PessoaOutputPort {
                 .ifPresentOrElse(existingPessoa -> {
                     throw new DuplicidadeException("Pessoa com CPF " + pessoa.getPessoaFisica().getCpf() + JA_EXISTE);
                 }, () -> {
-                    var pais = findIfExists(pessoa.getPessoaFisica().getPaisId(), this::buscarPaisPorId);
-                    var orientacao = findIfExists(pessoa.getPessoaFisica().getOrientacaoSexualId(), this::buscarOrientacaoSexualPorId);
-                    var identidadeGenero = findIfExists(pessoa.getPessoaFisica().getIdentidadeDeGeneroId(), this::buscarIdentidadeGeneroPorId);
-                    var profissao = findIfExists(pessoa.getPessoaFisica().getProfissaoId(), this::buscarProfissaoPorId);
-                    var pessoaFisica = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao);
+                    var pais = findIfExists(pessoa.getPessoaFisica().getPais().getIdPais(), this::buscarPaisPorId);
+                    var orientacao = findEntityById(
+                            pessoa.getPessoaFisica().getOrientacaoSexual().getIdOrientacaoSexual(),
+                            orientacaoSexualRepository::findById,
+                            () -> new EntidadeNaoEncontradaException("Orientação não encontrada com ID: " + pessoa.getPessoaFisica().getOrientacaoSexual().getIdOrientacaoSexual())
+                    );
+                    var identidadeGenero = findEntityById(
+                            pessoa.getPessoaFisica().getIdentidadeGenero().getIdIdentidadeDeGenero(),
+                            identidadeGeneroRepository::findById,
+                            () -> new EntidadeNaoEncontradaException("Identidade de gênero não encontrada com ID: " + pessoa.getPessoaFisica().getIdentidadeGenero().getIdIdentidadeDeGenero())
+                    );
+                    var profissao = findEntityById(
+                            pessoa.getPessoaFisica().getProfissao().getCodigo(),
+                            profissaoRepository::findById,
+                            () -> new EntidadeNaoEncontradaException("Profissão não encontrada com código: " + pessoa.getPessoaFisica().getProfissao().getCodigo())
+                    );
+                    var estadoCivil = findEntityById(
+                            pessoa.getPessoaFisica().getEstadoCivil().getIdEstadoCivil(),
+                            estadoCivilRepository::findById,
+                            () -> new EntidadeNaoEncontradaException("Estado Civil não encontrado com ID: " + pessoa.getPessoaFisica().getEstadoCivil().getIdEstadoCivil())
+                    );
+                    var pessoaFisica = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao, estadoCivil);
                     pessoaRepository.save(pessoaFisica);
                     idCriado.set(pessoaFisica.getIdPessoa());
                 });
         return idCriado.get();
-    }
-
-    private ProfissaoEntity buscarProfissaoPorId(Long profissaoId) {
-        return profissaoRepository.findById(profissaoId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Profissão não encontrada com ID: " + profissaoId));
     }
 
     private <T> T findIfExists(Long id, LongFunction<T> buscaFunc) {
@@ -234,13 +263,5 @@ public class PessoaAdapter implements PessoaOutputPort {
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("País não encontrado com ID: " + paisId));
     }
 
-    private OrientacaoSexualEntity buscarOrientacaoSexualPorId(Long orientacaoSexualId) {
-        return orientacaoSexualRepository.findById(orientacaoSexualId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Orientação não encontrada com ID: " + orientacaoSexualId));
-    }
 
-    private IdentidadeGeneroEntity buscarIdentidadeGeneroPorId(Long identidadeDeGeneroId) {
-        return identidadeGeneroRepository.findById(identidadeDeGeneroId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Identidade de gênero não encontrada com ID: " + identidadeDeGeneroId));
-    }
 }

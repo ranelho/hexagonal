@@ -3,6 +3,7 @@ package com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.Profissao;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +11,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "PROFISSAO")
+@Entity
+@Table(name = "PROFISSAO")
 public class ProfissaoEntity {
     @Id
     private Long codigo;

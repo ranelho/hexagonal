@@ -10,7 +10,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "RESPONSAVEL_LEGAL")
+@Entity
+@Table(name = "RESPONSAVEL_LEGAL")
 public class ResponsavelLegalEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

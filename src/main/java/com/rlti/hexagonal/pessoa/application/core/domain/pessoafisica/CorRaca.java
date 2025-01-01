@@ -9,6 +9,10 @@ public class CorRaca {
         this.corRaca = corRaca;
     }
 
+    public CorRaca(Long corRacaId) {
+        this.id = corRacaId;
+    }
+
     public Long getId() {
         return id;
     }

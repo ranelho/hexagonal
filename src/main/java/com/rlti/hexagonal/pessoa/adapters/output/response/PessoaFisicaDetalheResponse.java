@@ -27,9 +27,9 @@ public class PessoaFisicaDetalheResponse {
     private String estrangeiro ;
     private String naturalidade;
     private BigDecimal rendaMensal;
-    private String indicadorFacta ;
-    private String indicadoCrs;
-    private String indicadorPpe ;
+    private boolean indicadorFacta ;
+    private boolean indicadoCrs;
+    private boolean indicadorPpe ;
     private String especificacaoPpe;
     private String especificacaoIg;
     private String especificacaoOs;
@@ -53,9 +53,9 @@ public class PessoaFisicaDetalheResponse {
         this.estrangeiro = pessoaFisica.getEstrangeiro();
         this.naturalidade = pessoaFisica.getNaturalidade();
         this.rendaMensal = pessoaFisica.getRendaMensal();
-        this.indicadorFacta = pessoaFisica.getIndicadorFacta();
-        this.indicadoCrs = pessoaFisica.getIndicadoCrs();
-        this.indicadorPpe = pessoaFisica.getIndicadorPpe();
+        this.indicadorFacta = pessoaFisica.isIndicadorFacta();
+        this.indicadoCrs = pessoaFisica.isIndicadoCrs();
+        this.indicadorPpe = pessoaFisica.isIndicadorPpe();
         this.especificacaoPpe = pessoaFisica.getEspecificacaoPpe();
         this.especificacaoIg = pessoaFisica.getEspecificacaoIg();
         this.especificacaoOs = pessoaFisica.getEspecificacaoOs();

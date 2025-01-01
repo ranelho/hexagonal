@@ -8,8 +8,15 @@ import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Agencia;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Banco;
 import com.rlti.hexagonal.pessoa.application.port.input.InstituicaoFinanceiraInputPort;
 import com.rlti.hexagonal.pessoa.application.port.output.InstituicaoFinanceiraOutputPort;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 public class InstituicaoFinanceiraUseCase implements InstituicaoFinanceiraInputPort {
 
@@ -67,6 +74,23 @@ public class InstituicaoFinanceiraUseCase implements InstituicaoFinanceiraInputP
     public Page<AgenciaResponse> listarAgenciasPorBanco(Long idBanco, int page, int size) {
         var agencias = instituicaoFinanceiraOutputPort.listarAgenciasPorBanco(idBanco, page, size);
         return agencias.map(agencia -> modelMapper.map(agencia, AgenciaResponse.class));
+    }
+
+    @Override
+    public void importExcel(MultipartFile file) throws IOException {
+        try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
+            Sheet sheet = workbook.getSheetAt(0);
+            for (int i = 9; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row != null) {
+                    Banco banco = new Banco();
+                    banco.setCnpj(row.getCell(0).getStringCellValue());
+                    banco.setNome(row.getCell(1).getStringCellValue());
+                    banco.setSiteNaInternet(row.getCell(13).getStringCellValue());
+                    instituicaoFinanceiraOutputPort.save(banco);
+                }
+            }
+        }
     }
 
 

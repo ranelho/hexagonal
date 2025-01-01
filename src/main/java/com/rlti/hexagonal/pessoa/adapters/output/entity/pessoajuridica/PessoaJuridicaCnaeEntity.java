@@ -11,7 +11,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "TB_PESSOA_JURIDICA_CNAE")
+@Entity
+@Table(name = "TB_PESSOA_JURIDICA_CNAE")
 public class PessoaJuridicaCnaeEntity {
 
     @Id

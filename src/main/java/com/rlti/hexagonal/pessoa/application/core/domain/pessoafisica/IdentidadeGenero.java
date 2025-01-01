@@ -12,6 +12,10 @@ public class IdentidadeGenero {
         this.identidadeDeGenero = identidadeDeGenero;
     }
 
+    public IdentidadeGenero(Long identidadeDeGeneroId) {
+        this.idIdentidadeDeGenero = identidadeDeGeneroId;
+    }
+
     public Long getIdIdentidadeDeGenero() {
         return idIdentidadeDeGenero;
     }

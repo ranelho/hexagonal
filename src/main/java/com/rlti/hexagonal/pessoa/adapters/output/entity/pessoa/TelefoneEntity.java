@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "TELEFONE")
+@Entity(name = "TB_TELEFONE")
 public class TelefoneEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -24,7 +24,7 @@ public class TelefoneEntity {
     private String numeroTelefone;
 
     @ManyToOne
-    @JoinColumn(name = "id_pessoa", referencedColumnName = "id_pessoa", nullable = true)
+    @JoinColumn(name = "ID_PESSOA", referencedColumnName = "ID_PESSOA")
     private PessoaEntity pessoa;
 
     public TelefoneEntity(Telefone telefone) {

@@ -11,6 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/instituicao-financeira")
@@ -69,5 +72,15 @@ public class InstituicaoFinanceiraController {
                                                          @RequestParam(defaultValue = "12") int size) {
         var agencias = instituicaoFinanceiraInputPort.listarAgenciasPorBanco(idBanco, page, size);
         return ResponseEntity.ok(agencias);
+    }
+
+    @PostMapping("/import")
+    public ResponseEntity<String> importExcel(@RequestParam("file") MultipartFile file) {
+        try {
+            instituicaoFinanceiraInputPort.importExcel(file);
+            return ResponseEntity.status(HttpStatus.OK).body("Importação realizada com sucesso.");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao importar o arquivo.");
+        }
     }
 }

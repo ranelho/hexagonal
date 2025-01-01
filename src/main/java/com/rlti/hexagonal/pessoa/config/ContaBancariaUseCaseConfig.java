@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.pessoa.adapters.config;
+package com.rlti.hexagonal.pessoa.config;
 
 import com.rlti.hexagonal.pessoa.application.core.usecase.ContaBancariaUseCase;
 import com.rlti.hexagonal.pessoa.application.port.output.ContaBancariaOutputPort;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class ContaBancariaUseCaseConfig {
 
     @Bean
-    public ContaBancariaUseCase agenciaBancariaUseCase(ContaBancariaOutputPort contaBancariaOutputPort, ModelMapper modelMapper) {
+    public ContaBancariaUseCase contaBancariaUseCase(ContaBancariaOutputPort contaBancariaOutputPort, ModelMapper modelMapper) {
         return new ContaBancariaUseCase(contaBancariaOutputPort, modelMapper);
     }
 }

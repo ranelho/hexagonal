@@ -1,11 +1,11 @@
 package com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica;
 
+import com.rlti.hexagonal.pessoa.config.PostgreSQLEnumConverter;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.PaisEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.PessoaEntity;
-import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.EstadoCivil;
-import com.rlti.hexagonal.pessoa.application.core.domain.enums.GrauDeInstrucao;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Sexo;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
@@ -18,97 +18,127 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-@Entity(name = "PESSOA_FISICA")
+@Entity
+@Table(name = "TB_PESSOA_FISICA")
 public class PessoaFisicaEntity  {
 
     @Id
-    @Column(name = "id_pessoa")
-    private Long idPessoa;
+    private Long idPessoaFisica;
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "idPessoa")
+    @JoinColumn(name = "ID_PESSOA_FISICA")
     private PessoaEntity pessoa;
 
-    @CPF @Column(unique = true, updatable = false, nullable = false)
+    @CPF @Column(name= "NUM_CPF", unique = true, updatable = false, nullable = false)
     private String cpf;
+
+    @Column(name = "NOM_SOCIAL")
     private String nomeSocial;
+
+    @Column(name = "DAT_NASCIMENTO")
     private LocalDate dataNascimento;
+
+    @Column(name = "DAT_OBITO")
     private LocalDate dataObito;
-    private String resideExterior;
-    @Enumerated(EnumType.STRING)
+
+    @Enumerated(EnumType.STRING) @Convert(converter = PostgreSQLEnumConverter.class)
+    @Column(name = "TP_SEXO")
     private Sexo sexo;
-    @Enumerated(EnumType.STRING)
-    private EstadoCivil estadoCivil;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_ESTADO_CIVIL")
+    private EstadoCivilEntity estadoCivil;
+
+    @Column(name = "NOM_PAI")
     private String nomePai;
+
+    @Column(name = "NOM_MAE")
     private String nomeMae;
-    private String estrangeiro ;
+
+    @Column(name = "STS_RESIDE_EXTERIOR")
+    private boolean resideExterior;
+
+    @Column(name = "DSC_NATURALIDADE")
     private String naturalidade;
+
+    @Column(name = "VAL_RENDA_MENSAL")
     private BigDecimal rendaMensal;
-    private String indicadorFacta ;
-    private String indicadoCrs;
-    private String indicadorPpe ;
+
+    @Column(name = "STS_INDICADOR_FATCA")
+    private boolean indicadorFacta ;
+
+    @Column(name = "DSC_MOTIVO_FATCA")
+    private String motivoFacta;
+
+    @Column(name = "STS_INDICADOR_CRS")
+    private boolean indicadoCrs;
+
+    @Column(name = "DSC_MOTIVO_CRS")
+    private String motivoCrs;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_PAIS_CRS")
+    private PaisEntity paisCrs;
+
+    @Column(name = "STS_INDICADOR_PPE")
+    private boolean indicadorPpe ;
+
+    @Column(name = "DSC_ESPECIFICACAO_PPE")
     private String especificacaoPpe;
-    private String especificacaoIg;
-    private String especificacaoOs;
 
-    @Enumerated(EnumType.STRING)
-    private GrauDeInstrucao grauDeInstrucao;
-
-/*    @OneToMany(mappedBy = "pessoaFisica", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    @Size(max = 3, message = "Uma pessoa pode ter no máximo 3 telefones.")
-    private List<TelefoneEntity> telefones = new ArrayList<>();*/
-
-/*    @OneToMany(mappedBy = "pessoaFisica", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<EmailEntity> emails = new ArrayList<>();*/
+    @ManyToOne
+    @JoinColumn(name = "ID_GRAU_INSTRUCAO")
+    private GrauInstrucaoEntity grauInstrucao;
 
     @ManyToOne
     @JoinColumn(name = "ID_PAIS")
     private PaisEntity pais;
 
     @ManyToOne
-    @JoinColumn(name = "identidade_genero_id")
+    @JoinColumn(name = "ID_IDENTIDADE_GENERO")
     private IdentidadeGeneroEntity identidadeGenero;
 
-    @ManyToOne
-    @JoinColumn(name = "orientacao_sexual_id")
-    private OrientacaoSexualEntity orientacaoSexual;
+    @Column(name = "DSC_ESPECIFICACAO_IG")
+    private String especificacaoIG;
 
     @ManyToOne
-    @JoinColumn(name = "cor_raca_id")
+    @JoinColumn(name = "ID_ORIENTACAO_SEXUAL")
+    private OrientacaoSexualEntity orientacaoSexual;
+
+    @Column(name = "DSC_ESPECIFICACAO_OS")
+    private String especificacaoOs;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_COR_RACA")
     private CorRacaEntity corRacaEntity;
 
     @ManyToOne
-    @JoinColumn(name = "profissao_id")
+    @JoinColumn(name = "ID_PROFISSAO")
     private ProfissaoEntity profissao;
 
     public PessoaFisicaEntity(PessoaFisica pessoaFisica,
                               PaisEntity pais,
                               OrientacaoSexualEntity orientacao,
                               IdentidadeGeneroEntity identidadeGenero,
-                              ProfissaoEntity profissao) {
+                              ProfissaoEntity profissao, EstadoCivilEntity estadoCivil) {
         this.cpf = pessoaFisica.getCpf();
         this.dataNascimento = pessoaFisica.getDataNascimento();
         this.sexo = pessoaFisica.getSexo();
-        this.estadoCivil = pessoaFisica.getEstadoCivil();
+        this.estadoCivil = estadoCivil;
         this.nomeSocial = pessoaFisica.getNomeSocial().toUpperCase();
         this.dataObito = pessoaFisica.getDataObito();
-        this.resideExterior = pessoaFisica.getResideExterior();
         this.nomePai = pessoaFisica.getNomePai().toUpperCase();
         this.nomeMae = pessoaFisica.getNomeMae().toUpperCase();
-        this.estrangeiro = pessoaFisica.getEstrangeiro().isEmpty() ? "N" : pessoaFisica.getEstrangeiro().toUpperCase();
+        this.resideExterior = pessoaFisica.isResideExterior();
         this.naturalidade = pessoaFisica.getNaturalidade().toUpperCase();
         this.rendaMensal = pessoaFisica.getRendaMensal();
-        this.indicadoCrs = pessoaFisica.getIndicadoCrs().isEmpty() ? "N" : pessoaFisica.getIndicadoCrs();
-        this.indicadorFacta = pessoaFisica.getIndicadorFacta().isEmpty() ? "N" : pessoaFisica.getIndicadorFacta();
-        this.indicadorPpe = pessoaFisica.getIndicadorPpe().isEmpty() ? "N" : pessoaFisica.getIndicadorPpe();
+        this.indicadoCrs = pessoaFisica.isIndicadoCrs();
+        this.indicadorFacta = pessoaFisica.isIndicadorFacta();
+        this.indicadorPpe = pessoaFisica.isIndicadorPpe();
         this.especificacaoPpe = pessoaFisica.getEspecificacaoPpe();
-        this.especificacaoIg = pessoaFisica.getEspecificacaoIg();
+        this.especificacaoIG = pessoaFisica.getEspecificacaoIg();
         this.especificacaoOs = pessoaFisica.getEspecificacaoOs();
-        this.grauDeInstrucao = pessoaFisica.getGrauDeInstrucao();
-       //addTelefones(pessoaFisica);
         if (pais != null)
             this.pais = pais;
         if (orientacao != null)
@@ -121,36 +151,33 @@ public class PessoaFisicaEntity  {
 
     public PessoaFisicaEntity(PessoaFisica pessoaFisica) {
         this.sexo = pessoaFisica.getSexo();
-        this.estadoCivil = pessoaFisica.getEstadoCivil();
+        this.estadoCivil = new EstadoCivilEntity(pessoaFisica.getEstadoCivil());
         this.nomeSocial = pessoaFisica.getNomeSocial().toUpperCase();
         this.dataObito = pessoaFisica.getDataObito();
-        this.resideExterior = pessoaFisica.getResideExterior();
+        this.resideExterior = pessoaFisica.isResideExterior();
         this.nomePai = pessoaFisica.getNomePai().toUpperCase();
         this.nomeMae = pessoaFisica.getNomeMae().toUpperCase();
-        this.estrangeiro = pessoaFisica.getEstrangeiro().isEmpty() ? "N" : pessoaFisica.getEstrangeiro().toUpperCase();
+        this.resideExterior = pessoaFisica.isResideExterior();
         this.naturalidade = pessoaFisica.getNaturalidade().toUpperCase();
         this.rendaMensal = pessoaFisica.getRendaMensal();
-        this.indicadoCrs = pessoaFisica.getIndicadoCrs().isEmpty() ? "N" : pessoaFisica.getIndicadoCrs();
-        this.indicadorFacta = pessoaFisica.getIndicadorFacta().isEmpty() ? "N" : pessoaFisica.getIndicadorFacta();
-        this.indicadorPpe = pessoaFisica.getIndicadorPpe().isEmpty() ? "N" : pessoaFisica.getIndicadorPpe();
+        this.indicadoCrs = pessoaFisica.isIndicadoCrs();
+        this.indicadorFacta = pessoaFisica.isIndicadorFacta();
+        this.indicadorPpe = pessoaFisica.isIndicadorPpe();
         this.especificacaoPpe = pessoaFisica.getEspecificacaoPpe();
-        this.especificacaoIg = pessoaFisica.getEspecificacaoIg();
+        this.especificacaoIG = pessoaFisica.getEspecificacaoIg();
         this.especificacaoOs = pessoaFisica.getEspecificacaoOs();
-        this.grauDeInstrucao = pessoaFisica.getGrauDeInstrucao();
     }
 
     public void update(PessoaFisica pessoa) {
         this.nomeSocial = pessoa.getNomeSocial().toUpperCase();
-        this.resideExterior = pessoa.getResideExterior();
+        this.resideExterior = pessoa.isResideExterior();
         this.dataObito = pessoa.getDataObito();
         this.sexo = pessoa.getSexo();
-        this.estadoCivil = pessoa.getEstadoCivil();
         this.rendaMensal = pessoa.getRendaMensal();
-        this.indicadorFacta = pessoa.getIndicadorFacta().isEmpty() ? "N" : pessoa.getIndicadorFacta();
-        this.indicadoCrs = pessoa.getIndicadoCrs().isEmpty() ? "N" : pessoa.getIndicadoCrs();
-        this.indicadorPpe = pessoa.getIndicadorPpe().isEmpty() ? "N" : pessoa.getIndicadorPpe();
+        this.indicadorFacta = pessoa.isIndicadorFacta();
+        this.indicadoCrs = pessoa.isIndicadoCrs();
+        this.indicadorPpe = pessoa.isIndicadorPpe();
         this.especificacaoPpe = pessoa.getEspecificacaoPpe();
-        this.grauDeInstrucao = pessoa.getGrauDeInstrucao();
     }
 
 }

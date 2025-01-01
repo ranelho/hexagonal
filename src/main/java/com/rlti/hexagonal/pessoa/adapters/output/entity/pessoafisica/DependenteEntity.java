@@ -13,7 +13,8 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "TB_DEPENDENTE")
+@Entity
+@Table(name = "TB_DEPENDENTE")
 public class DependenteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

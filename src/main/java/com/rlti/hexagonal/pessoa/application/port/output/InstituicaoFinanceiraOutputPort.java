@@ -20,4 +20,6 @@ public interface InstituicaoFinanceiraOutputPort {
     Agencia buscarAgencia(Long idAgencia);
 
     Page<Agencia> listarAgenciasPorBanco(Long idBanco, int page, int size);
+
+    void save(Banco banco);
 }

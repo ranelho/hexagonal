@@ -11,7 +11,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "TB_ORIENTACAO_SEXUAL")
+@Entity
+@Table(name = "TB_ORIENTACAO_SEXUAL")
 public class OrientacaoSexualEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "EMAIL")
+@Entity(name = "TB_EMAIL")
 public class EmailEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -24,7 +24,7 @@ public class EmailEntity {
     private TipoEmail tipoEmail;
 
     @ManyToOne
-    @JoinColumn(name = "id_pessoa", referencedColumnName = "id_pessoa")
+    @JoinColumn(name = "ID_PESSOA", referencedColumnName = "ID_PESSOA")
     @JsonIgnore
     private PessoaEntity pessoa;
 

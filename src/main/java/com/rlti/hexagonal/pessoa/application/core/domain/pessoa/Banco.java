@@ -7,17 +7,20 @@ public class Banco {
     private String nome;
     private String codigo;
     private String cnpj;
+    private String siteNaInternet;
     private String inscricaoEstadual;
 
     List<Agencia> agencias;
 
     public Banco() {
     }
-    public Banco(Long idBanco, String nome, String codigo, String cnpj, String inscricaoEstadual, List<Agencia> agencias) {
+
+    public Banco(Long idBanco, String nome, String codigo, String cnpj, String siteNaInternet, String inscricaoEstadual, List<Agencia> agencias) {
         this.idBanco = idBanco;
         this.nome = nome;
         this.codigo = codigo;
         this.cnpj = cnpj;
+        this.siteNaInternet = siteNaInternet;
         this.inscricaoEstadual = inscricaoEstadual;
         this.agencias = agencias;
     }
@@ -52,6 +55,14 @@ public class Banco {
 
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
+    }
+
+    public String getSiteNaInternet() {
+        return siteNaInternet;
+    }
+
+    public void setSiteNaInternet(String siteNaInternet) {
+        this.siteNaInternet = siteNaInternet;
     }
 
     public String getInscricaoEstadual() {

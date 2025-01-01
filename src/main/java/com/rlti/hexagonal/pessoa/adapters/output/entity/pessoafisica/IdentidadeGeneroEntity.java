@@ -10,7 +10,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "TB_IDENTIDADE_GENERO")
+@Entity
+@Table(name = "TB_IDENTIDADE_GENERO")
 public class IdentidadeGeneroEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

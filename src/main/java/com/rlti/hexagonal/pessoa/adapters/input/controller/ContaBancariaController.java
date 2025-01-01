@@ -21,5 +21,4 @@ public class ContaBancariaController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-
 }

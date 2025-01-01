@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.pessoa.adapters.config;
+package com.rlti.hexagonal.pessoa.config;
 
 import com.rlti.hexagonal.pessoa.application.core.usecase.InstituicaoFinanceiraUseCase;
 import com.rlti.hexagonal.pessoa.application.port.output.InstituicaoFinanceiraOutputPort;

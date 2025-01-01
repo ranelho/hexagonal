@@ -2,10 +2,7 @@ package com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.PaisEntity;
-import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.IdentidadeGeneroEntity;
-import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.OrientacaoSexualEntity;
-import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.PessoaFisicaEntity;
-import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.ProfissaoEntity;
+import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.*;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.PessoaJuridicaEntity;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
@@ -23,23 +20,25 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "PESSOA")
+@Entity
+@Table(name = "TB_PESSOA")
 public class PessoaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pessoa_seq_generator")
-    @SequenceGenerator(name = "pessoa_seq_generator", sequenceName = "pessoa_sequence", allocationSize = 1)
-    @Column(name = "id_pessoa")
+    @SequenceGenerator(name = "pessoa_seq_generator", sequenceName = "TB_PESSOA_ID_PESSOA_seq", allocationSize = 1)
+    @Column(name = "ID_PESSOA")
     private Long idPessoa;
 
     @Enumerated(EnumType.STRING)
-    @Column(updatable = false)
+    @Column(name = "TP_PESSOA")
     private Tipo tipo;
 
-    @Column(nullable = false)
+    @Column(name = "NOM_PESSOA")
     private String nome;
 
     @CreatedDate
+    @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
 
     @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
@@ -63,9 +62,9 @@ public class PessoaEntity {
     public PessoaEntity(Pessoa pessoa,
                         PaisEntity pais,
                         OrientacaoSexualEntity orientacao,
-                        IdentidadeGeneroEntity identidadeGenero, ProfissaoEntity profissao) {
+                        IdentidadeGeneroEntity identidadeGenero, ProfissaoEntity profissao, EstadoCivilEntity estadoCivil) {
         inicializarCamposComuns(pessoa);
-        this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica(), pais, orientacao, identidadeGenero, profissao);
+        this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica(), pais, orientacao, identidadeGenero, profissao, estadoCivil);
         this.pessoaFisica.setPessoa(this);
     }
 

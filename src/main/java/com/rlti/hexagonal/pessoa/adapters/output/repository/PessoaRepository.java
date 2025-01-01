@@ -10,8 +10,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface PessoaRepository extends JpaRepository<PessoaEntity, Long>  {
 
-    @Query("SELECT p FROM PESSOA p " +
-            "INNER JOIN PESSOA_FISICA pf on pf.idPessoa = p.idPessoa " +
+    @Query("SELECT p FROM PessoaEntity p " +
+            "INNER JOIN PessoaFisicaEntity pf on pf.idPessoaFisica = p.idPessoa " +
             "WHERE (:nome IS NULL OR UPPER(p.nome) LIKE %:nome% ) AND " +
             "(:dataNascimento IS NULL OR TO_CHAR(pf.dataNascimento, 'yyyy-MM-dd') = :dataNascimento) AND" +
             "(:sexo IS NULL OR pf.sexo = :sexo) AND " +

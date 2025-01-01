@@ -13,17 +13,16 @@ import java.util.Optional;
 public interface PessoaFisicaRepository extends JpaRepository<PessoaFisicaEntity, Long> {
     Optional<PessoaFisicaEntity> findByCpf(String cpf);
 
-    @Query("SELECT pf FROM PESSOA_FISICA pf " +
-            "INNER JOIN PESSOA p on p.idPessoa = pf.idPessoa " +
-            "WHERE (:nome IS NULL OR UPPER(p.nome) LIKE %:nome% ) AND " +
-            "(:dataNascimento IS NULL OR TO_CHAR(pf.dataNascimento, 'yyyy-MM-dd') = :dataNascimento) AND" +
+    @Query("SELECT pf FROM PessoaFisicaEntity pf " +
+            "INNER JOIN PessoaEntity p ON p.idPessoa = pf.idPessoaFisica " +
+            "WHERE (:nome IS NULL OR UPPER(p.nome) LIKE %:nome%) AND " +
+            "(:dataNascimento IS NULL OR TO_CHAR(pf.dataNascimento, 'yyyy-MM-dd') = :dataNascimento) AND " +
             "(:sexo IS NULL OR pf.sexo = :sexo) AND " +
-            "(:cpf IS NULL OR pf.cpf = :cpf)  ")
+            "(:cpf IS NULL OR pf.cpf = :cpf)")
     Page<PessoaFisicaEntity> findWithFilters(
             @Param("nome") String nome,
             @Param("dataNascimento") String dataNascimento,
             @Param("sexo") Sexo sexo,
             @Param("cpf") String cpf,
-            Pageable pageable
-    );
+            Pageable pageable);
 }

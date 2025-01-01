@@ -80,6 +80,12 @@ public class InstituicaoFinanceiraAdapter implements InstituicaoFinanceiraOutput
         return new PageImpl<>(agencias, pageable, agenciasEntity.getTotalElements());
     }
 
+    @Override
+    public void save(Banco banco) {
+        var bancoEntity = modelMapper.map(banco, BancoEntity.class);
+        bancoRepository.save(bancoEntity);
+    }
+
     private BancoEntity getBancoEntity(Long id) {
         return bancoRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Banco não encontrado"));

@@ -16,16 +16,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-@Entity(name = "TB_PESSOA_JURIDICA")
+@Entity
+@Table(name = "TB_PESSOA_JURIDICA")
 public class PessoaJuridicaEntity {
 
     @Id
-    @Column(name = "ID_PESSOA_JURIDICA")
-    private Long idPessoa;
+    private Long idPessoaJuridica;
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "ID_PESSOA")
+    @JoinColumn(name = "ID_PESSOA_JURIDICA")
     private PessoaEntity pessoa;
 
     @CNPJ

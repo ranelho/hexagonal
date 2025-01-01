@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.pessoa.handler;
+package com.rlti.hexagonal.handler;
 
 public class EntidadeNaoEncontradaException extends RuntimeException {
     public EntidadeNaoEncontradaException(String message) {

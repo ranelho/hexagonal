@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "PAIS")
+@Entity(name = "TB_PAIS")
 public class PaisEntity {
 
     @Id

@@ -12,6 +12,10 @@ public class OrientacaoSexual {
         this.descricao = descricao;
     }
 
+    public OrientacaoSexual(Long orientacaoSexualId) {
+        this.idOrientacaoSexual = orientacaoSexualId;
+    }
+
     public Long getIdOrientacaoSexual() {
         return idOrientacaoSexual;
     }

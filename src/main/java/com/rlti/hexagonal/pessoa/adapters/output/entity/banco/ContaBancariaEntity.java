@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "CONTA_BANCARIA")
+@Entity(name = "TB_CONTA_BANCARIA")
 public class ContaBancariaEntity {
 
     @Id

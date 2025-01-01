@@ -10,7 +10,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "TB_COR_RACA")
+@Entity
+@Table(name = "TB_COR_RACA")
 public class CorRacaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

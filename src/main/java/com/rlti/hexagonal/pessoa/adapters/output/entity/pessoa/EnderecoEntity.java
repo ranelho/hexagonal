@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "ENDERECO")
+@Entity(name = "TB_ENDERECO")
 public class EnderecoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -30,7 +30,7 @@ public class EnderecoEntity {
     private String indicadorFaturamento;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_pessoa", referencedColumnName = "id_pessoa")
+    @JoinColumn(name = "ID_PESSOA", referencedColumnName = "ID_PESSOA")
     private PessoaEntity pessoa;
 
     public EnderecoEntity(PessoaEntity pessoa, Endereco endereco) {
