@@ -47,10 +47,17 @@ public class PessoaController {
         return ResponseEntity.ok(detalhes);
     }
 
-    @PostMapping
+    /*@PostMapping
     public ResponseEntity<Void> criarPessoa(@RequestBody @Valid PessoaRequest request) {
         Long idSalvo = pessoaInputPort.criarPessoa(request);
         URI location = URI.create(String.format("/pessoas/%d", idSalvo));
+        return ResponseEntity.created(location).build();
+    }*/
+
+    @PostMapping("/fisica")
+    public ResponseEntity<Void> criarPessoaFisica(@RequestBody @Valid PessoaFisicaRequest request) {
+        Long idSalvo = pessoaInputPort.criarPessoaFisica(request);
+        URI location = URI.create(String.format("/pessoa-fisica/%d", idSalvo));
         return ResponseEntity.created(location).build();
     }
 

@@ -1,9 +1,6 @@
 package com.rlti.hexagonal.pessoa.application.core.usecase;
 
-import com.rlti.hexagonal.pessoa.adapters.input.request.EmailRequest;
-import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFilterParam;
-import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFisicaUpdateRequest;
-import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.*;
 import com.rlti.hexagonal.pessoa.adapters.output.response.*;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Email;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
@@ -24,11 +21,11 @@ public class PessoaUserCase implements PessoaInputPort {
         this.modelMapper = modelMapper;
     }
 
-    @Override
+ /*   @Override
     public Long criarPessoa(PessoaRequest request) {
         var pessoa = new Pessoa(request);
         return pessoaOutputPort.salvar(pessoa);
-    }
+    }*/
 
     @Override
     public Page<PessoaResponse> listarPessoas(int page, int size) {
@@ -82,6 +79,13 @@ public class PessoaUserCase implements PessoaInputPort {
     public Page<PessoaFisicaResponse> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params) {
         var pessoasFisicas = pessoaOutputPort.listPessoasFisicasWithFilter(pageable, params);
         return PessoaFisicaResponse.converte(pessoasFisicas);
+    }
+
+    @Override
+    public Long criarPessoaFisica(PessoaFisicaRequest request) {
+        var pessoa = new Pessoa(request);
+        return pessoaOutputPort.criarPessoaFisica(pessoa);
+
     }
 
 

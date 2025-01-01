@@ -6,13 +6,14 @@ import com.rlti.hexagonal.pessoa.application.core.domain.enums.Sexo;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.Data;
+import lombok.Getter;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Data
-public class PessoaFisicaRequest {
+@Getter
+public class PessoaFisicaRequest extends PessoaRequest {
     @NotNull @CPF(message = "CPF inválido")
   //  @Pattern(regexp = "^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$", message = "CPF inválido")
     private String cpf;

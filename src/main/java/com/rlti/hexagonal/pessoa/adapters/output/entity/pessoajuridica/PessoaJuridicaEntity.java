@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CNPJ;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,29 +16,45 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-@Entity(name = "PESSOA_JURIDICA")
+@Entity(name = "TB_PESSOA_JURIDICA")
 public class PessoaJuridicaEntity {
 
     @Id
-    @Column(name = "id_pessoa")
+    @Column(name = "ID_PESSOA_JURIDICA")
     private Long idPessoa;
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "idPessoa")
+    @JoinColumn(name = "ID_PESSOA")
     private PessoaEntity pessoa;
 
     @CNPJ
-    @Column(unique = true, updatable = false, nullable = false)
+    @Column(name= "NUM_CNPJ",unique = true, updatable = false, nullable = false)
     private String cnpj;
 
-    @Column(nullable = false)
+    @Column(name = "DSC_RAZAO_SOCIAL", nullable = false)
     private String razaoSocial;
-    private LocalDate dataAbertura;
+
+    @Column(name = "NOM_FANTASIA")
     private String nomeFantasia;
+
+    @Column(name = "NUM_INSCRICAO_ESTADUAL")
     private String inscricaoEstadual;
+
+    @Column(name = "NUM_INSCRICAO_MUNICIPAL")
     private String inscricaoMunicipal;
+
+    @Column(name = "STS_SITUACAO")
     private String situacao;
+
+    @Column(name = "NUM_CNPJ_MATRIZ")
+    private String cnpjMatriz;
+
+    @Column(name = "TIP_NATUREZA_JURIDICA")
+    private String tipoNaturezaJuridica;
+
+    @Column(name = "ID_ITEM_NATUREZA_JURIDICA")
+    private Long idItemNaturezaJuridica;
 
     @OneToMany(mappedBy = "pessoaJuridica", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

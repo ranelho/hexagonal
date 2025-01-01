@@ -1,13 +1,13 @@
 package com.rlti.hexagonal.pessoa.adapters.input.request;
 
-import lombok.Data;
+import lombok.Getter;
 import org.hibernate.validator.constraints.br.CNPJ;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
-public class PessoaJuridicaRequest {
+@Getter
+public class PessoaJuridicaRequest extends PessoaRequest {
     @CNPJ(message = "CNPJ inválido")
    // @Pattern(regexp = "^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$", message = "CNPJ deve estar no formato 99.999.999/9999-99")
     private String cnpj;

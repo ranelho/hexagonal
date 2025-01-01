@@ -8,10 +8,10 @@ spring:
     username: teste_pwc
     password: Dev@135246
   jpa:
-    generate-ddl: true
+    #generate-ddl: true
     properties:
       hibernate:
-        ddl-auto: update
+        #ddl-auto: update
         show_sql: true
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect

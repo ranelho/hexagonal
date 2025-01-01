@@ -42,7 +42,7 @@ public class PessoaEntity {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
     private PessoaFisicaEntity pessoaFisica;
 
     @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)

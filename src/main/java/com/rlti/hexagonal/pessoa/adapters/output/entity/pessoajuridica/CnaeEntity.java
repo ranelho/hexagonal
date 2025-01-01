@@ -15,17 +15,17 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "cnaes")
+@Entity(name = "TB_CNAE")
 public class CnaeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "NUM_SUBCLASSE", nullable = false, unique = true)
     private String subclasse;
 
-    @Column(nullable = false)
+    @Column(name = "DSC_DENOMINACAO", nullable = false)
     private String denominacao;
 
     @OneToMany(mappedBy = "cnae", cascade = CascadeType.ALL, orphanRemoval = true)

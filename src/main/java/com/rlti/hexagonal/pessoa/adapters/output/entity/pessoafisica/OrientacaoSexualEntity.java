@@ -1,9 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,10 +11,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "ORIENTACAO_SEXUAL")
+@Entity(name = "TB_ORIENTACAO_SEXUAL")
 public class OrientacaoSexualEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_ORIENTACAO_SEXUAL")
     private Long idOrientacaoSexual;
+
+    @Column(name = "DSC_ORIENTACAO_SEXUAL")
     private String descricao;
 }

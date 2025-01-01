@@ -1,13 +1,12 @@
 package com.rlti.hexagonal.pessoa.application.core.domain.pessoa;
 
-import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaRequest;
+import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFisicaRequest;
+import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.PessoaJuridica;
-import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Pessoa {
     private Long idPessoa;
@@ -25,26 +24,26 @@ public class Pessoa {
     public Pessoa() {
     }
 
-    public Pessoa(PessoaRequest request) {
+    public Pessoa(PessoaFisicaRequest request) {
+        getComumPessoa(request);
+        this.pessoaFisica = new PessoaFisica(request);
+    }
+
+    private void getComumPessoa(PessoaFisicaRequest request) {
         this.tipo = request.getTipo();
         this.nome = request.getNome().toUpperCase();
 
         this.enderecos = request.getEnderecos().stream()
                 .map(Endereco::new)
-                .collect(Collectors.toList());
+                .toList();
 
         this.telefones = request.getTelefones().stream()
                 .map(Telefone::new)
-                .collect(Collectors.toList());
+                .toList();
 
         this.emails = request.getEmails().stream()
                 .map(Email::new)
-                .collect(Collectors.toList());
-        if (Tipo.FISICA == request.getTipo()){
-            this.pessoaFisica = new PessoaFisica(request.getPessoaFisica());
-        } else {
-            this.pessoaJuridica = new PessoaJuridica(request.getPessoaJuridica());
-        }
+                .toList();
     }
 
     public Pessoa(Long idPessoa, Tipo tipo, String nome, LocalDateTime createdAt, PessoaFisica pessoaFisica, PessoaJuridica pessoaJuridica, List<Endereco> enderecos, List<Telefone> telefones, List<Email> emails) {

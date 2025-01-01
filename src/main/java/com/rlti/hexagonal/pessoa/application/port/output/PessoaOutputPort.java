@@ -33,4 +33,6 @@ public interface PessoaOutputPort {
     void atualizarPessoa(Long idPessoa, PessoaFisica pessoa);
 
     Page<PessoaFisica> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params);
+
+    Long criarPessoaFisica(Pessoa pessoa);
 }

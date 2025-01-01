@@ -36,6 +36,9 @@ import java.util.function.LongFunction;
 @RequiredArgsConstructor
 public class PessoaAdapter implements PessoaOutputPort {
 
+    public static final String PESSOA_NAO_ENCONTRADA_COM_ID = "Pessoa não encontrada com ID: ";
+    public static final String JA_EXISTE = " já existe.";
+
     private final PessoaRepository pessoaRepository;
     private final PessoaFisicaRepository pessoaFisicaRepository;
     private final PessoaJuridicaRepository pessoaJuridicaRepository;
@@ -47,8 +50,6 @@ public class PessoaAdapter implements PessoaOutputPort {
     private final EmailRepository emailRepository;
     private final CnaeOutputPort cnaeOutputPort;
 
-    private final PessoaRepositoryCustom pessoaRepositoryCustom;
-
     @Override
     @Transactional
     public Long salvar(Pessoa pessoa) {
@@ -57,7 +58,7 @@ public class PessoaAdapter implements PessoaOutputPort {
         if (pessoa.getTipo() == Tipo.FISICA) {
             pessoaFisicaRepository.findByCpf(pessoa.getPessoaFisica().getCpf())
                     .ifPresentOrElse(existingPessoa -> {
-                        throw new DuplicidadeException("Pessoa com CPF " + pessoa.getPessoaFisica().getCpf() + " já existe.");
+                        throw new DuplicidadeException("Pessoa com CPF " + pessoa.getPessoaFisica().getCpf() + JA_EXISTE);
                     }, () -> {
                         var pais = findIfExists(pessoa.getPessoaFisica().getPaisId(), this::buscarPaisPorId);
                         var orientacao = findIfExists(pessoa.getPessoaFisica().getOrientacaoSexualId(), this::buscarOrientacaoSexualPorId);
@@ -70,7 +71,7 @@ public class PessoaAdapter implements PessoaOutputPort {
         } else if (pessoa.getTipo() == Tipo.JURIDICA) {
             pessoaJuridicaRepository.findByCnpj(pessoa.getPessoaJuridica().getCnpj())
                     .ifPresentOrElse(existingPessoa -> {
-                        throw new DuplicidadeException("Pessoa com CNPJ " + pessoa.getPessoaJuridica().getCnpj() + " já existe.");
+                        throw new DuplicidadeException("Pessoa com CNPJ " + pessoa.getPessoaJuridica().getCnpj() + JA_EXISTE);
                     }, () -> {
                         var pessoaJuridica = new PessoaEntity(pessoa);
                         pessoaRepository.save(pessoaJuridica);
@@ -104,7 +105,7 @@ public class PessoaAdapter implements PessoaOutputPort {
     @Override
     public PessoaFisica findById(Long idPessoa) {
         var pessoaEntity = pessoaFisicaRepository.findById(idPessoa)
-                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + idPessoa));
+                .orElseThrow(() -> new RuntimeException(PESSOA_NAO_ENCONTRADA_COM_ID + idPessoa));
         return modelMapper.map(pessoaEntity, PessoaFisica.class);
     }
 
@@ -121,14 +122,14 @@ public class PessoaAdapter implements PessoaOutputPort {
     @Override
     public Pessoa findPessoaById(Long idPessoa) {
         var pessoaEntity = pessoaRepository.findById(idPessoa)
-                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + idPessoa));
+                .orElseThrow(() -> new RuntimeException(PESSOA_NAO_ENCONTRADA_COM_ID + idPessoa));
         return modelMapper.map(pessoaEntity, Pessoa.class);
     }
 
     @Override
     public PessoaFisica findPessoaFisicaById(Long idPessoa) {
         var pessoaFisicaEntity = pessoaFisicaRepository.findById(idPessoa)
-                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada com ID: " + idPessoa));
+                .orElseThrow(() -> new RuntimeException(PESSOA_NAO_ENCONTRADA_COM_ID + idPessoa));
         return modelMapper.map(pessoaFisicaEntity, PessoaFisica.class);
     }
 
@@ -163,26 +164,22 @@ public class PessoaAdapter implements PessoaOutputPort {
     @Override
     public void salvarEmail(Long idPessoa, Email email) {
         var pessoa = pessoaRepository.findById(idPessoa)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Pessoa não encontrada com ID: " + idPessoa));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(PESSOA_NAO_ENCONTRADA_COM_ID + idPessoa));
         var emailEntity = new EmailEntity(email, pessoa);
         emailRepository.save(emailEntity);
     }
 
     @Override
     public void atualizarPessoa(Long idPessoa, PessoaFisica pessoa) {
-/*        var pessoaFisicaEntity = pessoaFisicaRepository.findById(idPessoa)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Pessoa não encontrada com ID: " + idPessoa));*/
         pessoaFisicaRepository.findById(idPessoa).ifPresentOrElse(
                 pessoaFisicaEntity -> {
                     pessoaFisicaEntity.update(pessoa);
                     pessoaFisicaRepository.save(pessoaFisicaEntity);
                 },
                 () -> {
-                    throw new EntidadeNaoEncontradaException("Pessoa não encontrada com ID: " + idPessoa);
+                    throw new EntidadeNaoEncontradaException(PESSOA_NAO_ENCONTRADA_COM_ID + idPessoa);
                 }
         );
-       /* pessoaFisicaEntity.update(pessoa);
-        pessoaFisicaRepository.save(pessoaFisicaEntity);*/
     }
 
     @Override
@@ -203,31 +200,28 @@ public class PessoaAdapter implements PessoaOutputPort {
 
     }
 
+    @Override
+    public Long criarPessoaFisica(Pessoa pessoa) {
+        AtomicReference<Long> idCriado = new AtomicReference<>();
+        pessoaFisicaRepository.findByCpf(pessoa.getPessoaFisica().getCpf())
+                .ifPresentOrElse(existingPessoa -> {
+                    throw new DuplicidadeException("Pessoa com CPF " + pessoa.getPessoaFisica().getCpf() + JA_EXISTE);
+                }, () -> {
+                    var pais = findIfExists(pessoa.getPessoaFisica().getPaisId(), this::buscarPaisPorId);
+                    var orientacao = findIfExists(pessoa.getPessoaFisica().getOrientacaoSexualId(), this::buscarOrientacaoSexualPorId);
+                    var identidadeGenero = findIfExists(pessoa.getPessoaFisica().getIdentidadeDeGeneroId(), this::buscarIdentidadeGeneroPorId);
+                    var profissao = findIfExists(pessoa.getPessoaFisica().getProfissaoId(), this::buscarProfissaoPorId);
+                    var pessoaFisica = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao);
+                    pessoaRepository.save(pessoaFisica);
+                    idCriado.set(pessoaFisica.getIdPessoa());
+                });
+        return idCriado.get();
+    }
+
     private ProfissaoEntity buscarProfissaoPorId(Long profissaoId) {
         return profissaoRepository.findById(profissaoId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Profissão não encontrada com ID: " + profissaoId));
     }
-
-    private void validarPessoa(Pessoa pessoa) {
-        if (pessoa == null) {
-            throw new IllegalArgumentException("Pessoa não pode ser nula.");
-        }
-        if (pessoa.getTipo() == null) {
-            throw new IllegalArgumentException("Tipo da pessoa deve ser informado.");
-        }
-    }
-
-  /*  private void verificarDuplicidadeCpf(String cpf) {
-        pessoaFisicaRepository.findByCpf(cpf).ifPresent(
-                existingPessoa -> {
-                    throw new DuplicidadeException("Pessoa com CPF " + cpf + " já existe.");
-                }
-        );
-    }*/
-
-    /*private <T> T findIfExists(Long id, Function<Long, T> buscaFunc) {
-        return id != null ? buscaFunc.apply(id) : null;
-    }*/
 
     private <T> T findIfExists(Long id, LongFunction<T> buscaFunc) {
         return id != null ? buscaFunc.apply(id) : null;
@@ -249,11 +243,4 @@ public class PessoaAdapter implements PessoaOutputPort {
         return identidadeGeneroRepository.findById(identidadeDeGeneroId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Identidade de gênero não encontrada com ID: " + identidadeDeGeneroId));
     }
-
-    /*private void validarDuplicidadePessoaJuridica(Pessoa pessoa) {
-        pessoaJuridicaRepository.findByCnpj(pessoa.getPessoaJuridica().getCnpj())
-                .ifPresent(existingPessoa -> {
-                    throw new DuplicidadeException("Pessoa com CNPJ " + pessoa.getPessoaJuridica().getCnpj() + " já existe.");
-                });
-    }*/
 }

@@ -11,19 +11,20 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "pessoa_juridica_cnae")
+@Entity(name = "TB_PESSOA_JURIDICA_CNAE")
 public class PessoaJuridicaCnaeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "ID_PESSOA_JURIDICA_CNAE")
+    private Long idPessoaJuridicaCnae;
 
     @ManyToOne
-    @JoinColumn(name = "pessoa_juridica_id", nullable = false)
+    @JoinColumn(name = "ID_PESSOA_JURIDICA", nullable = false)
     private PessoaJuridicaEntity pessoaJuridica;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "cnae_id", nullable = false)
+    @JoinColumn(name = "ID_CNAE", nullable = false)
     @JsonIgnore
     private CnaeEntity cnae;
 
