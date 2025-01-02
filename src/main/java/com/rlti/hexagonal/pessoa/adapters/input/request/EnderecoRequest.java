@@ -14,6 +14,6 @@ public class EnderecoRequest {
     private String cidade;
     private String uf;
     private TipoEndereco tipoEndereco;
-    private String indicadorCorrespondencia;
-    private String indicadorFaturamento;
+    private boolean indicadorCorrespondencia;
+    private boolean indicadorFaturamento;
 }

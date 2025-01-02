@@ -6,12 +6,15 @@ import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoTelefone;
 import java.util.List;
 
 public class Telefone {
-    private Long id;
+    private Long idTelefone;
     private TipoTelefone tipoTelefone;
     private String ddi;
     private String ddd;
     private String numeroTelefone;
     private Pessoa pessoa;
+
+    public Telefone() {
+    }
 
     public Telefone(TipoTelefone tipoTelefone, String ddi,String ddd,String numeroTelefone, Pessoa pessoa) {
         this.tipoTelefone = tipoTelefone;
@@ -39,8 +42,8 @@ public class Telefone {
         this.numeroTelefone = request.getNumeroTelefone();
     }
 
-    public Telefone(Long id, TipoTelefone tipoTelefone, String ddi, String ddd, String numeroTelefone, Pessoa pessoa) {
-        this.id = id;
+    public Telefone(Long idTelefone, TipoTelefone tipoTelefone, String ddi, String ddd, String numeroTelefone, Pessoa pessoa) {
+        this.idTelefone = idTelefone;
         this.tipoTelefone = tipoTelefone;
         this.ddi = ddi;
         this.ddd = ddd;
@@ -49,11 +52,11 @@ public class Telefone {
     }
 
     public Long getId() {
-        return id;
+        return idTelefone;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.idTelefone = id;
     }
 
     public TipoTelefone getTipoTelefone() {

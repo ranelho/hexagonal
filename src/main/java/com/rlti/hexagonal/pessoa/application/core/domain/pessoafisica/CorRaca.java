@@ -4,6 +4,9 @@ public class CorRaca {
     private Long id;
     private String corRaca;
 
+    public CorRaca() {
+    }
+
     public CorRaca(Long id, String corRaca) {
         this.id = id;
         this.corRaca = corRaca;

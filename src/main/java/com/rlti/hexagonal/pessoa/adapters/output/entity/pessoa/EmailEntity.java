@@ -3,6 +3,7 @@ package com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Email;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoEmail;
+import com.rlti.hexagonal.pessoa.config.PostgreSQLEnumConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,13 +15,18 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "TB_EMAIL")
+@Entity
+@Table(name = "TB_E_MAIL")
 public class EmailEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "ID_EMAIL")
     private Long idEmail;
+
+    @Column(name = "DSC_E_MAIL")
     private String email;
-    @Enumerated(EnumType.STRING)
+
+    @Enumerated(EnumType.STRING) @Column(name = "TIP_EMAIL") @Convert(converter = PostgreSQLEnumConverter.class)
     private TipoEmail tipoEmail;
 
     @ManyToOne

@@ -1,12 +1,5 @@
 package com.rlti.hexagonal.pessoa.application.core.domain.enums;
 
 public enum TipoLogradouro {
-    RUA,
-    AVENIDA,
-    TRAVESSA,
-    ESTRADA,
-    RODOVIA,
-    ALAMEDA,
-    LARGO,
-    OUTROS
+    ALM, AVN, BCO, CND, CPO, EST, FOL, LGO, PCA, PRA, QDA, ROD, RUA, TRA
 }
