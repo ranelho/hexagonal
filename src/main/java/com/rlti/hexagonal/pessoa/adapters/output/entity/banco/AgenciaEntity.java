@@ -11,7 +11,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "TB_AGENCIA_BANCARIA")
+@Entity
+@Table(name = "TB_AGENCIA_BANCARIA")
 public class AgenciaEntity {
     @Id
     @GeneratedValue(strategy =  GenerationType.SEQUENCE)

@@ -12,7 +12,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "TB_CONTA_BANCARIA")
+@Entity
+@Table(name = "TB_CONTA_BANCARIA")
 public class ContaBancariaEntity {
 
     @Id

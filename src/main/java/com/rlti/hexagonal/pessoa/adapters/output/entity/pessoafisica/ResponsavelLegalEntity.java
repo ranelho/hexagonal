@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "RESPONSAVEL_LEGAL")
+@Table(name = "TB_RESPONSAVEL_LEGAL")
 public class ResponsavelLegalEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

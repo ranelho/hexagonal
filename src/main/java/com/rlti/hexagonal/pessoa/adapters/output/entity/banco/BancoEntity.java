@@ -13,7 +13,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "TB_BANCO")
+@Entity
+@Table(name = "TB_BANCO")
 public class BancoEntity {
 
     @Id

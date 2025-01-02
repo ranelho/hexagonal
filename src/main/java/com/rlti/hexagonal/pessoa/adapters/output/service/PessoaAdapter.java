@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.LongFunction;
 
-import static com.rlti.hexagonal.util.Utils.*;
+import static com.rlti.hexagonal.util.Utils.findEntityById;
 
 @Service
 @RequiredArgsConstructor
@@ -75,9 +75,9 @@ public class PessoaAdapter implements PessoaOutputPort {
                                 () -> new EntidadeNaoEncontradaException("Identidade de gênero não encontrada com ID: " + pessoa.getPessoaFisica().getIdentidadeGenero().getIdIdentidadeDeGenero())
                         );
                         var profissao = findEntityById(
-                                pessoa.getPessoaFisica().getProfissao().getCodigo(),
+                                pessoa.getPessoaFisica().getProfissao().getIdProfissao(),
                                 profissaoRepository::findById,
-                                () -> new EntidadeNaoEncontradaException("Profissão não encontrada com código: " + pessoa.getPessoaFisica().getProfissao().getCodigo())
+                                () -> new EntidadeNaoEncontradaException("Profissão não encontrada com código: " + pessoa.getPessoaFisica().getProfissao().getIdProfissao())
                         );
                         var estadoCivil = findEntityById(
                                 pessoa.getPessoaFisica().getEstadoCivil().getIdEstadoCivil(),
@@ -208,7 +208,10 @@ public class PessoaAdapter implements PessoaOutputPort {
                 : null;
 
         var content = pessoaFisicaRepository.findWithFilters(params.getNome(),
-                dataString, params.getSexo(), params.getCpf(), pageable);
+                dataString,
+                //  params.getSexo(),
+                params.getCpf(),
+                pageable);
 
         List<PessoaFisica> results = content.stream()
                 .map(entity -> modelMapper.map(entity, PessoaFisica.class))
@@ -236,9 +239,9 @@ public class PessoaAdapter implements PessoaOutputPort {
                             () -> new EntidadeNaoEncontradaException("Identidade de gênero não encontrada com ID: " + pessoa.getPessoaFisica().getIdentidadeGenero().getIdIdentidadeDeGenero())
                     );
                     var profissao = findEntityById(
-                            pessoa.getPessoaFisica().getProfissao().getCodigo(),
+                            pessoa.getPessoaFisica().getProfissao().getIdProfissao(),
                             profissaoRepository::findById,
-                            () -> new EntidadeNaoEncontradaException("Profissão não encontrada com código: " + pessoa.getPessoaFisica().getProfissao().getCodigo())
+                            () -> new EntidadeNaoEncontradaException("Profissão não encontrada com código: " + pessoa.getPessoaFisica().getProfissao().getIdProfissao())
                     );
                     var estadoCivil = findEntityById(
                             pessoa.getPessoaFisica().getEstadoCivil().getIdEstadoCivil(),

@@ -9,7 +9,7 @@ import lombok.Getter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "TIPO_RESPONSAVEL_LEGAL")
+@Table(name = "TB_IPO_RESPONSAVEL_LEGAL")
 public class TipoResponsavelLegalEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

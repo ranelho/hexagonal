@@ -7,11 +7,11 @@ import java.util.List;
 
 @Data
 public class ProfissaoResponse {
-    private Long codigo;
+    private String codigo;
     private String nomeProfissao;
 
     public ProfissaoResponse(Profissao profissao) {
-        this.codigo = profissao.getCodigo();
+        this.codigo = profissao.getNumeroProfissao();
         this.nomeProfissao = profissao.getNomeProfissao();
     }
 

@@ -1,9 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output.entity.banco;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,13 +10,24 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "TB_PAIS")
+@Entity
+@Table(name = "TB_PAIS")
 public class PaisEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "ID_PAIS")
     private Long idPais;
+
+    @Column(name = "NOM_PAIS")
     private String nomePais;
-    private String sigla;
+
+    @Column(name = "DSC_ISO_ALPHA2")
+    private String isoAlpha2;
+
+    @Column(name = "DSC_ISO_ALPHA3")
+    private String isoAlpha3;
+
+    @Column(name = "DSC_NACIONALIDADE")
     private String nacionalidade;
 }

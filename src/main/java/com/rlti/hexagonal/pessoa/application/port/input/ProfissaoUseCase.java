@@ -46,7 +46,7 @@ public class ProfissaoUseCase implements ProfissaoInputPort {
                 }
 
                 try {
-                    Long codigo = Long.valueOf(nextLine[0].trim());
+                    String codigo =nextLine[0].trim();
                     String titulo = nextLine[1].trim();
 
                     // Cria a profissão a partir dos dados lidos

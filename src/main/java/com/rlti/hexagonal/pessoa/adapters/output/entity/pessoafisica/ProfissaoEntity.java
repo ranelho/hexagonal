@@ -1,6 +1,7 @@
 package com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica;
 
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.Profissao;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -12,19 +13,20 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "PROFISSAO")
+@Table(name = "TB_PROFISSAO")
 public class ProfissaoEntity {
     @Id
-    private Long codigo;
+    @Column(name = "ID_PROFISSAO")
+    private String idProfissao;
+
+    @Column(name = "NUM_PROFISSAO")
+    private String numeroProfissao;
+
+    @Column(name = "DSC_PROFISSAO")
     private String nomeProfissao;
 
-    public ProfissaoEntity(Long codigo, String titulo) {
-        this.codigo =  codigo;
-        this.nomeProfissao = titulo;
-    }
-
     public ProfissaoEntity(Profissao profissao) {
-        this.codigo = profissao.getCodigo();
+        this.numeroProfissao = profissao.getNomeProfissao();
         this.nomeProfissao = profissao.getNomeProfissao();
     }
 }
