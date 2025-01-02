@@ -19,11 +19,20 @@ public class BancoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "ID_BANCO")
     private Long idBanco;
+
+    @Column(name = "NOM_BANCO")
     private String nome;
+
+    @Column(name = "NUM_BANCO")
     private String codigo;
+
+    @Column(name = "NUM_CNPJ")
     private String cnpj;
-    private String inscricaoEstadual;
+
+    @Column(name = "STS_INDICADOR_INATIVACAO")
+    private boolean indicadorInativacao;
 
     @OneToMany(mappedBy = "banco", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<AgenciaEntity> agencias;
@@ -32,7 +41,7 @@ public class BancoEntity {
         this.nome = banco.getNome();
         this.codigo = banco.getCodigo();
         this.cnpj = banco.getCnpj();
-        this.inscricaoEstadual = banco.getInscricaoEstadual();
+        this.indicadorInativacao = banco.isIndicadorInativacao();
     }
 
 }

@@ -12,6 +12,5 @@ public class AgenciaRequest {
     private String cidade;
     private String uf;
     private String cep;
-    private String pais;
     private String numero;
 }

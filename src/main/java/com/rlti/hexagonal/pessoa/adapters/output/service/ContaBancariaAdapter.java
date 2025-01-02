@@ -22,7 +22,7 @@ public class ContaBancariaAdapter implements ContaBancariaOutputPort {
         var pessoa = pessoaRepository.findById(idPessoa).orElseThrow(
                 () -> new RuntimeException("Pessoa não encontrada")
         );
-        var agencia = agenciaRepository.findById(contaBancaria.getIdAgencia()).orElseThrow(
+        var agencia = agenciaRepository.findById(contaBancaria.getIdContaBancaria()).orElseThrow(
                 () -> new RuntimeException("Agência não encontrada")
         );
         var conta = new ContaBancariaEntity(pessoa, contaBancaria, agencia);

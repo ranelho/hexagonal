@@ -1,6 +1,7 @@
 package com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.ContaBancariaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.PaisEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.*;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.PessoaJuridicaEntity;
@@ -58,6 +59,10 @@ public class PessoaEntity {
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<TelefoneEntity> telefones;
+
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<ContaBancariaEntity> contas;
 
     public PessoaEntity(Pessoa pessoa,
                         PaisEntity pais,

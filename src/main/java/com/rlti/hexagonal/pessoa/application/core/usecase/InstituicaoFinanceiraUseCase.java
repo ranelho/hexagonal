@@ -86,7 +86,7 @@ public class InstituicaoFinanceiraUseCase implements InstituicaoFinanceiraInputP
                     Banco banco = new Banco();
                     banco.setCnpj(row.getCell(0).getStringCellValue());
                     banco.setNome(row.getCell(1).getStringCellValue());
-                    banco.setSiteNaInternet(row.getCell(13).getStringCellValue());
+                  //  banco.setSiteNaInternet(row.getCell(13).getStringCellValue());
                     instituicaoFinanceiraOutputPort.save(banco);
                 }
             }
