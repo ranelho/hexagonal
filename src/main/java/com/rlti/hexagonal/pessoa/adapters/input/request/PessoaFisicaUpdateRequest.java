@@ -1,7 +1,7 @@
 package com.rlti.hexagonal.pessoa.adapters.input.request;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.enums.EstadoCivil;
-import com.rlti.hexagonal.pessoa.application.core.domain.enums.GrauDeInstrucao;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.EstadoCivil;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.GrauInstrucao;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Sexo;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -21,5 +21,5 @@ public class PessoaFisicaUpdateRequest {
     private String indicadoCrs;
     private String indicadorPpe;
     private String especificacaoPpe;
-    private GrauDeInstrucao grauDeInstrucao;
+    private GrauInstrucao grauInstrucao;
 }

@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.enums.EstadoCivil;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.EstadoCivil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

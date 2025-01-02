@@ -9,7 +9,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Data //todo - remove lombok
 public class Pessoa {
     private Long idPessoa;
     private Tipo tipo;

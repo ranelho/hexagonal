@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.pessoa.application.core.domain.enums;
+package com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica;
 
 public class EstadoCivil {
     Long idEstadoCivil;

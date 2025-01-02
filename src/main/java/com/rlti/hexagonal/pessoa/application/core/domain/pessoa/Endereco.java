@@ -4,7 +4,7 @@ import com.rlti.hexagonal.pessoa.adapters.input.request.EnderecoRequest;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoEndereco;
 import lombok.Data;
 
-@Data
+@Data //todo - remove lombok
 public class Endereco {
     private Long idEndereco;
     private String cep;

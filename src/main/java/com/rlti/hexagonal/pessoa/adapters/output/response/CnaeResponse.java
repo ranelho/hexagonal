@@ -1,27 +1,28 @@
 package com.rlti.hexagonal.pessoa.adapters.output.response;
 
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.Cnae;
-import lombok.Data;
 
 import java.util.List;
 
-@Data
-public class CnaeResponse {
-
-    private Long id;
-    private String subclasse;
-    private String denominacao;
-    boolean isPrincipal;
+public record CnaeResponse(
+        Long id,
+        String subclasse,
+        String denominacao,
+        boolean isPrincipal) {
 
     public CnaeResponse(Cnae cnae) {
-        this.id = cnae.getId();
-        this.subclasse = cnae.getSubclasse();
-        this.denominacao = cnae.getDenominacao();
-        this.isPrincipal = cnae.isPrincipal();
+        this(
+                cnae.getId(),
+                cnae.getSubclasse(),
+                cnae.getDenominacao(),
+                cnae.isPrincipal()
+        );
     }
 
     public static List<CnaeResponse> convert(List<Cnae> cnaes) {
-        return cnaes.stream().map(CnaeResponse::new).toList();
+        return cnaes.stream()
+                .map(CnaeResponse::new)
+                .toList();
     }
 
     public static CnaeResponse getPrincipal(List<Cnae> cnaes) {

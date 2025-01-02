@@ -2,23 +2,24 @@ package com.rlti.hexagonal.pessoa.adapters.output.response;
 
 
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Email;
-import lombok.Data;
 
 import java.util.List;
 
-@Data
-public class EmailResponse {
-    private Long idEmail;
-    private String email;
-    private String tipoEmail;
+public record EmailResponse(
+        Long idEmail,
+        String email,
+        String tipoEmail) {
 
-    public  EmailResponse(Email email){
-        this.idEmail = email.getIdEmail();
-        this.email = email.getEmail();
-        this.tipoEmail = email.getTipoEmail().toString();
+    public EmailResponse(Email email) {
+        this(
+                email.getIdEmail(),
+                email.getEmail(),
+                email.getTipoEmail().toString()
+        );
     }
-
     public static List<EmailResponse> converte(List<Email> emails) {
-        return emails.stream().map(EmailResponse::new).toList();
+        return emails.stream()
+                .map(EmailResponse::new)
+                .toList();
     }
 }

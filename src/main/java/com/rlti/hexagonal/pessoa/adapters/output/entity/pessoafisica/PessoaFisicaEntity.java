@@ -3,7 +3,6 @@ package com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica;
 import com.rlti.hexagonal.pessoa.config.PostgreSQLEnumConverter;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.PaisEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.PessoaEntity;
-import com.rlti.hexagonal.pessoa.application.core.domain.enums.EstadoCivil;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Sexo;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
 import jakarta.persistence.*;

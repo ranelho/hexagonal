@@ -1,11 +1,8 @@
 package com.rlti.hexagonal.pessoa.adapters.output.response;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pais;
-import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
-import com.rlti.hexagonal.pessoa.application.core.domain.enums.EstadoCivil;
-import com.rlti.hexagonal.pessoa.application.core.domain.enums.GrauDeInstrucao;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.*;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
-import lombok.Data;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pais;
 import org.springframework.data.domain.Page;
 
 import java.math.BigDecimal;
@@ -14,87 +11,64 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-@Data
-public class PessoaFisicaDetalheResponse {
-    private Long id;
-    private String cpf;
-    private String nome;
-    private Tipo tipo;
-    private LocalDate dataNascimento;
-    private LocalDate dataObito;
-    private String sexo;
-    private String nacionalidade;
-    private String estadoCivil;
-    private String nomePai;
-    private String nomeMae;
-    private String estrangeiro ;
-    private String naturalidade;
-    private BigDecimal rendaMensal;
-    private boolean indicadorFacta ;
-    private boolean indicadoCrs;
-    private boolean indicadorPpe ;
-
-    private GrauDeInstrucao grauDeInstrucao;
-    private List<TelefoneResponse> telefones;
-    private List<EmailResponse> emails;
-    private List<EnderecoResponse> enderecos;
-    private AutoDeclaracaoResponse autoDeclaracao;
-    private List<ContaBancariaResponse> contaBancaria;
-
+public record PessoaFisicaDetalheResponse(
+        Long id,
+        String cpf,
+        String nome,
+        Tipo tipo,
+        LocalDate dataNascimento,
+        LocalDate dataObito,
+        String sexo,
+        String nacionalidade,
+        String estadoCivil,
+        String nomePai,
+        String nomeMae,
+        String estrangeiro,
+        String naturalidade,
+        BigDecimal rendaMensal,
+        boolean indicadorFacta,
+        boolean indicadoCrs,
+        boolean indicadorPpe,
+        String especificacaoPpe,
+        GrauInstrucao grauInstrucao,
+        List<TelefoneResponse> telefones,
+        List<EmailResponse> emails,
+        List<EnderecoResponse> enderecos,
+        AutoDeclaracaoResponse autoDeclaracao,
+        List<ContaBancariaResponse> contaBancaria
+) {
     public PessoaFisicaDetalheResponse(PessoaFisica pessoaFisica) {
-        this.id = pessoaFisica.getIdPessoaFisica();
-        this.cpf = pessoaFisica.getCpf();
-        this.nome = pessoaFisica.getPessoa().getNome();
-        this.tipo = pessoaFisica.getPessoa().getTipo();
-        this.dataNascimento = pessoaFisica.getDataNascimento();
-        this.sexo = pessoaFisica.getSexo().toString();
-        this.nomePai = pessoaFisica.getNomePai();
-        this.nomeMae = pessoaFisica.getNomeMae();
-        this.estrangeiro = pessoaFisica.getEstrangeiro();
-        this.naturalidade = pessoaFisica.getNaturalidade();
-        this.rendaMensal = pessoaFisica.getRendaMensal();
-        this.indicadorFacta = pessoaFisica.isIndicadorFacta();
-        this.indicadoCrs = pessoaFisica.isIndicadoCrs();
-        this.indicadorPpe = pessoaFisica.isIndicadorPpe();
-        this.grauDeInstrucao = pessoaFisica.getGrauDeInstrucao();
-
-        this.nacionalidade = Optional.ofNullable(pessoaFisica.getPais())
-                .map(Pais::getNome)
-                .orElse(null);
-
-        this.estadoCivil = Optional.ofNullable(pessoaFisica.getEstadoCivil())
-                .map(EstadoCivil::getNomeEstadoCivil)
-                .orElse(null);
-
-        this.telefones = List.copyOf(
-                Optional.ofNullable(pessoaFisica.getPessoa().getTelefones())
-                        .map(TelefoneResponse::converte)
-                        .orElse(Collections.emptyList())
-        );
-
-        this.emails = List.copyOf(
-                Optional.ofNullable(pessoaFisica.getPessoa().getEmails())
-                        .map(EmailResponse::converte)
-                        .orElse(Collections.emptyList())
-        );
-
-        this.enderecos = List.copyOf(
-                Optional.ofNullable(pessoaFisica.getPessoa().getEnderecos())
-                        .map(EnderecoResponse::converte)
-                        .orElse(Collections.emptyList())
-        );
-
-        this.contaBancaria = List.copyOf(
-                Optional.ofNullable(pessoaFisica.getPessoa().getContas())
-                        .map(ContaBancariaResponse::converte)
-                        .orElse(Collections.emptyList())
-        );
-
-        this.autoDeclaracao = new AutoDeclaracaoResponse(
+        this(
+                pessoaFisica.getIdPessoaFisica(),
+                pessoaFisica.getCpf(),
+                pessoaFisica.getPessoa().getNome(),
+                pessoaFisica.getPessoa().getTipo(),
+                pessoaFisica.getDataNascimento(),
+                null,
+                pessoaFisica.getSexo().toString(),
+                Optional.ofNullable(pessoaFisica.getPais()).map(Pais::getNome).orElse(null),
+                Optional.ofNullable(pessoaFisica.getEstadoCivil()).map(EstadoCivil::getNomeEstadoCivil).orElse(null),
+                pessoaFisica.getNomePai(),
+                pessoaFisica.getNomeMae(),
+                pessoaFisica.getEstrangeiro(),
+                pessoaFisica.getNaturalidade(),
+                pessoaFisica.getRendaMensal(),
+                pessoaFisica.isIndicadorFacta(),
+                pessoaFisica.isIndicadoCrs(),
+                pessoaFisica.isIndicadorPpe(),
                 pessoaFisica.getEspecificacaoPpe(),
-                pessoaFisica.getEspecificacaoIg(),
-                pessoaFisica.getEspecificacaoOs(),
-                pessoaFisica.getCorRaca().getCorRaca()
+                pessoaFisica.getGrauInstrucao(),
+                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getTelefones()).map(TelefoneResponse::converte).orElse(Collections.emptyList())),
+                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getEmails()).map(EmailResponse::converte).orElse(Collections.emptyList())),
+                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getEnderecos()).map(EnderecoResponse::converte).orElse(Collections.emptyList())),
+                new AutoDeclaracaoResponse(
+                        Optional.ofNullable(pessoaFisica.getIdentidadeGenero()).map(IdentidadeGenero::getIdentidadeDeGenero).orElse(null),
+                        pessoaFisica.getEspecificacaoIg(),
+                        Optional.ofNullable(pessoaFisica.getOrientacaoSexual()).map(OrientacaoSexual::getOrientacaoSexual).orElse(null),
+                        pessoaFisica.getEspecificacaoOs(),
+                        Optional.ofNullable(pessoaFisica.getCorRaca()).map(CorRaca::getCorRaca).orElse(null)
+                ),
+                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getContas()).map(ContaBancariaResponse::converte).orElse(Collections.emptyList()))
         );
     }
 

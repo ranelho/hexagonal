@@ -2,7 +2,7 @@ package com.rlti.hexagonal.pessoa.application.core.domain.pessoa;
 
 import lombok.Data;
 
-@Data
+@Data //todo - remove lombok
 public class Agencia {
     private Long idAgencia;
     private String agencia;

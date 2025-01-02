@@ -6,28 +6,30 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
-public class EnderecoResponse {
-    private String cep;
-    private String logradouro;
-    private String complemento;
-    private String bairro;
-    private String localidade;
-    private String uf;
+public record EnderecoResponse(
+        String cep,
+        String logradouro,
+        String complemento,
+        String bairro,
+        String localidade,
+        String uf) {
 
     public EnderecoResponse(Endereco endereco) {
-        this.cep = endereco.getCep();
-        this.logradouro = endereco.getLogradouro();
-        this.complemento = endereco.getComplemento();
-        this.bairro = endereco.getBairro();
-        this.localidade = endereco.getLocalidade();
-        this.uf = endereco.getUf();
+        this(
+                endereco.getCep(),
+                endereco.getLogradouro(),
+                endereco.getComplemento(),
+                endereco.getBairro(),
+                endereco.getLocalidade(),
+                endereco.getUf()
+        );
     }
 
     public static List<EnderecoResponse> converte(List<Endereco> enderecos) {
-        return enderecos.stream().map(EnderecoResponse::new).toList();
+        return enderecos.stream()
+                .map(EnderecoResponse::new)
+                .toList();
     }
 }

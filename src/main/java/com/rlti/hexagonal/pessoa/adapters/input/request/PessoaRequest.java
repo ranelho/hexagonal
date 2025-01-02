@@ -11,10 +11,13 @@ import java.util.List;
 
 @Data
 public class PessoaRequest {
-    @NotNull Tipo tipo;
-    @NotBlank String nome;
+    @NotNull
+    private Tipo tipo;
 
-    List<@Valid TelefoneRequest> telefones;
-    List<@Valid EmailRequest> emails;
-    List<@Valid EnderecoRequest> enderecos;
+    @NotBlank
+    private String nome;
+
+    private List<@Valid TelefoneRequest> telefones;
+    private List<@Valid EmailRequest> emails;
+    private List<@Valid EnderecoRequest> enderecos;
 }

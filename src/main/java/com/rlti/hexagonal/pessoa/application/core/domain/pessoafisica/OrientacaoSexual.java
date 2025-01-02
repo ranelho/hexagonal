@@ -2,14 +2,14 @@ package com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica;
 
 public class OrientacaoSexual {
     private Long idOrientacaoSexual;
-    private String descricao;
+    private String orientacaoSexual;
 
     public OrientacaoSexual() {
     }
 
-    public OrientacaoSexual(Long idOrientacaoSexual, String descricao) {
+    public OrientacaoSexual(Long idOrientacaoSexual, String orientacaoSexual) {
         this.idOrientacaoSexual = idOrientacaoSexual;
-        this.descricao = descricao;
+        this.orientacaoSexual = orientacaoSexual;
     }
 
     public OrientacaoSexual(Long orientacaoSexualId) {
@@ -24,11 +24,11 @@ public class OrientacaoSexual {
         this.idOrientacaoSexual = idOrientacaoSexual;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getOrientacaoSexual() {
+        return orientacaoSexual;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setOrientacaoSexual(String orientacaoSexual) {
+        this.orientacaoSexual = orientacaoSexual;
     }
 }

@@ -1,7 +1,5 @@
 package com.rlti.hexagonal.pessoa.adapters.input.request;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.enums.EstadoCivil;
-import com.rlti.hexagonal.pessoa.application.core.domain.enums.GrauDeInstrucao;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Sexo;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -16,14 +14,23 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class PessoaFisicaRequest extends PessoaRequest {
-    @NotNull @CPF(message = "CPF inválido")
+    @NotNull
+    @CPF(message = "CPF inválido")
     @Pattern(regexp = "^\\d{11}$", message = "CPF inválido")
     private String cpf;
+
     private String nomeSocial;
     private boolean resideExterior;
-    @NotNull @Past private LocalDate dataNascimento;
+
+    @NotNull
+    @Past
+    private LocalDate dataNascimento;
+
     private LocalDate dataObito;
-    @NotNull private Sexo sexo;
+
+    @NotNull
+    private Sexo sexo;
+
     private Long idEstadoCivil;
     private String nomePai;
     private String nomeMae;
@@ -35,10 +42,12 @@ public class PessoaFisicaRequest extends PessoaRequest {
     private boolean indicadorPpe;
     private String especificacaoPpe;
 
-    @NotNull private Long paisId;
+    @NotNull
+    private Long paisId;
+
     private Long idPaisCrs;
     private Long profissaoId;
-    private GrauDeInstrucao grauDeInstrucao;
+    private Long idGrauInstrucao;
     private Long identidadeDeGeneroId;
     private String especificacaoIg;
     private Long orientacaoSexualId;

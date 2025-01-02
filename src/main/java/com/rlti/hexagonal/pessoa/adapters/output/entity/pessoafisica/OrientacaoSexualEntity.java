@@ -20,5 +20,5 @@ public class OrientacaoSexualEntity {
     private Long idOrientacaoSexual;
 
     @Column(name = "DSC_ORIENTACAO_SEXUAL")
-    private String descricao;
+    private String orientacaoSexual;
 }

@@ -4,7 +4,7 @@ import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoChavePix;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoContaBancaria;
 import lombok.Data;
 
-@Data
+@Data //todo - remove lombok
 public class ContaBancaria {
     private Long idContaBancaria;
     private Pessoa pessoa;
