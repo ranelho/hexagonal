@@ -21,5 +21,7 @@ public class Agencia {
     public Agencia() {
     }
 
-
+    public Agencia(Long idAgencia) {
+        this.idAgencia = idAgencia;
+    }
 }

@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 public interface PessoaInputPort {
    /* Long criarPessoa(PessoaRequest request);*/
 
+    Long criarPessoaFisica(@Valid PessoaFisicaRequest request);
+
     Page<PessoaResponse> listarPessoas(int page, int size);
 
     PessoaResponse buscarPessoa(Long idPessoa);
@@ -27,5 +29,5 @@ public interface PessoaInputPort {
 
     Page<PessoaFisicaResponse> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params);
 
-    Long criarPessoaFisica(@Valid PessoaFisicaRequest request);
+
 }

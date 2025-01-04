@@ -10,7 +10,10 @@ import org.springframework.data.domain.Pageable;
 
 
 public interface PessoaOutputPort {
-    Long salvar(Pessoa pessoa);
+
+    Long criarPessoaFisica(Pessoa pessoa);
+
+    //Long salvar(Pessoa pessoa);
 
     Page<Pessoa> findAllPaginated(int page, int size);
 
@@ -34,5 +37,5 @@ public interface PessoaOutputPort {
 
     Page<PessoaFisica> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params);
 
-    Long criarPessoaFisica(Pessoa pessoa);
+
 }

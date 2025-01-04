@@ -15,12 +15,13 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
 @Table(name = "TB_PESSOA_FISICA")
-public class PessoaFisicaEntity  {
+public class PessoaFisicaEntity {
 
     @Id
     private Long idPessoaFisica;
@@ -31,7 +32,7 @@ public class PessoaFisicaEntity  {
     private PessoaEntity pessoa;
 
     @CPF
-    @Column(name= "NUM_CPF", unique = true, updatable = false, nullable = false)
+    @Column(name = "NUM_CPF", unique = true, updatable = false, nullable = false)
     private String cpf;
 
     @Column(name = "NOM_SOCIAL")
@@ -70,7 +71,7 @@ public class PessoaFisicaEntity  {
     private BigDecimal rendaMensal;
 
     @Column(name = "STS_INDICADOR_FATCA")
-    private boolean indicadorFacta ;
+    private boolean indicadorFacta;
 
     @Column(name = "DSC_MOTIVO_FATCA")
     private String motivoFacta;
@@ -86,7 +87,7 @@ public class PessoaFisicaEntity  {
     private PaisEntity paisCrs;
 
     @Column(name = "STS_INDICADOR_PPE")
-    private boolean indicadorPpe ;
+    private boolean indicadorPpe;
 
     @Column(name = "DSC_ESPECIFICACAO_PPE")
     private String especificacaoPpe;

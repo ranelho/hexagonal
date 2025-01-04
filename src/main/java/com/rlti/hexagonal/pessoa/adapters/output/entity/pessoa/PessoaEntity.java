@@ -64,18 +64,17 @@ public class PessoaEntity {
     @JsonIgnore
     private List<TelefoneEntity> telefones;
 
-    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<ContaBancariaEntity> contas;
+    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
+    private ContaBancariaEntity conta;
 
-    public PessoaEntity(Pessoa pessoa,
+/*    public PessoaEntity(Pessoa pessoa,
                         PaisEntity pais,
                         OrientacaoSexualEntity orientacao,
                         IdentidadeGeneroEntity identidadeGenero, ProfissaoEntity profissao, EstadoCivilEntity estadoCivil) {
         inicializarCamposComuns(pessoa, pais);
         this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica(), pais, orientacao, identidadeGenero, profissao, estadoCivil);
         this.pessoaFisica.setPessoa(this);
-    }
+    }*/
 
     public PessoaEntity(Pessoa pessoa, PessoaFisicaEntity pessoaFisica, PaisEntity pais) {
         inicializarCamposComuns(pessoa, pais);

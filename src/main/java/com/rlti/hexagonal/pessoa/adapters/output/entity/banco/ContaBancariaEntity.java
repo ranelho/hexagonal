@@ -4,7 +4,6 @@ import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.PessoaEntity;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoChavePix;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoContaBancaria;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.ContaBancaria;
-import com.rlti.hexagonal.pessoa.config.GenericEnumConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,7 +50,7 @@ public class ContaBancariaEntity {
     @JoinColumn(name = "ID_AGENCIA", referencedColumnName = "ID_AGENCIA")
     private AgenciaEntity agencia;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "ID_PESSOA", referencedColumnName = "ID_PESSOA")
     private PessoaEntity pessoa;
 
@@ -62,5 +61,13 @@ public class ContaBancariaEntity {
         this.numeroChavePix = contaBancaria.getNumeroChavePix();
         this.agencia = agencia;
         this.pessoa = pessoa;
+    }
+
+    public ContaBancariaEntity(ContaBancaria contaBancaria, AgenciaEntity agenciaEntity) {
+        this.numeroConta = contaBancaria.getNumeroConta();
+        this.digitoVerificadorConta = contaBancaria.getDigitoVerificadorConta();
+        this.tipoChavePix = contaBancaria.getTipoChavePix();
+        this.numeroChavePix = contaBancaria.getNumeroChavePix();
+        this.agencia = agenciaEntity;
     }
 }

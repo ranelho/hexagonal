@@ -3,6 +3,7 @@ package com.rlti.hexagonal.pessoa.adapters.output.service;
 import com.rlti.hexagonal.handler.DuplicidadeException;
 import com.rlti.hexagonal.handler.EntidadeNaoEncontradaException;
 import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFilterParam;
+import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.ContaBancariaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.PaisEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.EmailEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.PessoaEntity;
@@ -10,7 +11,6 @@ import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.PessoaFisic
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.CnaeEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.PessoaJuridicaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.*;
-import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Email;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
@@ -26,10 +26,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.LongFunction;
 
-import static com.rlti.hexagonal.util.Utils.*;
+import static com.rlti.hexagonal.util.Utils.formatDataNascimento;
+import static com.rlti.hexagonal.util.Utils.formatEnum;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +49,7 @@ public class PessoaAdapter implements PessoaOutputPort {
     private final EstadoCivilRepository estadoCivilRepository;
     private final CorRacaRepository corRacaRepository;
     private final GrauInstrucaoRepository grauInstrucaoRepository;
+    private final AgenciaRepository agenciaRepository;
     private final CnaeOutputPort cnaeOutputPort;
     private final ModelMapper modelMapper;
 
@@ -99,77 +100,89 @@ public class PessoaAdapter implements PessoaOutputPort {
                 id -> new EntidadeNaoEncontradaException("Grau de Instrução não encontrado com ID: " + id)
         );
 
-        var pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica());
-        pessoaFisica.setPais(pais);
-        pessoaFisica.setOrientacaoSexual(orientacaoSexual);
-        pessoaFisica.setIdentidadeGenero(identidadeGenero);
-        pessoaFisica.setProfissao(profissao);
-        pessoaFisica.setEstadoCivil(estadoCivil);
-        pessoaFisica.setCorRaca(corRaca);
-        pessoaFisica.setGrauInstrucao(grauInstrucao);
+        var agenciaEntity = findEntity(
+                pessoa.getContaBancaria().getAgencia().getIdAgencia(),
+                agenciaRepository::findById,
+                id -> new EntidadeNaoEncontradaException("Agência não encontrada com ID: " + id)
+        );
+
+        var contaBancariaEntity = new ContaBancariaEntity(pessoa.getContaBancaria(), agenciaEntity);
+
+        var pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica())
+                .toBuilder()
+                .pais(pais)
+                .orientacaoSexual(orientacaoSexual)
+                .identidadeGenero(identidadeGenero)
+                .profissao(profissao)
+                .estadoCivil(estadoCivil)
+                .corRaca(corRaca)
+                .grauInstrucao(grauInstrucao)
+                .build();
 
         var pessoaEntity = new PessoaEntity(pessoa, pessoaFisica, pais);
+        pessoaEntity.setConta(contaBancariaEntity);
+
         pessoaRepository.save(pessoaEntity);
 
         return pessoaEntity.getIdPessoa();
     }
 
-    @Transactional
-    public Long salvar(Pessoa pessoa) {
-        AtomicReference<Long> idCriado = new AtomicReference<>();
-
-        if (pessoa.getTipo() == Tipo.FISICA) {
-            pessoaFisicaRepository.findByCpf(pessoa.getPessoaFisica().getCpf())
-                    .ifPresentOrElse(existingPessoa -> {
-                        throw new DuplicidadeException("Pessoa com CPF " + pessoa.getPessoaFisica().getCpf() + JA_EXISTE);
-                    }, () -> {
-                        var pais = findEntityById(
-                                pessoa.getPessoaFisica().getPais().getIdPais(),
-                                paisRepository::findById,
-                                () -> new EntidadeNaoEncontradaException("País não encontrado com ID: " + pessoa.getPessoaFisica().getPais().getIdPais())
-                        );
-                        var orientacao = findEntityById(
-                                pessoa.getPessoaFisica().getOrientacaoSexual().getIdOrientacaoSexual(),
-                                orientacaoSexualRepository::findById,
-                                () -> new EntidadeNaoEncontradaException("Orientação não encontrada com ID: " + pessoa.getPessoaFisica().getOrientacaoSexual().getIdOrientacaoSexual())
-                        );
-                        var identidadeGenero = findEntityById(
-                                pessoa.getPessoaFisica().getIdentidadeGenero().getId(),
-                                identidadeGeneroRepository::findById,
-                                () -> new EntidadeNaoEncontradaException("Identidade de gênero não encontrada com ID: " + pessoa.getPessoaFisica().getIdentidadeGenero().getId())
-                        );
-                        var profissao = findEntityById(
-                                pessoa.getPessoaFisica().getProfissao().getIdProfissao(),
-                                profissaoRepository::findById,
-                                () -> new EntidadeNaoEncontradaException("Profissão não encontrada com código: " + pessoa.getPessoaFisica().getProfissao().getIdProfissao())
-                        );
-                        var estadoCivil = findEntityById(
-                                pessoa.getPessoaFisica().getEstadoCivil().getIdEstadoCivil(),
-                                estadoCivilRepository::findById,
-                                () -> new EntidadeNaoEncontradaException("Estado Civil não encontrado com ID: " + pessoa.getPessoaFisica().getEstadoCivil().getIdEstadoCivil())
-                        );
-                        var pessoaFisica = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao, estadoCivil);
-                        pessoaRepository.save(pessoaFisica);
-                        idCriado.set(pessoaFisica.getIdPessoa());
-                    });
-        } else if (pessoa.getTipo() == Tipo.JURIDICA) {
-          /*  pessoaJuridicaRepository.findByCnpj(pessoa.getPessoaJuridica().getCnpj())
-                    .ifPresentOrElse(existingPessoa     -> {
-                        throw new DuplicidadeException("Pessoa com CNPJ " + pessoa.getPessoaJuridica().getCnpj() + JA_EXISTE);
-                    }, () -> {
-                        var pais = findEntityById(
-                                pessoa.getPessoaFisica().getPais().getIdPais(),
-                                paisRepository::findById,
-                                () -> new EntidadeNaoEncontradaException("País não encontrado com ID: " + pessoa.getPessoaFisica().getPais().getIdPais())
-                        );
-                        var pessoaJuridica = new PessoaEntity(pessoa,  pais);
-                        pessoaRepository.save(pessoaJuridica);
-                        cnaeOutputPort.addCnaesV2(pessoaJuridica.getIdPessoa(), pessoa.getPessoaJuridica().getSubclasse(), pessoa.getPessoaJuridica().getCnaes());
-                        idCriado.set(pessoaJuridica.getIdPessoa());
-                    });*/
-        }
-        return idCriado.get();
-    }
+//    @Transactional
+//    public Long salvar(Pessoa pessoa) {
+//        AtomicReference<Long> idCriado = new AtomicReference<>();
+//
+//        if (pessoa.getTipo() == Tipo.FISICA) {
+//            pessoaFisicaRepository.findByCpf(pessoa.getPessoaFisica().getCpf())
+//                    .ifPresentOrElse(existingPessoa -> {
+//                        throw new DuplicidadeException("Pessoa com CPF " + pessoa.getPessoaFisica().getCpf() + JA_EXISTE);
+//                    }, () -> {
+//                        var pais = findEntityById(
+//                                pessoa.getPessoaFisica().getPais().getIdPais(),
+//                                paisRepository::findById,
+//                                () -> new EntidadeNaoEncontradaException("País não encontrado com ID: " + pessoa.getPessoaFisica().getPais().getIdPais())
+//                        );
+//                        var orientacao = findEntityById(
+//                                pessoa.getPessoaFisica().getOrientacaoSexual().getIdOrientacaoSexual(),
+//                                orientacaoSexualRepository::findById,
+//                                () -> new EntidadeNaoEncontradaException("Orientação não encontrada com ID: " + pessoa.getPessoaFisica().getOrientacaoSexual().getIdOrientacaoSexual())
+//                        );
+//                        var identidadeGenero = findEntityById(
+//                                pessoa.getPessoaFisica().getIdentidadeGenero().getId(),
+//                                identidadeGeneroRepository::findById,
+//                                () -> new EntidadeNaoEncontradaException("Identidade de gênero não encontrada com ID: " + pessoa.getPessoaFisica().getIdentidadeGenero().getId())
+//                        );
+//                        var profissao = findEntityById(
+//                                pessoa.getPessoaFisica().getProfissao().getIdProfissao(),
+//                                profissaoRepository::findById,
+//                                () -> new EntidadeNaoEncontradaException("Profissão não encontrada com código: " + pessoa.getPessoaFisica().getProfissao().getIdProfissao())
+//                        );
+//                        var estadoCivil = findEntityById(
+//                                pessoa.getPessoaFisica().getEstadoCivil().getIdEstadoCivil(),
+//                                estadoCivilRepository::findById,
+//                                () -> new EntidadeNaoEncontradaException("Estado Civil não encontrado com ID: " + pessoa.getPessoaFisica().getEstadoCivil().getIdEstadoCivil())
+//                        );
+//                        var pessoaFisica = new PessoaEntity(pessoa, pais, orientacao, identidadeGenero, profissao, estadoCivil);
+//                        pessoaRepository.save(pessoaFisica);
+//                        idCriado.set(pessoaFisica.getIdPessoa());
+//                    });
+//        } else if (pessoa.getTipo() == Tipo.JURIDICA) {
+//          /*  pessoaJuridicaRepository.findByCnpj(pessoa.getPessoaJuridica().getCnpj())
+//                    .ifPresentOrElse(existingPessoa     -> {
+//                        throw new DuplicidadeException("Pessoa com CNPJ " + pessoa.getPessoaJuridica().getCnpj() + JA_EXISTE);
+//                    }, () -> {
+//                        var pais = findEntityById(
+//                                pessoa.getPessoaFisica().getPais().getIdPais(),
+//                                paisRepository::findById,
+//                                () -> new EntidadeNaoEncontradaException("País não encontrado com ID: " + pessoa.getPessoaFisica().getPais().getIdPais())
+//                        );
+//                        var pessoaJuridica = new PessoaEntity(pessoa,  pais);
+//                        pessoaRepository.save(pessoaJuridica);
+//                        cnaeOutputPort.addCnaesV2(pessoaJuridica.getIdPessoa(), pessoa.getPessoaJuridica().getSubclasse(), pessoa.getPessoaJuridica().getCnaes());
+//                        idCriado.set(pessoaJuridica.getIdPessoa());
+//                    });*/
+//        }
+//        return idCriado.get();
+//    }
 
     @Override
     public Page<Pessoa> findAllPaginated(int page, int size) {
@@ -290,8 +303,6 @@ public class PessoaAdapter implements PessoaOutputPort {
 
         return new PageImpl<>(results, pageable, content.getTotalElements());
     }
-
-
 
     private <T> T findEntity(Long id, LongFunction<Optional<T>> findFunction, LongFunction<RuntimeException> exceptionSupplier) {
         return findFunction.apply(id).orElseThrow(() -> exceptionSupplier.apply(id));

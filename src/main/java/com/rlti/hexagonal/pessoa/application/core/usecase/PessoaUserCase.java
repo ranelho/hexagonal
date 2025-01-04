@@ -21,6 +21,13 @@ public class PessoaUserCase implements PessoaInputPort {
         this.modelMapper = modelMapper;
     }
 
+    @Override
+    public Long criarPessoaFisica(PessoaFisicaRequest request) {
+        var pessoa = new Pessoa(request);
+        return pessoaOutputPort.criarPessoaFisica(pessoa);
+
+    }
+
  /*   @Override
     public Long criarPessoa(PessoaRequest request) {
         var pessoa = new Pessoa(request);
@@ -81,12 +88,7 @@ public class PessoaUserCase implements PessoaInputPort {
         return PessoaFisicaResponse.converte(pessoasFisicas);
     }
 
-    @Override
-    public Long criarPessoaFisica(PessoaFisicaRequest request) {
-        var pessoa = new Pessoa(request);
-        return pessoaOutputPort.criarPessoaFisica(pessoa);
 
-    }
 
 
 }

@@ -22,7 +22,7 @@ public class Pessoa {
     private List<Endereco> enderecos;
     private List<Telefone> telefones;
     private List<Email> emails;
-    private List<ContaBancaria> contas;
+    private ContaBancaria contaBancaria;
 
     public Pessoa() {
     }
@@ -47,6 +47,7 @@ public class Pessoa {
         this.emails = request.getEmails().stream()
                 .map(Email::new)
                 .toList();
+        this.contaBancaria = new ContaBancaria(request.getContaBancaria());
     }
 
 }

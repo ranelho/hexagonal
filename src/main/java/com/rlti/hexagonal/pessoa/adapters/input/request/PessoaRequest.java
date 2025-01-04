@@ -20,4 +20,5 @@ public class PessoaRequest {
     private List<@Valid TelefoneRequest> telefones;
     private List<@Valid EmailRequest> emails;
     private List<@Valid EnderecoRequest> enderecos;
+    private @Valid ContaBancariaRequest contaBancaria;
 }
