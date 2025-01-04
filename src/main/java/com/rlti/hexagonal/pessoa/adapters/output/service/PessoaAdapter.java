@@ -209,7 +209,7 @@ public class PessoaAdapter implements PessoaOutputPort {
 
         var content = pessoaFisicaRepository.findWithFilters(params.getNome(),
                 dataString,
-                //  params.getSexo(),
+                params.getSexo().name(),
                 params.getCpf(),
                 pageable);
 

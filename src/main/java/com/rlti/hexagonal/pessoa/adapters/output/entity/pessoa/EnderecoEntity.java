@@ -4,7 +4,7 @@ package com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoLogradouro;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Endereco;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoEndereco;
-import com.rlti.hexagonal.pessoa.config.PostgreSQLEnumConverter;
+import com.rlti.hexagonal.pessoa.config.GenericEnumConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,10 +44,10 @@ public class EnderecoEntity {
     @Column(name = "SG_UF")
     private String uf;
 
-    @Enumerated(EnumType.STRING) @Convert(converter = PostgreSQLEnumConverter.class) @Column(name = "TIP_ENDERECO")
+    @Enumerated(EnumType.STRING) @Convert(converter = GenericEnumConverter.class) @Column(name = "TIP_ENDERECO")
     private TipoEndereco tipoEndereco;
 
-    @Enumerated(EnumType.STRING) @Convert(converter = PostgreSQLEnumConverter.class) @Column(name = "TIP_LOGRADOURO")
+    @Enumerated(EnumType.STRING) @Convert(converter = GenericEnumConverter.class) @Column(name = "TIP_LOGRADOURO")
     private TipoLogradouro tipoLogradouro;
 
     @Column(name = "ST_INDICADOR_CORRESPONDENCIA")

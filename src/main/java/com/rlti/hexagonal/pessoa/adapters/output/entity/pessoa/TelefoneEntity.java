@@ -2,7 +2,7 @@ package com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa;
 
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Telefone;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoTelefone;
-import com.rlti.hexagonal.pessoa.config.PostgreSQLEnumConverter;
+import com.rlti.hexagonal.pessoa.config.GenericEnumConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class TelefoneEntity {
     @Column(name = "ID_TELEFONE")
     private Long idTelefone;
 
-    @Enumerated(EnumType.STRING) @Column(name = "TP_TELEFONE_CONTATO") @Convert(converter = PostgreSQLEnumConverter.class)
+    @Enumerated(EnumType.STRING) @Column(name = "TP_TELEFONE_CONTATO") @Convert(converter = GenericEnumConverter.class)
     private TipoTelefone tipoTelefone;
 
     @Column(name = "NUM_DDI")

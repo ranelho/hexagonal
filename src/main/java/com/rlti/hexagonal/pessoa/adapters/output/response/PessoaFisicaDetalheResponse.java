@@ -1,8 +1,8 @@
 package com.rlti.hexagonal.pessoa.adapters.output.response;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.*;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pais;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.*;
 import org.springframework.data.domain.Page;
 
 import java.math.BigDecimal;
@@ -34,8 +34,8 @@ public record PessoaFisicaDetalheResponse(
         List<TelefoneResponse> telefones,
         List<EmailResponse> emails,
         List<EnderecoResponse> enderecos,
-        AutoDeclaracaoResponse autoDeclaracao,
-        List<ContaBancariaResponse> contaBancaria
+        List<ContaBancariaResponse> contaBancaria,
+        AutoDeclaracaoResponse autoDeclaracao
 ) {
     public PessoaFisicaDetalheResponse(PessoaFisica pessoaFisica) {
         this(
@@ -46,8 +46,10 @@ public record PessoaFisicaDetalheResponse(
                 pessoaFisica.getDataNascimento(),
                 null,
                 pessoaFisica.getSexo().toString(),
-                Optional.ofNullable(pessoaFisica.getPais()).map(Pais::getNome).orElse(null),
-                Optional.ofNullable(pessoaFisica.getEstadoCivil()).map(EstadoCivil::getNomeEstadoCivil).orElse(null),
+                Optional.ofNullable(pessoaFisica.getPais())
+                        .map(Pais::getNacionalidade).orElse(null),
+                Optional.ofNullable(pessoaFisica.getEstadoCivil())
+                        .map(EstadoCivil::getNomeEstadoCivil).orElse(null),
                 pessoaFisica.getNomePai(),
                 pessoaFisica.getNomeMae(),
                 pessoaFisica.getEstrangeiro(),
@@ -58,17 +60,24 @@ public record PessoaFisicaDetalheResponse(
                 pessoaFisica.isIndicadorPpe(),
                 pessoaFisica.getEspecificacaoPpe(),
                 pessoaFisica.getGrauInstrucao(),
-                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getTelefones()).map(TelefoneResponse::converte).orElse(Collections.emptyList())),
-                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getEmails()).map(EmailResponse::converte).orElse(Collections.emptyList())),
-                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getEnderecos()).map(EnderecoResponse::converte).orElse(Collections.emptyList())),
+                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getTelefones())
+                        .map(TelefoneResponse::converte).orElse(Collections.emptyList())),
+                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getEmails())
+                        .map(EmailResponse::converte).orElse(Collections.emptyList())),
+                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getEnderecos())
+                        .map(EnderecoResponse::converte).orElse(Collections.emptyList())),
+                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getContas())
+                        .map(ContaBancariaResponse::converte).orElse(Collections.emptyList())),
                 new AutoDeclaracaoResponse(
-                        Optional.ofNullable(pessoaFisica.getIdentidadeGenero()).map(IdentidadeGenero::getIdentidadeDeGenero).orElse(null),
+                        Optional.ofNullable(pessoaFisica.getIdentidadeGenero())
+                                .map(IdentidadeGenero::getIdentidadeDeGenero).orElse(null),
                         pessoaFisica.getEspecificacaoIg(),
-                        Optional.ofNullable(pessoaFisica.getOrientacaoSexual()).map(OrientacaoSexual::getOrientacaoSexual).orElse(null),
+                        Optional.ofNullable(pessoaFisica.getOrientacaoSexual())
+                                .map(OrientacaoSexual::getOrientacaoSexual).orElse(null),
                         pessoaFisica.getEspecificacaoOs(),
-                        Optional.ofNullable(pessoaFisica.getCorRaca()).map(CorRaca::getCorRaca).orElse(null)
-                ),
-                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getContas()).map(ContaBancariaResponse::converte).orElse(Collections.emptyList()))
+                        Optional.ofNullable(pessoaFisica.getCorRaca())
+                                .map(CorRaca::getCorRaca).orElse(null)
+                )
         );
     }
 

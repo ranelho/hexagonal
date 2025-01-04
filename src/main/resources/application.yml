@@ -5,9 +5,13 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${DB_HOST:teste-pwc.postgres.database.azure.com}:${DB_PORT:5432}/${DB_NAME:postgres}
+    #url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:hexagonal2}
     username: ${DB_USERNAME:teste_pwc}
+    #username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:Dev@135246}
+    #password: ${DB_PASSWORD:852456}
   jpa:
+    #generate-ddl: true
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

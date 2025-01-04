@@ -4,7 +4,7 @@ import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.PessoaEntity;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoChavePix;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoContaBancaria;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.ContaBancaria;
-import com.rlti.hexagonal.pessoa.config.PostgreSQLEnumConverter;
+import com.rlti.hexagonal.pessoa.config.GenericEnumConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,10 +30,10 @@ public class ContaBancariaEntity {
     @Column(name = "NUM_DIGITO_VERIF_CONTA")
     private String digitoVerificadorConta;
 
-    @Enumerated(EnumType.STRING) @Column(name = "TP_CHAVE_PIX") @Convert(converter = PostgreSQLEnumConverter.class)
+    @Enumerated(EnumType.STRING) @Column(name = "TP_CHAVE_PIX") @Convert(converter = GenericEnumConverter.class)
     private TipoChavePix tipoChavePix;
 
-    @Enumerated(EnumType.STRING) @Column(name = "TP_CONTA_BANCARIA") @Convert(converter = PostgreSQLEnumConverter.class)
+    @Enumerated(EnumType.STRING) @Column(name = "TP_CONTA_BANCARIA") @Convert(converter = GenericEnumConverter.class)
     private TipoContaBancaria tipoContaBancaria;
 
     @Column(name = "NUM_CHAVE_PIX")

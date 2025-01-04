@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.pessoa.adapters.input.controller;
+package com.rlti.hexagonal.instituicaofinanceira.adapters.input.controller;
 
 import com.rlti.hexagonal.pessoa.adapters.input.request.AgenciaRequest;
 import com.rlti.hexagonal.pessoa.adapters.input.request.BancoRequest;
