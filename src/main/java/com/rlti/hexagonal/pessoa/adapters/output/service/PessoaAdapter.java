@@ -24,12 +24,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.LongFunction;
 
-import static com.rlti.hexagonal.util.Utils.findEntityById;
+import static com.rlti.hexagonal.util.Utils.*;
 
 @Service
 @RequiredArgsConstructor
@@ -203,15 +202,17 @@ public class PessoaAdapter implements PessoaOutputPort {
 
     @Override
     public Page<PessoaFisica> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params) {
-        String dataString = params.getDataNascimento() != null
-                ? params.getDataNascimento().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-                : null;
 
-        var content = pessoaFisicaRepository.findWithFilters(params.getNome(),
-                dataString,
-                params.getSexo().name(),
+        var formattedDataNascimento = formatDataNascimento(params.getDataNascimento());
+        var sexoString = formatEnum(params.getSexo());
+
+        var content = pessoaFisicaRepository.findWithFilters(
+                params.getNome(),
+                formattedDataNascimento,
+                sexoString,
                 params.getCpf(),
-                pageable);
+                pageable
+        );
 
         List<PessoaFisica> results = content.stream()
                 .map(entity -> modelMapper.map(entity, PessoaFisica.class))
