@@ -77,10 +77,10 @@ public class PessoaEntity {
         this.pessoaFisica.setPessoa(this);
     }
 
-    public PessoaEntity(Pessoa pessoa, PaisEntity pais) {
+    public PessoaEntity(Pessoa pessoa, PessoaFisicaEntity pessoaFisica, PaisEntity pais) {
         inicializarCamposComuns(pessoa, pais);
-        this.pessoaJuridica = new PessoaJuridicaEntity(pessoa.getPessoaJuridica());
-        this.pessoaJuridica.setPessoa(this);
+        this.pessoaFisica = pessoaFisica;
+        this.pessoaFisica.setPessoa(this);
     }
 
     private void inicializarCamposComuns(Pessoa pessoa, PaisEntity pais) {

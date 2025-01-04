@@ -65,7 +65,7 @@ public class PessoaFisica {
         this.pais = new Pais(request.getPaisId());
         this.profissao = new Profissao(request.getProfissaoId());
         this.grauInstrucao = new GrauInstrucao(request.getIdGrauInstrucao());
-        this.identidadeGenero = new IdentidadeGenero(request.getIdentidadeDeGeneroId());
+        this.identidadeGenero = new IdentidadeGenero(request.getIdIdentidadeGenero());
         this.especificacaoIg = request.getEspecificacaoIg();
         this.orientacaoSexual = new OrientacaoSexual(request.getOrientacaoSexualId());
         this.especificacaoOs = request.getEspecificacaoOs();

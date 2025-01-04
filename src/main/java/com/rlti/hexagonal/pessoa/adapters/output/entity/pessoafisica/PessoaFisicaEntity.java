@@ -4,7 +4,6 @@ import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.PaisEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.PessoaEntity;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Sexo;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
-import com.rlti.hexagonal.pessoa.config.EnumConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -116,7 +115,7 @@ public class PessoaFisicaEntity  {
 
     @ManyToOne
     @JoinColumn(name = "ID_COR_RACA")
-    private CorRacaEntity corRacaEntity;
+    private CorRacaEntity corRaca;
 
     @ManyToOne
     @JoinColumn(name = "ID_PROFISSAO")
@@ -155,11 +154,11 @@ public class PessoaFisicaEntity  {
     }
 
     public PessoaFisicaEntity(PessoaFisica pessoaFisica) {
+        this.cpf = pessoaFisica.getCpf();
+        this.dataNascimento = pessoaFisica.getDataNascimento();
         this.sexo = pessoaFisica.getSexo();
-        this.estadoCivil = new EstadoCivilEntity(pessoaFisica.getEstadoCivil());
         this.nomeSocial = pessoaFisica.getNomeSocial().toUpperCase();
         this.dataObito = pessoaFisica.getDataObito();
-        this.resideExterior = pessoaFisica.isResideExterior();
         this.nomePai = pessoaFisica.getNomePai().toUpperCase();
         this.nomeMae = pessoaFisica.getNomeMae().toUpperCase();
         this.resideExterior = pessoaFisica.isResideExterior();

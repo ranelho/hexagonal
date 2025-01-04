@@ -1,34 +1,34 @@
 package com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica;
 
 public class IdentidadeGenero {
-    private Long idIdentidadeDeGenero;
-    private String identidadeDeGenero;
+    private Long id;
+    private String genero;
 
     public IdentidadeGenero() {
     }
 
-    public IdentidadeGenero(Long idIdentidadeDeGenero, String identidadeDeGenero) {
-        this.idIdentidadeDeGenero = idIdentidadeDeGenero;
-        this.identidadeDeGenero = identidadeDeGenero;
+    public IdentidadeGenero(Long id) {
+        this.id = id;
     }
 
-    public IdentidadeGenero(Long identidadeDeGeneroId) {
-        this.idIdentidadeDeGenero = identidadeDeGeneroId;
+    public IdentidadeGenero(Long id, String genero) {
+        this.id = id;
+        this.genero = genero;
     }
 
-    public Long getIdIdentidadeDeGenero() {
-        return idIdentidadeDeGenero;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdIdentidadeDeGenero(Long idIdentidadeDeGenero) {
-        this.idIdentidadeDeGenero = idIdentidadeDeGenero;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getIdentidadeDeGenero() {
-        return identidadeDeGenero;
+    public String getGenero() {
+        return genero;
     }
 
-    public void setIdentidadeDeGenero(String identidadeDeGenero) {
-        this.identidadeDeGenero = identidadeDeGenero;
+    public void setGenero(String genero) {
+        this.genero = genero;
     }
 }

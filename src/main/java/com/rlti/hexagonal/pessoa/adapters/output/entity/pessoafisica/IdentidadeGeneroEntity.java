@@ -16,8 +16,8 @@ public class IdentidadeGeneroEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "ID_IDENTIDADE_GENERO")
-    private Long idIdentidadeGenero;
+    private Long id;
 
     @Column(name = "DSC_IDENTIDADE_GENERO")
-    private String nomeIdentidadeGenero;
+    private String genero;
 }

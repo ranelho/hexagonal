@@ -13,7 +13,7 @@ public class Endereco {
     private String numero;
     private String complemento;
     private String bairro;
-    private String localidade;
+    private String municipio;
     private String uf;
     private TipoEndereco tipoEndereco;
     private TipoLogradouro tipoLogradouro;
@@ -29,7 +29,7 @@ public class Endereco {
         this.numero = enderecoRequest.getNumero();
         this.complemento = enderecoRequest.getComplemento();
         this.bairro = enderecoRequest.getBairro();
-        this.localidade = enderecoRequest.getLocalidade();
+        this.municipio = enderecoRequest.getMunicipio();
         this.uf = enderecoRequest.getUf();
         this.tipoEndereco = enderecoRequest.getTipoEndereco();
         this.indicadorCorrespondencia = enderecoRequest.isIndicadorCorrespondencia();

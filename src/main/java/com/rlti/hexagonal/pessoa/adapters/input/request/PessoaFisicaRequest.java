@@ -48,7 +48,7 @@ public class PessoaFisicaRequest extends PessoaRequest {
     private Long idPaisCrs;
     private Long profissaoId;
     private Long idGrauInstrucao;
-    private Long identidadeDeGeneroId;
+    private Long idIdentidadeGenero;
     private String especificacaoIg;
     private Long orientacaoSexualId;
     private String especificacaoOs;

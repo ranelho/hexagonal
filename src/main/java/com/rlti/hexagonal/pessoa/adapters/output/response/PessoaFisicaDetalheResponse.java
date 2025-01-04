@@ -70,7 +70,7 @@ public record PessoaFisicaDetalheResponse(
                         .map(ContaBancariaResponse::converte).orElse(Collections.emptyList())),
                 new AutoDeclaracaoResponse(
                         Optional.ofNullable(pessoaFisica.getIdentidadeGenero())
-                                .map(IdentidadeGenero::getIdentidadeDeGenero).orElse(null),
+                                .map(IdentidadeGenero::getGenero).orElse(null),
                         pessoaFisica.getEspecificacaoIg(),
                         Optional.ofNullable(pessoaFisica.getOrientacaoSexual())
                                 .map(OrientacaoSexual::getOrientacaoSexual).orElse(null),

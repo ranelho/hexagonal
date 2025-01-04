@@ -5,7 +5,6 @@ import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.PaisEntity;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoEndereco;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoLogradouro;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Endereco;
-import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,7 +41,7 @@ public class EnderecoEntity {
     private String bairro;
 
     @Column(name = "DSC_MUNICIPIO")
-    private String cidade;
+    private String municipio;
 
     @Column(name = "SG_UF")
     private String uf;
@@ -78,7 +77,7 @@ public class EnderecoEntity {
         this.numero = endereco.getNumero();
         this.complemento = endereco.getComplemento();
         this.bairro = endereco.getBairro();
-        this.cidade = endereco.getLocalidade();
+        this.municipio = endereco.getMunicipio();
         this.uf = endereco.getUf();
         this.tipoEndereco = endereco.getTipoEndereco();
         this.tipoLogradouro = endereco.getTipoLogradouro();
@@ -93,7 +92,7 @@ public class EnderecoEntity {
         this.numero = endereco.getNumero();
         this.complemento = endereco.getComplemento();
         this.bairro = endereco.getBairro();
-        this.cidade = endereco.getLocalidade();
+        this.municipio = endereco.getMunicipio();
         this.uf = endereco.getUf();
         this.tipoEndereco = endereco.getTipoEndereco();
         this.tipoLogradouro = endereco.getTipoLogradouro();
@@ -107,7 +106,7 @@ public class EnderecoEntity {
         this.numero = endereco.getNumero();
         this.complemento = endereco.getComplemento();
         this.bairro = endereco.getBairro();
-        this.cidade = endereco.getLocalidade();
+        this.municipio = endereco.getMunicipio();
         this.uf = endereco.getUf();
         this.tipoEndereco = endereco.getTipoEndereco();
         this.tipoLogradouro = endereco.getTipoLogradouro();
