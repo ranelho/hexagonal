@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Getter
 @Setter
@@ -30,10 +32,16 @@ public class ContaBancariaEntity {
     @Column(name = "NUM_DIGITO_VERIF_CONTA")
     private String digitoVerificadorConta;
 
-    @Enumerated(EnumType.STRING) @Column(name = "TP_CHAVE_PIX") @Convert(converter = GenericEnumConverter.class)
+    //@Enumerated(EnumType.STRING)  @Convert(converter = GenericEnumConverter.class)
+    @Column(name = "TP_CHAVE_PIX")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Basic(optional = false)
     private TipoChavePix tipoChavePix;
 
-    @Enumerated(EnumType.STRING) @Column(name = "TP_CONTA_BANCARIA") @Convert(converter = GenericEnumConverter.class)
+    //@Enumerated(EnumType.STRING)  @Convert(converter = GenericEnumConverter.class)
+    @Column(name = "TP_CONTA_BANCARIA")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Basic(optional = false)
     private TipoContaBancaria tipoContaBancaria;
 
     @Column(name = "NUM_CHAVE_PIX")

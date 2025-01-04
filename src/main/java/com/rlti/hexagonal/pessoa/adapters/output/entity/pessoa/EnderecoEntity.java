@@ -1,15 +1,18 @@
 package com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa;
 
 
+import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.PaisEntity;
+import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoEndereco;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoLogradouro;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Endereco;
-import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoEndereco;
-import com.rlti.hexagonal.pessoa.config.GenericEnumConverter;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Getter
 @Setter
@@ -44,10 +47,16 @@ public class EnderecoEntity {
     @Column(name = "SG_UF")
     private String uf;
 
-    @Enumerated(EnumType.STRING) @Convert(converter = GenericEnumConverter.class) @Column(name = "TIP_ENDERECO")
+    //@Enumerated(EnumType.STRING) @Convert(converter = GenericEnumConverter.class)
+    @Column(name = "TIP_ENDERECO")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Basic(optional = false)
     private TipoEndereco tipoEndereco;
 
-    @Enumerated(EnumType.STRING) @Convert(converter = GenericEnumConverter.class) @Column(name = "TIP_LOGRADOURO")
+    //@Enumerated(EnumType.STRING) @Convert(converter = GenericEnumConverter.class)
+    @Column(name = "TIP_LOGRADOURO")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Basic(optional = false)
     private TipoLogradouro tipoLogradouro;
 
     @Column(name = "ST_INDICADOR_CORRESPONDENCIA")
@@ -72,6 +81,7 @@ public class EnderecoEntity {
         this.cidade = endereco.getLocalidade();
         this.uf = endereco.getUf();
         this.tipoEndereco = endereco.getTipoEndereco();
+        this.tipoLogradouro = endereco.getTipoLogradouro();
         this.indicadorCorrespondencia = endereco.isIndicadorCorrespondencia();
         this.indicadorFaturamento = endereco.isIndicadorFaturamento();
         this.pessoa = pessoa;
@@ -86,7 +96,26 @@ public class EnderecoEntity {
         this.cidade = endereco.getLocalidade();
         this.uf = endereco.getUf();
         this.tipoEndereco = endereco.getTipoEndereco();
+        this.tipoLogradouro = endereco.getTipoLogradouro();
         this.indicadorCorrespondencia = endereco.isIndicadorCorrespondencia();
         this.indicadorFaturamento = endereco.isIndicadorFaturamento();
     }
+
+    public EnderecoEntity(Endereco endereco, PaisEntity pais,  PessoaEntity pessoa) {
+        this.cep = endereco.getCep();
+        this.logradouro = endereco.getLogradouro();
+        this.numero = endereco.getNumero();
+        this.complemento = endereco.getComplemento();
+        this.bairro = endereco.getBairro();
+        this.cidade = endereco.getLocalidade();
+        this.uf = endereco.getUf();
+        this.tipoEndereco = endereco.getTipoEndereco();
+        this.tipoLogradouro = endereco.getTipoLogradouro();
+        this.indicadorCorrespondencia = endereco.isIndicadorCorrespondencia();
+        this.indicadorFaturamento = endereco.isIndicadorFaturamento();
+        this.idPais = pais.getIdPais();
+        this.pessoa = pessoa;
+    }
+
+
 }

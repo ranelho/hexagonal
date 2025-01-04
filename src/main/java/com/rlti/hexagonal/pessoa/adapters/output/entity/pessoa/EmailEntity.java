@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 
 @Getter
@@ -26,7 +28,10 @@ public class EmailEntity {
     @Column(name = "DSC_E_MAIL")
     private String email;
 
-    @Enumerated(EnumType.STRING) @Column(name = "TIP_EMAIL") @Convert(converter = GenericEnumConverter.class)
+   // @Enumerated(EnumType.STRING)  @Convert(converter = GenericEnumConverter.class)
+    @Column(name = "TIP_EMAIL")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Basic(optional = false)
     private TipoEmail tipoEmail;
 
     @ManyToOne

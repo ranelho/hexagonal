@@ -92,7 +92,12 @@ public class PessoaAdapter implements PessoaOutputPort {
                     .ifPresentOrElse(existingPessoa -> {
                         throw new DuplicidadeException("Pessoa com CNPJ " + pessoa.getPessoaJuridica().getCnpj() + JA_EXISTE);
                     }, () -> {
-                        var pessoaJuridica = new PessoaEntity(pessoa);
+                        var pais = findEntityById(
+                                pessoa.getPessoaFisica().getPais().getIdPais(),
+                                paisRepository::findById,
+                                () -> new EntidadeNaoEncontradaException("País não encontrado com ID: " + pessoa.getPessoaFisica().getPais().getIdPais())
+                        );
+                        var pessoaJuridica = new PessoaEntity(pessoa, pais);
                         pessoaRepository.save(pessoaJuridica);
                         cnaeOutputPort.addCnaesV2(pessoaJuridica.getIdPessoa(), pessoa.getPessoaJuridica().getSubclasse(), pessoa.getPessoaJuridica().getCnaes());
                         idCriado.set(pessoaJuridica.getIdPessoa());

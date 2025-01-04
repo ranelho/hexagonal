@@ -7,6 +7,8 @@ import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisi
 import com.rlti.hexagonal.pessoa.config.EnumConverter;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.math.BigDecimal;
@@ -42,8 +44,11 @@ public class PessoaFisicaEntity  {
     @Column(name = "DAT_OBITO")
     private LocalDate dataObito;
 
-    @Convert(converter = EnumConverter.class)
-    @Enumerated(EnumType.STRING) @Column(name = "TP_SEXO")
+    //@Convert(converter = EnumConverter.class)
+    //@Enumerated(EnumType.STRING)
+    @Column(name = "TP_SEXO")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Basic(optional = false)
     private Sexo sexo;
 
     @ManyToOne

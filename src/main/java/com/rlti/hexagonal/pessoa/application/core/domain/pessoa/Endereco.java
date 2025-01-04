@@ -2,6 +2,7 @@ package com.rlti.hexagonal.pessoa.application.core.domain.pessoa;
 
 import com.rlti.hexagonal.pessoa.adapters.input.request.EnderecoRequest;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoEndereco;
+import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoLogradouro;
 import lombok.Data;
 
 @Data //todo - remove lombok
@@ -15,6 +16,7 @@ public class Endereco {
     private String localidade;
     private String uf;
     private TipoEndereco tipoEndereco;
+    private TipoLogradouro tipoLogradouro;
     private boolean indicadorCorrespondencia;
     private boolean indicadorFaturamento;
 
@@ -32,6 +34,7 @@ public class Endereco {
         this.tipoEndereco = enderecoRequest.getTipoEndereco();
         this.indicadorCorrespondencia = enderecoRequest.isIndicadorCorrespondencia();
         this.indicadorFaturamento = enderecoRequest.isIndicadorFaturamento();
+        this.tipoLogradouro = enderecoRequest.getTipoLogradouro();
     }
 
 

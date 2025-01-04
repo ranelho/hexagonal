@@ -17,7 +17,7 @@ import lombok.Setter;
 public class ProfissaoEntity {
     @Id
     @Column(name = "ID_PROFISSAO")
-    private String idProfissao;
+    private Long idProfissao;
 
     @Column(name = "NUM_PROFISSAO")
     private String numeroProfissao;

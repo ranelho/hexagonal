@@ -5,13 +5,16 @@ import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.ContaBancariaEntit
 import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.PaisEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.*;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.PessoaJuridicaEntity;
-import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -31,8 +34,9 @@ public class PessoaEntity {
     @Column(name = "ID_PESSOA")
     private Long idPessoa;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "TP_PESSOA")
+    @Column(name = "TP_PESSOA", columnDefinition = "TIPOPESSOA")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Basic(optional = false)
     private Tipo tipo;
 
     @Column(name = "NOM_PESSOA")
@@ -68,42 +72,28 @@ public class PessoaEntity {
                         PaisEntity pais,
                         OrientacaoSexualEntity orientacao,
                         IdentidadeGeneroEntity identidadeGenero, ProfissaoEntity profissao, EstadoCivilEntity estadoCivil) {
-        inicializarCamposComuns(pessoa);
+        inicializarCamposComuns(pessoa, pais);
         this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica(), pais, orientacao, identidadeGenero, profissao, estadoCivil);
         this.pessoaFisica.setPessoa(this);
     }
 
-    public PessoaEntity(Pessoa pessoa) {
-        inicializarCamposComuns(pessoa);
+    public PessoaEntity(Pessoa pessoa, PaisEntity pais) {
+        inicializarCamposComuns(pessoa, pais);
         this.pessoaJuridica = new PessoaJuridicaEntity(pessoa.getPessoaJuridica());
         this.pessoaJuridica.setPessoa(this);
     }
 
-    private void inicializarCamposComuns(Pessoa pessoa) {
+    private void inicializarCamposComuns(Pessoa pessoa, PaisEntity pais) {
         this.idPessoa = pessoa.getIdPessoa();
         this.tipo = pessoa.getTipo();
         this.nome = pessoa.getNome().toUpperCase();
         this.createdAt = pessoa.getCreatedAt();
-        this.telefones = pessoa.getTelefones().stream().map(TelefoneEntity::new).toList();
-        this.enderecos = pessoa.getEnderecos().stream().map(EnderecoEntity::new).toList();
-        this.emails = pessoa.getEmails().stream().map(EmailEntity::new).toList();
+        this.telefones = pessoa.getTelefones().stream().map(telefone -> new TelefoneEntity(telefone, this)).toList();
+        this.enderecos = pessoa.getEnderecos().stream().map(endereco -> new EnderecoEntity(endereco, pais, this)).toList();
+        this.emails = pessoa.getEmails().stream().map(email -> new EmailEntity(email, this)).toList();
     }
 
-    public void update(Pessoa pessoa) {
-        updateCampoComuns(pessoa);
-        if(pessoa.getTipo() == Tipo.FISICA){
-            this.pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica());
-        }else if (pessoa.getTipo() == Tipo.JURIDICA){
-            this.pessoaJuridica = new PessoaJuridicaEntity(pessoa.getPessoaJuridica());
-        }
-    }
 
-    private void updateCampoComuns(Pessoa pessoa) {
-        this.nome = pessoa.getNome();
-        this.telefones = pessoa.getTelefones().stream().map(TelefoneEntity::new).toList();
-        this.enderecos = pessoa.getEnderecos().stream().map(EnderecoEntity::new).toList();
-        this.emails = pessoa.getEmails().stream().map(EmailEntity::new).toList();
-    }
 }
 
 

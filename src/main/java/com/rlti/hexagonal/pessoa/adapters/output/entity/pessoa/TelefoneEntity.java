@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Getter
 @Setter
@@ -20,7 +22,10 @@ public class TelefoneEntity {
     @Column(name = "ID_TELEFONE")
     private Long idTelefone;
 
-    @Enumerated(EnumType.STRING) @Column(name = "TP_TELEFONE_CONTATO") @Convert(converter = GenericEnumConverter.class)
+    //@Enumerated(EnumType.STRING)  @Convert(converter = GenericEnumConverter.class)
+    @Column(name = "TP_TELEFONE_CONTATO")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Basic(optional = false)
     private TipoTelefone tipoTelefone;
 
     @Column(name = "NUM_DDI")
@@ -36,10 +41,11 @@ public class TelefoneEntity {
     @JoinColumn(name = "ID_PESSOA", referencedColumnName = "ID_PESSOA")
     private PessoaEntity pessoa;
 
-    public TelefoneEntity(Telefone telefone) {
+    public TelefoneEntity(Telefone telefone, PessoaEntity pessoaEntity) {
         this.tipoTelefone = telefone.getTipoTelefone();
         this.ddi = telefone.getDdi();
         this.ddd = telefone.getDdd();
         this.numeroTelefone = telefone.getNumeroTelefone();
+        this.pessoa = pessoaEntity;
     }
 }

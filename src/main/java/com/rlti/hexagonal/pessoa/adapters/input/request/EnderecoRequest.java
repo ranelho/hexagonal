@@ -1,6 +1,7 @@
 package com.rlti.hexagonal.pessoa.adapters.input.request;
 
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoEndereco;
+import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoLogradouro;
 import lombok.Data;
 
 @Data
@@ -14,6 +15,7 @@ public class EnderecoRequest {
     private String cidade;
     private String uf;
     private TipoEndereco tipoEndereco;
+    private TipoLogradouro tipoLogradouro;
     private boolean indicadorCorrespondencia;
     private boolean indicadorFaturamento;
 }
