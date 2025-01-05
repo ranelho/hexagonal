@@ -25,7 +25,6 @@ public class PessoaUserCase implements PessoaInputPort {
     public Long criarPessoaFisica(PessoaFisicaRequest request) {
         var pessoa = new Pessoa(request);
         return pessoaOutputPort.criarPessoaFisica(pessoa);
-
     }
 
  /*   @Override

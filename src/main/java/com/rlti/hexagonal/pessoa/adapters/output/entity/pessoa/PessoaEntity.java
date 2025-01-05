@@ -76,13 +76,16 @@ public class PessoaEntity {
         this.pessoaFisica.setPessoa(this);
     }*/
 
-    public PessoaEntity(Pessoa pessoa, PessoaFisicaEntity pessoaFisica, PaisEntity pais) {
-        inicializarCamposComuns(pessoa, pais);
+    public PessoaEntity(Pessoa pessoa, PessoaFisicaEntity pessoaFisica, PaisEntity pais, ContaBancariaEntity conta) {
+        setCommonFields(pessoa, pais);
         this.pessoaFisica = pessoaFisica;
+        this.conta = conta;
+
+        this.conta.setPessoa(this);
         this.pessoaFisica.setPessoa(this);
     }
 
-    private void inicializarCamposComuns(Pessoa pessoa, PaisEntity pais) {
+    private void setCommonFields(Pessoa pessoa, PaisEntity pais) {
         this.idPessoa = pessoa.getIdPessoa();
         this.tipo = pessoa.getTipo();
         this.nome = pessoa.getNome().toUpperCase();

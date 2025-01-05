@@ -4,16 +4,14 @@ import com.rlti.hexagonal.handler.DuplicidadeException;
 import com.rlti.hexagonal.handler.EntidadeNaoEncontradaException;
 import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFilterParam;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.ContaBancariaEntity;
-import com.rlti.hexagonal.pessoa.adapters.output.entity.banco.PaisEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.EmailEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.PessoaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoafisica.PessoaFisicaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.CnaeEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.PessoaJuridicaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.*;
-import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Email;
-import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
-import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.*;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.*;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.Cnae;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.PessoaJuridica;
 import com.rlti.hexagonal.pessoa.application.port.output.CnaeOutputPort;
@@ -30,13 +28,13 @@ import java.util.function.LongFunction;
 
 import static com.rlti.hexagonal.util.Utils.formatDataNascimento;
 import static com.rlti.hexagonal.util.Utils.formatEnum;
+import static java.lang.String.format;
 
 @Service
 @RequiredArgsConstructor
 public class PessoaAdapter implements PessoaOutputPort {
 
-    public static final String PESSOA_NAO_ENCONTRADA_COM_ID = "Pessoa não encontrada com ID: ";
-    public static final String JA_EXISTE = " já existe.";
+    private static final String ENTIDADE_NAO_ENCONTRADA = "%s não encontrada com ID: %s";
 
     private final PessoaRepository pessoaRepository;
     private final PessoaFisicaRepository pessoaFisicaRepository;
@@ -53,62 +51,71 @@ public class PessoaAdapter implements PessoaOutputPort {
     private final CnaeOutputPort cnaeOutputPort;
     private final ModelMapper modelMapper;
 
-
     @Transactional
     @Override
     public Long criarPessoaFisica(Pessoa pessoa) {
         pessoaFisicaRepository.findByCpf(pessoa.getPessoaFisica().getCpf())
                 .ifPresent(existingPessoa -> {
-                    throw new DuplicidadeException("Pessoa com CPF " + pessoa.getPessoaFisica().getCpf() + JA_EXISTE);
+                    throw new DuplicidadeException("Pessoa com CPF " + pessoa.getPessoaFisica().getCpf() + "já possui cadastro");
                 });
 
-        var pais = findIfExists(pessoa.getPessoaFisica().getPais().getIdPais(), this::buscarPaisPorId);
+        var pessoaFisica = setPessoaFisica(pessoa);
+        var contaBancariaEntity = buildContaBancaria(pessoa);
+        var pessoaEntity = new PessoaEntity(pessoa, pessoaFisica, pessoaFisica.getPais(), contaBancariaEntity);
+        pessoaRepository.save(pessoaEntity);
+        return pessoaEntity.getIdPessoa();
+    }
 
-        var orientacaoSexual = findEntity(
-                pessoa.getPessoaFisica().getOrientacaoSexual().getIdOrientacaoSexual(),
-                orientacaoSexualRepository::findById,
-                id -> new EntidadeNaoEncontradaException("Orientação não encontrada com ID: " + id)
-        );
+    private ContaBancariaEntity buildContaBancaria(Pessoa pessoa) {
+        var idAgencia = Optional.ofNullable(pessoa.getContaBancaria())
+                .map(ContaBancaria::getAgencia)
+                .map(Agencia::getIdAgencia)
+                .orElseThrow(() -> new IllegalArgumentException("Conta bancária ou agência não fornecida."));
 
-        var identidadeGenero = findEntity(
-                pessoa.getPessoaFisica().getIdentidadeGenero().getId(),
-                identidadeGeneroRepository::findById,
-                id -> new EntidadeNaoEncontradaException("Identidade de gênero não encontrada com ID: " + id)
-        );
+        var agenciaEntity = findEntity(idAgencia, agenciaRepository::findById, "Agência");
 
-        var profissao = findEntity(
-                pessoa.getPessoaFisica().getProfissao().getIdProfissao(),
-                profissaoRepository::findById,
-                id -> new EntidadeNaoEncontradaException("Profissão não encontrada com código: " + id)
-        );
+        return new ContaBancariaEntity(pessoa.getContaBancaria(), agenciaEntity);
+    }
 
-        var estadoCivil = findEntity(
-                pessoa.getPessoaFisica().getEstadoCivil().getIdEstadoCivil(),
-                estadoCivilRepository::findById,
-                id -> new EntidadeNaoEncontradaException("Estado Civil não encontrado com ID: " + id)
-        );
+    private PessoaFisicaEntity setPessoaFisica(Pessoa pessoa) {
+        var pessoaFisica = pessoa.getPessoaFisica();
 
-        var corRaca = findEntity(
-                pessoa.getPessoaFisica().getCorRaca().getId(),
-                corRacaRepository::findById,
-                id -> new EntidadeNaoEncontradaException("Cor/Raça não encontrada com ID: " + id)
-        );
+        var pais = Optional.ofNullable(pessoaFisica.getPais())
+                .map(Pais::getIdPais)
+                .map(id -> findEntity(id, paisRepository::findById, "País"))
+                .orElseThrow(() -> new IllegalArgumentException("Pais não encontrado"));
 
-        var grauInstrucao = findEntity(
-                pessoa.getPessoaFisica().getGrauInstrucao().getIdGrauInstrucao(),
-                grauInstrucaoRepository::findById,
-                id -> new EntidadeNaoEncontradaException("Grau de Instrução não encontrado com ID: " + id)
-        );
+        var orientacaoSexual = Optional.ofNullable(pessoaFisica.getOrientacaoSexual())
+                .map(OrientacaoSexual::getIdOrientacaoSexual)
+                .map(id -> findEntity(id, orientacaoSexualRepository::findById, "Orientação Sexual"))
+                .orElseThrow(() -> new IllegalArgumentException("Orientação Sexual não encontrada"));
 
-        var agenciaEntity = findEntity(
-                pessoa.getContaBancaria().getAgencia().getIdAgencia(),
-                agenciaRepository::findById,
-                id -> new EntidadeNaoEncontradaException("Agência não encontrada com ID: " + id)
-        );
+        var identidadeGenero = Optional.ofNullable(pessoaFisica.getIdentidadeGenero())
+                .map(IdentidadeGenero::getId)
+                .map(id -> findEntity(id, identidadeGeneroRepository::findById, "Identidade de Gênero"))
+                .orElseThrow(() -> new IllegalArgumentException("Identidade de Gênero não encontrada"));
 
-        var contaBancariaEntity = new ContaBancariaEntity(pessoa.getContaBancaria(), agenciaEntity);
+        var profissao = Optional.ofNullable(pessoaFisica.getProfissao())
+                .map(Profissao::getIdProfissao)
+                .map(id -> findEntity(id, profissaoRepository::findById, "Profissão"))
+                .orElseThrow(() -> new IllegalArgumentException("Profissão não encontrada"));
 
-        var pessoaFisica = new PessoaFisicaEntity(pessoa.getPessoaFisica())
+        var estadoCivil = Optional.ofNullable(pessoaFisica.getEstadoCivil())
+                .map(EstadoCivil::getIdEstadoCivil)
+                .map(id -> findEntity(id, estadoCivilRepository::findById, "Estado Civil"))
+                .orElseThrow(() -> new IllegalArgumentException("Estado Civil não encontrado"));
+
+        var corRaca = Optional.ofNullable(pessoaFisica.getCorRaca())
+                .map(CorRaca::getId)
+                .map(id -> findEntity(id, corRacaRepository::findById, "Cor/Raça"))
+                .orElseThrow(() -> new IllegalArgumentException("Cor/Raça não encontrada"));
+
+        var grauInstrucao = Optional.ofNullable(pessoaFisica.getGrauInstrucao())
+                .map(GrauInstrucao::getIdGrauInstrucao)
+                .map(id -> findEntity(id, grauInstrucaoRepository::findById, "Grau de Instrução"))
+                .orElseThrow(() -> new IllegalArgumentException("Grau de Instrução não encontrado"));
+
+        return new PessoaFisicaEntity(pessoaFisica)
                 .toBuilder()
                 .pais(pais)
                 .orientacaoSexual(orientacaoSexual)
@@ -118,14 +125,13 @@ public class PessoaAdapter implements PessoaOutputPort {
                 .corRaca(corRaca)
                 .grauInstrucao(grauInstrucao)
                 .build();
-
-        var pessoaEntity = new PessoaEntity(pessoa, pessoaFisica, pais);
-        pessoaEntity.setConta(contaBancariaEntity);
-
-        pessoaRepository.save(pessoaEntity);
-
-        return pessoaEntity.getIdPessoa();
     }
+
+    private <T> T findEntity(long id, LongFunction<Optional<T>> repository, String entidadeNome) {
+        return repository.apply(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(entidadeNome + " não encontrada com ID: " + id));
+    }
+
 
 //    @Transactional
 //    public Long salvar(Pessoa pessoa) {
@@ -206,7 +212,7 @@ public class PessoaAdapter implements PessoaOutputPort {
     @Override
     public PessoaFisica findById(Long idPessoa) {
         var pessoaEntity = pessoaFisicaRepository.findById(idPessoa)
-                .orElseThrow(() -> new RuntimeException(PESSOA_NAO_ENCONTRADA_COM_ID + idPessoa));
+                .orElseThrow(() -> new RuntimeException(format(ENTIDADE_NAO_ENCONTRADA, "Pessoa Fisica", +idPessoa)));
         return modelMapper.map(pessoaEntity, PessoaFisica.class);
     }
 
@@ -223,21 +229,21 @@ public class PessoaAdapter implements PessoaOutputPort {
     @Override
     public Pessoa findPessoaById(Long idPessoa) {
         var pessoaEntity = pessoaRepository.findById(idPessoa)
-                .orElseThrow(() -> new RuntimeException(PESSOA_NAO_ENCONTRADA_COM_ID + idPessoa));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(format(ENTIDADE_NAO_ENCONTRADA, "Pessoa", +idPessoa)));
         return modelMapper.map(pessoaEntity, Pessoa.class);
     }
 
     @Override
     public PessoaFisica findPessoaFisicaById(Long idPessoa) {
         var pessoaFisicaEntity = pessoaFisicaRepository.findById(idPessoa)
-                .orElseThrow(() -> new RuntimeException(PESSOA_NAO_ENCONTRADA_COM_ID + idPessoa));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(format(ENTIDADE_NAO_ENCONTRADA, "Pessoa Fisica", +idPessoa)));
         return modelMapper.map(pessoaFisicaEntity, PessoaFisica.class);
     }
 
     @Override
     public PessoaJuridica findPessoaJuridicaById(Long idPessoa) {
         var pessoaJuridicaEntity = pessoaJuridicaRepository.findById(idPessoa)
-                .orElseThrow(() -> new RuntimeException("Pessoa Jurídica não encontrada com ID: " + idPessoa));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(format(ENTIDADE_NAO_ENCONTRADA, "Pessoa Juridica", +idPessoa)));
 
         List<Cnae> cnaes = pessoaJuridicaEntity.getCnaes().stream()
                 .map(pessoaJuridicaCnae -> {
@@ -265,7 +271,7 @@ public class PessoaAdapter implements PessoaOutputPort {
     @Override
     public void salvarEmail(Long idPessoa, Email email) {
         var pessoa = pessoaRepository.findById(idPessoa)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(PESSOA_NAO_ENCONTRADA_COM_ID + idPessoa));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(format(ENTIDADE_NAO_ENCONTRADA, "Pessoa", +idPessoa)));
         var emailEntity = new EmailEntity(email, pessoa);
         emailRepository.save(emailEntity);
     }
@@ -278,7 +284,7 @@ public class PessoaAdapter implements PessoaOutputPort {
                     pessoaFisicaRepository.save(pessoaFisicaEntity);
                 },
                 () -> {
-                    throw new EntidadeNaoEncontradaException(PESSOA_NAO_ENCONTRADA_COM_ID + idPessoa);
+                    throw new EntidadeNaoEncontradaException(format(ENTIDADE_NAO_ENCONTRADA, "Pessoa", +idPessoa));
                 }
         );
     }
@@ -302,23 +308,6 @@ public class PessoaAdapter implements PessoaOutputPort {
                 .toList();
 
         return new PageImpl<>(results, pageable, content.getTotalElements());
-    }
-
-    private <T> T findEntity(Long id, LongFunction<Optional<T>> findFunction, LongFunction<RuntimeException> exceptionSupplier) {
-        return findFunction.apply(id).orElseThrow(() -> exceptionSupplier.apply(id));
-    }
-
-
-
-    private <T> T findIfExists(Long id, LongFunction<T> buscaFunc) {
-        return id != null ? buscaFunc.apply(id) : null;
-    }
-
-    private PaisEntity buscarPaisPorId(Long paisId) {
-        if (paisId == null)
-            return null;
-        return paisRepository.findById(paisId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("País não encontrado com ID: " + paisId));
     }
 
 
