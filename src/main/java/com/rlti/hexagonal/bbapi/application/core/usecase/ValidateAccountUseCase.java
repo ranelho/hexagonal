@@ -1,6 +1,6 @@
 package com.rlti.hexagonal.bbapi.application.core.usecase;
 
-import com.rlti.hexagonal.bbapi.adapter.response.ValidationResponse;
+import com.rlti.hexagonal.bbapi.adapter.out.response.ValidateResponse;
 import com.rlti.hexagonal.bbapi.application.port.in.ValidateAccountInputPort;
 import com.rlti.hexagonal.bbapi.application.port.out.AccountValidationOutputPort;
 
@@ -13,8 +13,8 @@ public class ValidateAccountUseCase implements ValidateAccountInputPort {
     }
 
     @Override
-    public ValidationResponse validateAccount(String agencia, String conta, String cpfCnpj) {
+    public ValidateResponse validateAccount(String agencia, String conta, String cpfCnpj) {
         var validateAccount = validationOutputPort.validateAccount(agencia, conta, cpfCnpj);
-        return new ValidationResponse(validateAccount);
+        return new ValidateResponse(validateAccount);
     }
 }

@@ -1,22 +1,22 @@
-package com.rlti.hexagonal.bbapi.adapter.rest;
+package com.rlti.hexagonal.bbapi.adapter.out.service;
 
 import com.rlti.hexagonal.bbapi.application.core.domain.ValidateAccount;
 import com.rlti.hexagonal.bbapi.application.port.out.AccountValidationFeignClient;
-import com.rlti.hexagonal.bbapi.application.port.out.AccountValidationService;
+import com.rlti.hexagonal.bbapi.application.port.out.BancoDoBrasilAccountValidationOutputPort;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Component
-public class BancoDoBrasilAccountValidationAdapter implements AccountValidationService {
+public class BancoDoBrasilAccountValidationServiceAdapter implements BancoDoBrasilAccountValidationOutputPort {
 
     private final AccountValidationFeignClient accountValidationFeignClient;
 
     @Value("${bbapi.validation.gw-dev-app-key}")
     private String gwDevAppKey;
 
-    public BancoDoBrasilAccountValidationAdapter(AccountValidationFeignClient accountValidationFeignClient) {
+    public BancoDoBrasilAccountValidationServiceAdapter(AccountValidationFeignClient accountValidationFeignClient) {
         this.accountValidationFeignClient = accountValidationFeignClient;
     }
 

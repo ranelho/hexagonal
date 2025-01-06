@@ -1,7 +1,7 @@
-package com.rlti.hexagonal.bbapi.adapter.controller;
+package com.rlti.hexagonal.bbapi.adapter.in.controller;
 
 import com.rlti.hexagonal.bbapi.application.port.in.ValidateAccountInputPort;
-import com.rlti.hexagonal.bbapi.adapter.response.ValidationResponse;
+import com.rlti.hexagonal.bbapi.adapter.out.response.ValidateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +13,9 @@ public class AccountValidationController {
     private final ValidateAccountInputPort validateAccountInputPort;
 
     @GetMapping
-    public ValidationResponse validateAccount(@RequestParam String agencia,
-                                              @RequestParam String conta,
-                                              @RequestParam String cpfCnpj) {
+    public ValidateResponse validateAccount(@RequestParam String agencia,
+                                            @RequestParam String conta,
+                                            @RequestParam String cpfCnpj) {
         // Valida o campo cpfCnpj
         validateCpfCnpj(cpfCnpj);
 

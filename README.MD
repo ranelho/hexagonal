@@ -1,29 +1,39 @@
-# Hexagonal Architecture
+# Api Validação de Contas do Banco do Brasil
 
 ```sh
 src/main/java
 └── com
-└── rlti.hexagonal
+└── rlti.hexagonal.bbapi
 ├── adapters
-│   ├── input        # Adaptadores primários (ex.: Controllers REST, consumidores do sistema)
-│   │   └── EnderecoController.java
-│   ├── output       # Adaptadores secundários (ex.: FeignClients, Repositórios, APIs externas)
-│   │   ├── ViaCepFeignAdapter.java
-│   │   ├── ViaCepFeignClient.java
-│   │   └── response
-│   │       └── ViaCepResponse.java
-│   └── config       # Configurações relacionadas a portas/adaptadores (ex.: Beans, Feign, etc.)
-│       └── ApplicationConfig.java
-├── core
-│   ├── domain       # Entidades do domínio (objetos principais do negócio)
-│   │   └── Endereco.java
-│   ├── port         # Portas que definem os contratos de entrada e saída
-│   │   ├── input
-│   │   │   └── BuscaEnderecoInputPort.java
-│   │   └── output
-│   │       └── ViaCepOutputPort.java
-│   └── usecase      # Casos de uso que implementam a lógica de negócio
+│   ├── config  
+│   │   └── ValidateAccountConfig.java 
+│   ├── in 
+│   │    ├── controller
+│   │    │   └── EnderecoController.java
+│   ├── out 
+│   │   ├── response
+│   │   │   └── ValidateResponse.java
+│   │   ├── service
+│   │   │   └── AccountValidationService.java
+│   │   │   └── BancoDoBrasilAccountValidationServiceAdapter.java
+│   │   │   └── OAuth2TokenProviderAdapter.java
+├── application
+│   ├── core
+│   │   ├── domain      
+│   │   │   └── ValidateAccount.java
+│   │   ├── usecase
+│   │   │   └── ValidateAccountUseCase.java  
+│   ├── port        
+│   │   ├── in
+│   │   │   └── ValidateAccountInputPort.java
+│   │   └── out
+│   │   │   └── AccountValidationFeignClient.java
+│   │   │   └── AccountValidationOutputPort.java
+│   │   │   └── BancoDoBrasilAccountValidationOutputPort.java
+│   │   │   └── OAuthFeignClient.java
+│   │   │   └── TokenProvider.java
+│   └── usecase      
 │       └── BuscaEnderecoUseCase.java
-└── Application.java # Classe principal da aplicação
+└── Application.java 
 
 ```

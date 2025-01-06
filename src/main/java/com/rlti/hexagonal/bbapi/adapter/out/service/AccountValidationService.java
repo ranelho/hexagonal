@@ -1,18 +1,18 @@
-package com.rlti.hexagonal.bbapi.adapter.service;
+package com.rlti.hexagonal.bbapi.adapter.out.service;
 
 import com.rlti.hexagonal.bbapi.application.core.domain.ValidateAccount;
 import com.rlti.hexagonal.bbapi.application.port.out.AccountValidationOutputPort;
-import com.rlti.hexagonal.bbapi.application.port.out.AccountValidationService;
+import com.rlti.hexagonal.bbapi.application.port.out.BancoDoBrasilAccountValidationOutputPort;
 import com.rlti.hexagonal.bbapi.application.port.out.TokenProvider;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AccountValidationServiceImpl implements AccountValidationOutputPort {
+public class AccountValidationService implements AccountValidationOutputPort {
 
     private final TokenProvider tokenProvider;
-    private final AccountValidationService validationService;
+    private final BancoDoBrasilAccountValidationOutputPort validationService;
 
-    public AccountValidationServiceImpl(TokenProvider tokenProvider, AccountValidationService validationService) {
+    public AccountValidationService(TokenProvider tokenProvider, BancoDoBrasilAccountValidationOutputPort validationService) {
         this.tokenProvider = tokenProvider;
         this.validationService = validationService;
     }

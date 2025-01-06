@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.bbapi.adapter.rest;
+package com.rlti.hexagonal.bbapi.adapter.out.service;
 
 
 import com.rlti.hexagonal.bbapi.application.port.out.OAuthFeignClient;
@@ -10,14 +10,14 @@ import java.util.Base64;
 import java.util.Map;
 
 @Component
-public class OAuth2TokenProvider implements TokenProvider {
+public class OAuth2TokenProviderAdapter implements TokenProvider {
 
     private final OAuthFeignClient oauthFeignClient;
     private final String clientId;
     private final String clientSecret;
     private final String scope;
 
-    public OAuth2TokenProvider(
+    public OAuth2TokenProviderAdapter(
             OAuthFeignClient oauthFeignClient,
             @Value("${bbapi.oauth.client-id}") String clientId,
             @Value("${bbapi.oauth.client-secret}") String clientSecret,
