@@ -7,13 +7,14 @@ import com.rlti.hexagonal.pessoa.adapters.output.repository.PessoaRepositoryCust
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
 import com.rlti.hexagonal.util.CriteriaQueryHelper;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -68,9 +69,6 @@ public class PessoaRepositoryImpl implements PessoaRepositoryCustom {
 
         addPredicateIf.accept(params.getCpf() != null,
                 () -> cb.equal(root.get("cpf"), params.getCpf()));
-
-        addPredicateIf.accept(params.isEstrangeiro(),
-                () -> cb.equal(root.get("estrangeiro"), "S"));
 
         addPredicateIf.accept(params.getSexo() != null,
                 () -> cb.equal(root.get("sexo"), params.getSexo()));

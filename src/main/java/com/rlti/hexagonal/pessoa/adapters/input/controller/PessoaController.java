@@ -42,7 +42,7 @@ public class PessoaController {
     @GetMapping("/{idPessoa}")
     public ResponseEntity<?> buscarPessoa(@PathVariable Long idPessoa) {
         var pessoa = pessoaInputPort.buscarPessoa(idPessoa);
-        var handler = tipoPessoaHandler.get(pessoa.getTipo());
+        var handler = tipoPessoaHandler.get(pessoa.tipo());
         var detalhes = handler.apply(idPessoa);
         return ResponseEntity.ok(detalhes);
     }

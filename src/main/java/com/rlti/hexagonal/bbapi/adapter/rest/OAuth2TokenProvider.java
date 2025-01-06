@@ -1,4 +1,4 @@
-package com.rlti.hexagonal.bbapi.infrastructure.adapter.rest;
+package com.rlti.hexagonal.bbapi.adapter.rest;
 
 
 import com.rlti.hexagonal.bbapi.application.port.out.OAuthFeignClient;
@@ -30,11 +30,9 @@ public class OAuth2TokenProvider implements TokenProvider {
 
     @Override
     public String getOAuthToken() {
-        // Geração do cabeçalho Authorization
         String auth = Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
         String authorizationHeader = "Basic " + auth;
 
-        // Chamada ao Feign Client
         Map<String, Object> response = oauthFeignClient.getToken(authorizationHeader, "client_credentials", scope);
         return (String) response.get("access_token");
     }

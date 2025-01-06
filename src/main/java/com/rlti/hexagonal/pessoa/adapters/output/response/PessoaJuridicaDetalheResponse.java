@@ -6,33 +6,35 @@ import lombok.Data;
 
 import java.util.List;
 
-@Data
-public class PessoaJuridicaDetalheResponse {
-    private Long id;
-    private String cnpj;
-    private String nome;
-    private Tipo tipo;
-    private String razaoSocial;
-    private String nomeFantasia;
-    private String inscricaoEstadual;
-    private String inscricaoMunicipal;
-    private String situacao;
-    private List<EnderecoResponse> enderecos;
-    private CnaeResponse cnaePrincipal;
-    private List<CnaeResponse> cnaesSecundarios;
-
+public record PessoaJuridicaDetalheResponse(
+        Long id,
+        String cnpj,
+        String nome,
+        Tipo tipo,
+        String razaoSocial,
+        String nomeFantasia,
+        String inscricaoEstadual,
+        String inscricaoMunicipal,
+        String situacao,
+        List<EnderecoResponse> enderecos,
+        CnaeResponse cnaePrincipal,
+        List<CnaeResponse> cnaesSecundarios
+) {
     public PessoaJuridicaDetalheResponse(PessoaJuridica pessoaJuridica) {
-        this.id = pessoaJuridica.getPessoa().getIdPessoa();
-        this.cnpj = pessoaJuridica.getCnpj();
-        this.nome = pessoaJuridica.getPessoa().getNome();
-        this.tipo = pessoaJuridica.getPessoa().getTipo();
-        this.razaoSocial = pessoaJuridica.getRazaoSocial();
-        this.nomeFantasia = pessoaJuridica.getNomeFantasia();
-        this.inscricaoEstadual = pessoaJuridica.getInscricaoEstadual();
-        this.inscricaoMunicipal = pessoaJuridica.getInscricaoMunicipal();
-        this.situacao = pessoaJuridica.getSituacao();
-        this.enderecos = EnderecoResponse.converte(pessoaJuridica.getPessoa().getEnderecos());
-        this.cnaePrincipal = CnaeResponse.getPrincipal(pessoaJuridica.getCnaes());
-        this.cnaesSecundarios = CnaeResponse.getSecundarios(pessoaJuridica.getCnaes());
+        this(
+                pessoaJuridica.getPessoa().getIdPessoa(),
+                pessoaJuridica.getCnpj(),
+                pessoaJuridica.getPessoa().getNome(),
+                pessoaJuridica.getPessoa().getTipo(),
+                pessoaJuridica.getRazaoSocial(),
+                pessoaJuridica.getNomeFantasia(),
+                pessoaJuridica.getInscricaoEstadual(),
+                pessoaJuridica.getInscricaoMunicipal(),
+                pessoaJuridica.getSituacao(),
+                EnderecoResponse.converte(pessoaJuridica.getPessoa().getEnderecos()),
+                CnaeResponse.getPrincipal(pessoaJuridica.getCnaes()),
+                CnaeResponse.getSecundarios(pessoaJuridica.getCnaes())
+        );
     }
 }
+

@@ -2,6 +2,7 @@ package com.rlti.hexagonal.pessoa.adapters.output.response;
 
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Tipo;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pais;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.*;
 import org.springframework.data.domain.Page;
 
@@ -30,12 +31,12 @@ public record PessoaFisicaDetalheResponse(
         boolean indicadoCrs,
         boolean indicadorPpe,
         String especificacaoPpe,
-        GrauInstrucao grauInstrucao,
+        String grauInstrucao,
+        ContaBancariaResponse contaBancaria,
+        AutoDeclaracaoResponse autoDeclaracao,
         List<TelefoneResponse> telefones,
         List<EmailResponse> emails,
-        List<EnderecoResponse> enderecos,
-        List<ContaBancariaResponse> contaBancaria,
-        AutoDeclaracaoResponse autoDeclaracao
+        List<EnderecoResponse> enderecos
 ) {
     public PessoaFisicaDetalheResponse(PessoaFisica pessoaFisica) {
         this(
@@ -59,15 +60,12 @@ public record PessoaFisicaDetalheResponse(
                 pessoaFisica.isIndicadoCrs(),
                 pessoaFisica.isIndicadorPpe(),
                 pessoaFisica.getEspecificacaoPpe(),
-                pessoaFisica.getGrauInstrucao(),
-                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getTelefones())
-                        .map(TelefoneResponse::converte).orElse(Collections.emptyList())),
-                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getEmails())
-                        .map(EmailResponse::converte).orElse(Collections.emptyList())),
-                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getEnderecos())
-                        .map(EnderecoResponse::converte).orElse(Collections.emptyList())),
-                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getContas())
-                        .map(ContaBancariaResponse::converte).orElse(Collections.emptyList())),
+                pessoaFisica.getGrauInstrucao().getGrauInstrucao(),
+                Optional.of(pessoaFisica)
+                        .map(PessoaFisica::getPessoa)
+                        .map(Pessoa::getContaBancaria)
+                        .map(ContaBancariaResponse::new)
+                        .orElse(null),
                 new AutoDeclaracaoResponse(
                         Optional.ofNullable(pessoaFisica.getIdentidadeGenero())
                                 .map(IdentidadeGenero::getGenero).orElse(null),
@@ -77,7 +75,13 @@ public record PessoaFisicaDetalheResponse(
                         pessoaFisica.getEspecificacaoOs(),
                         Optional.ofNullable(pessoaFisica.getCorRaca())
                                 .map(CorRaca::getCorRaca).orElse(null)
-                )
+                ),
+                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getTelefones())
+                        .map(TelefoneResponse::converte).orElse(Collections.emptyList())),
+                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getEmails())
+                        .map(EmailResponse::converte).orElse(Collections.emptyList())),
+                List.copyOf(Optional.ofNullable(pessoaFisica.getPessoa().getEnderecos())
+                        .map(EnderecoResponse::converte).orElse(Collections.emptyList()))
         );
     }
 

@@ -1,7 +1,7 @@
 package com.rlti.hexagonal.bbapi.application.port.out;
 
-import com.rlti.hexagonal.bbapi.domain.model.ValidationResponse;
+import com.rlti.hexagonal.bbapi.application.core.domain.ValidateAccount;
 
 public interface AccountValidationService {
-    ValidationResponse validateAccount(String token, String agencia, String conta, String cpfCnpj);
+    ValidateAccount validateAccount(String token, String agencia, String conta, String cpfCnpj);
 }
