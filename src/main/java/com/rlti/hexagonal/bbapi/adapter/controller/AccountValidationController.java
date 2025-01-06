@@ -16,6 +16,9 @@ public class AccountValidationController {
     public ValidationResponse validateAccount(@RequestParam String agencia,
                                               @RequestParam String conta,
                                               @RequestParam String cpfCnpj) {
+        // Valida o campo cpfCnpj
+        validateCpfCnpj(cpfCnpj);
+
         // Realiza a validação e formatação dos parâmetros
         String formattedAgencia = formatAccountOrAgency(agencia);
         String formattedConta = formatAccountOrAgency(conta);
@@ -37,5 +40,12 @@ public class AccountValidationController {
 
         // Retorna o dado formatado
         return input;
+    }
+
+    private void validateCpfCnpj(String cpfCnpj) {
+        // Verifica se o valor contém ".", "-", ou "/"
+        if (cpfCnpj.contains(".") || cpfCnpj.contains("-") || cpfCnpj.contains("/")) {
+            throw new IllegalArgumentException("O campo cpfCnpj não deve conter '.', '-' ou '/'.");
+        }
     }
 }
