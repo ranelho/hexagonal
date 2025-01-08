@@ -1,5 +1,6 @@
 package com.rlti.hexagonal.pessoa.adapters.output.entity.banco;
 
+import com.rlti.hexagonal.pessoa.adapters.input.request.ContaBancariaRequest;
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoa.PessoaEntity;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoChavePix;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.TipoContaBancaria;
@@ -70,4 +71,6 @@ public class ContaBancariaEntity {
         this.numeroChavePix = contaBancaria.getNumeroChavePix();
         this.agencia = agenciaEntity;
     }
+
+
 }

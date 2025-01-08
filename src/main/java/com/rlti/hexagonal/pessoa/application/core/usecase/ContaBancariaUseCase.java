@@ -18,7 +18,7 @@ public class ContaBancariaUseCase implements ContaBancariaInputPort {
 
     @Override
     public void novaContaBancaria(Long idPessoa, ContaBancariaRequest request) {
-        var contaBancaria = modelMapper.map(request, ContaBancaria.class);
-        outputPort.novaContaBancaria(idPessoa, contaBancaria);
+        var contaBancaria = new ContaBancaria(idPessoa, request);
+        outputPort.novaContaBancaria( contaBancaria);
     }
 }

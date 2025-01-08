@@ -3,6 +3,6 @@ package com.rlti.hexagonal.pessoa.application.port.output;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.ContaBancaria;
 
 public interface ContaBancariaOutputPort {
-    void novaContaBancaria(Long idPessoa, ContaBancaria contaBancaria);
+    void novaContaBancaria(ContaBancaria contaBancaria);
 
 }

@@ -19,8 +19,8 @@ public class Email {
     }
 
     public Email(EmailRequest emailRequest) {
-        this.email = emailRequest.getEmail();
-        this.tipoEmail = emailRequest.getTipoEmail();
+        this.email = emailRequest.email();
+        this.tipoEmail = emailRequest.tipoEmail();
     }
 
     public Email(Long idEmail, String email, TipoEmail tipoEmail, Pessoa pessoa) {

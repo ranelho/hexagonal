@@ -32,6 +32,10 @@ public class Pessoa {
         this.pessoaFisica = new PessoaFisica(request);
     }
 
+    public Pessoa(Long idPessoa) {
+        this.idPessoa = idPessoa;
+    }
+
     private void getComumPessoa(PessoaFisicaRequest request) {
         this.tipo = request.getTipo();
         this.nome = request.getNome().toUpperCase();

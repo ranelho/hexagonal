@@ -1,24 +1,17 @@
 package com.rlti.hexagonal.util;
 
-import com.rlti.hexagonal.pessoa.application.core.domain.enums.Sexo;
+import com.rlti.hexagonal.handler.EntidadeException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.LongFunction;
-import java.util.function.Supplier;
 
 public class Utils {
 
     private Utils() {
         throw new UnsupportedOperationException("Util class cannot be instantiated");
-    }
-
-    public static <T> T findEntityById(Long id, LongFunction<Optional<T>> repositoryFindById, Supplier<RuntimeException> exceptionSupplier) {
-        return id != null ?
-                repositoryFindById.apply(id)
-                        .orElseThrow(exceptionSupplier)
-                : null;
     }
 
     /**
@@ -34,13 +27,7 @@ public class Utils {
                 .orElse(null);
     }
 
-    /**
-     * Converte um valor do tipo Sexo para o seu nome em formato de String.
-     * Se o valor for null, retorna null.
-     *
-     * @param sexo O valor do sexo a ser convertido.
-     * @return O nome do sexo como String ou null se o valor for null.
-     */
+
     public static <E extends Enum<E>> String formatEnum(E enumValue) {
         return Optional.ofNullable(enumValue)
                 .map(Enum::name)
@@ -57,7 +44,26 @@ public class Utils {
      */
     public static String formatString(String value, DateTimeFormatter formatter) {
         return Optional.ofNullable(value)
-                .map(val -> val.format(String.valueOf(formatter)))
+                .map(val -> String.format(String.valueOf(formatter)))
                 .orElse(null);
     }
+
+    public static <T> T findEntity(long id, LongFunction<Optional<T>> repository, String entidadeNome) {
+        return repository.apply(id)
+                .orElseThrow(() -> new EntidadeException(entidadeNome + " não encontrada com ID: " + id));
+    }
+
+    public static <T, R> T fetchEntity(R entity, Function<R, Long> idExtractor, LongFunction<Optional<T>> repository, String entityName) {
+        return Optional.ofNullable(entity)
+                .map(idExtractor)
+                .map(id -> findEntity(id, repository, entityName))
+                .orElseThrow(() -> new EntidadeException(entityName + " não pode ser nula"));
+    }
+
+
+
+
+
+
+
 }

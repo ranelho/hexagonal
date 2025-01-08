@@ -28,4 +28,16 @@ public class ContaBancaria {
         this.numeroChavePix = contaBancaria.getNumeroChavePix();
         this.agencia = new Agencia(contaBancaria.getIdAgencia());
     }
+
+
+    public ContaBancaria(Long idPessoa, ContaBancariaRequest request) {
+        this.pessoa = new Pessoa(idPessoa);
+        this.agencia = new Agencia(request.getIdAgencia());
+        this.tipoContaBancaria = request.getTipoContaBancaria();
+        this.numeroConta = request.getNumeroConta();
+        this.digitoVerificadorConta = request.getDigitoVerificadorConta();
+        this.tipoChavePix = request.getTipoChavePix();
+        this.numeroChavePix = request.getNumeroChavePix();
+        this.agencia = new Agencia(request.getIdAgencia());
+    }
 }

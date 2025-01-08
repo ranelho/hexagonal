@@ -43,14 +43,25 @@ public class PessoaFisicaRequest extends PessoaRequest {
     private String especificacaoPpe;
 
     @NotNull
-    private Long paisId;
-
+    private Long idPais;
     private Long idPaisCrs;
+
+    @NotNull(message = "profissaoId não pode ser nulo")
     private Long profissaoId;
+
+    @NotNull(message = "idGrauInstrucao não pode ser nulo")
     private Long idGrauInstrucao;
+
+    @NotNull(message = "idIdentidadeGenero não pode ser nulo")
     private Long idIdentidadeGenero;
+
     private String especificacaoIg;
+
+    @NotNull(message = "orientacaoSexualId não pode ser nulo")
     private Long orientacaoSexualId;
+
     private String especificacaoOs;
+
+    @NotNull(message = "corRacaId não pode ser nulo")
     private Long corRacaId;
 }

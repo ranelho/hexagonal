@@ -23,11 +23,11 @@ public interface PessoaInputPort {
 
     Page<PessoaJuridicaResponse> listarPessoasJuridicas(int page, int size);
 
-    void criarEmail(Long idPessoa, @Valid EmailRequest request);
+    void addEmailPessoa(Long idPessoa, @Valid EmailRequest request);
 
     void atualizarPessoa(Long idPessoa, @Valid PessoaFisicaUpdateRequest request);
 
     Page<PessoaFisicaResponse> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params);
 
-
+    Page<PessoaFisicaDTO> listPessoasFisicasWithFilter2(Pageable pageable, PessoaFilterParam params);
 }

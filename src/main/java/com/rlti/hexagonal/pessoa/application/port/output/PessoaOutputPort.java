@@ -1,6 +1,9 @@
 package com.rlti.hexagonal.pessoa.application.port.output;
 
+import com.rlti.hexagonal.pessoa.adapters.input.request.ContaBancariaRequest;
 import com.rlti.hexagonal.pessoa.adapters.input.request.PessoaFilterParam;
+import com.rlti.hexagonal.pessoa.adapters.output.response.PessoaFisicaDTO;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.ContaBancaria;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Email;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
@@ -31,11 +34,11 @@ public interface PessoaOutputPort {
 
     Page<PessoaJuridica> findAllPessoaJuridicaPaginated(int page, int size);
 
-    void salvarEmail(Long idPessoa, Email email);
+    void addEmailPessoa(Long idPessoa, Email email);
 
     void atualizarPessoa(Long idPessoa, PessoaFisica pessoa);
 
     Page<PessoaFisica> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params);
 
-
+    Page<PessoaFisicaDTO> findWithFilters2(Pageable pageable, PessoaFilterParam params);
 }

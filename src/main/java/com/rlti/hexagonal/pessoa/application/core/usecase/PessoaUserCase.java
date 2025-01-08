@@ -2,6 +2,7 @@ package com.rlti.hexagonal.pessoa.application.core.usecase;
 
 import com.rlti.hexagonal.pessoa.adapters.input.request.*;
 import com.rlti.hexagonal.pessoa.adapters.output.response.*;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.ContaBancaria;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Email;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.PessoaFisica;
@@ -70,9 +71,9 @@ public class PessoaUserCase implements PessoaInputPort {
     }
 
     @Override
-    public void criarEmail(Long idPessoa, EmailRequest request) {
+    public void addEmailPessoa(Long idPessoa, EmailRequest request) {
         var email = modelMapper.map(request, Email.class);
-        pessoaOutputPort.salvarEmail(idPessoa, email);
+        pessoaOutputPort.addEmailPessoa(idPessoa, email);
     }
 
     @Override
@@ -87,7 +88,9 @@ public class PessoaUserCase implements PessoaInputPort {
         return PessoaFisicaResponse.converte(pessoasFisicas);
     }
 
-
-
+    @Override
+    public Page<PessoaFisicaDTO> listPessoasFisicasWithFilter2(Pageable pageable, PessoaFilterParam params) {
+        return pessoaOutputPort.findWithFilters2(pageable, params);
+    }
 
 }

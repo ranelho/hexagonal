@@ -62,7 +62,7 @@ public class PessoaFisica {
         this.indicadoCrs = request.isIndicadoCrs();
         this.indicadorPpe = request.isIndicadorPpe();
         this.especificacaoPpe = request.getEspecificacaoPpe();
-        this.pais = new Pais(request.getPaisId());
+        this.pais = new Pais(request.getIdPais());
         this.profissao = new Profissao(request.getProfissaoId());
         this.grauInstrucao = new GrauInstrucao(request.getIdGrauInstrucao());
         this.identidadeGenero = new IdentidadeGenero(request.getIdIdentidadeGenero());
