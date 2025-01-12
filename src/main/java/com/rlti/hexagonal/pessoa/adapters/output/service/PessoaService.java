@@ -11,8 +11,11 @@ import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.CnaeEntit
 import com.rlti.hexagonal.pessoa.adapters.output.entity.pessoajuridica.PessoaJuridicaEntity;
 import com.rlti.hexagonal.pessoa.adapters.output.repository.*;
 import com.rlti.hexagonal.pessoa.adapters.output.response.PessoaFisicaDTO;
+import com.rlti.hexagonal.pessoa.adapters.output.response.PessoaFisicaProjection;
 import com.rlti.hexagonal.pessoa.application.core.domain.enums.Sexo;
-import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.*;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Email;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pais;
+import com.rlti.hexagonal.pessoa.application.core.domain.pessoa.Pessoa;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoafisica.*;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.Cnae;
 import com.rlti.hexagonal.pessoa.application.core.domain.pessoajuridica.PessoaJuridica;
@@ -27,7 +30,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import static com.rlti.hexagonal.util.Utils.*;
 import static java.lang.String.format;
@@ -203,6 +205,7 @@ public class PessoaService implements PessoaOutputPort {
         );
     }
 
+    // 1 opcao + lenta
     @Override
     public Page<PessoaFisica> listPessoasFisicasWithFilter(Pageable pageable, PessoaFilterParam params) {
 
@@ -222,21 +225,26 @@ public class PessoaService implements PessoaOutputPort {
     }
 
 
-    // 2 opcao
+    // 2 opcao ++++ rapida
     @Override
     public Page<PessoaFisicaDTO> findWithFilters2(Pageable pageable, PessoaFilterParam filter) {
-        Page<Object[]> result = pessoaFisicaRepository.findWithFilters2(filter.getNome(), filter.getDataFormatada(),
-                formatEnum(filter.getSexo()), filter.getCpf(), pageable);
+        Page<PessoaFisicaProjection> result = pessoaFisicaRepository.findWithFilters3(
+                filter.getNome(),
+                filter.getDataFormatada(),
+                formatEnum(filter.getSexo()),
+                filter.getCpf(),
+                pageable
+        );
 
         List<PessoaFisicaDTO> dtos = result.getContent().stream()
-                .map(objects -> new PessoaFisicaDTO(
-                        (Long) objects[0],
-                        (String) objects[1],
-                        (LocalDate) objects[2],
-                        (Sexo) objects[3],
-                        (String) objects[4],
-                        (String) objects[5],
-                        (String) objects[6]
+                .map(projection -> new PessoaFisicaDTO(
+                        projection.getIdPessoaFisica(),
+                        projection.getNome(),
+                        projection.getDataNascimento(),
+                        Sexo.valueOf(projection.getSexo()),
+                        projection.getCpf(),
+                        projection.getNacionalidade(),
+                        projection.getEmail()
                 ))
                 .toList();
 
